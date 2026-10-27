@@ -28,7 +28,7 @@ Solo el equipo puede resolverlos, porque requieren identidades, cuentas, equipos
 | P3 | Ejecutar en la laptop Windows: `verificar_entorno.ps1` y `reproducir --confirmar-destruccion` | Equipo | Laptop con SQL Server, SSMS, Python y ODBC | `evidence/laptop_windows/`; columna «Laptop» de `docs/06_pruebas/plan_pruebas.md` |
 | P4 | Comparar los CSV de la laptop con `data/sintetico/manifiesto.json` (SHA-256) antes de citar cifras como obtenidas en la laptop | Equipo | P3 | `README.md`, informe §10-11 |
 | P5 | Desplegar en Azure SQL Database | Equipo | Suscripción, autorización expresa para crear recursos, administrador Entra (`docs/05_azure/guia_azure.md`, campo «Quién administra») | `evidence/azure/` según la lista de evidencias de la guía; R01 en la matriz |
-| P6 | Crear el repositorio u organización en GitHub, invitar a los integrantes y subir | Líder | Cuentas de GitHub y autorización | R24 en la matriz |
+| P6 | Invitar a los integrantes al repositorio ya publicado (https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611) | Propietario del repositorio | Usuarios de GitHub de los integrantes | R24 en la matriz |
 | P7 | Registrar los aportes reales y las actas de reunión | Cada integrante | Trabajo real realizado | `docs/equipo/registro_aportes.md`, `docs/equipo/plantilla_acta_reunion.md` |
 | P8 | Confirmar con el docente el mínimo de páginas (D12) y la semana del avance (D1); verificar la fecha de entrega en el aula virtual (D2) | Equipo | Respuesta del docente | `docs/00_fuentes/revision_fuentes.md`, R29-R30 |
 | P9 | Ensayo cronometrado de la exposición y de la demostración en la laptop que se usará | Todos | P3 | `docs/defensa/guion_demo.md` (lista de preparación) |
@@ -37,6 +37,6 @@ Solo el equipo puede resolverlos, porque requieren identidades, cuentas, equipos
 ## 3. Lo que no se hizo y por qué
 
 - **No se creó ningún recurso en Azure** ni se usó una suscripción: requiere autorización expresa y puede generar costos.
-- **No se inicializó ni se publicó un repositorio Git**: publicar requiere autorización y las cuentas del equipo; además, el historial debe reflejar aportes reales.
+- **El repositorio se publicó solo cuando el propietario de la cuenta lo pidió** (https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611). El primer commit figura a nombre del asistente de IA (autor «Claude»), no de un integrante; los aportes del equipo deben verse en sus propios commits.
 - **No se ejecutó nada en la laptop**: este entorno remoto no tiene acceso a ella. Los scripts y la guía están listos.
 - **No se asignaron exposiciones ni aportes**: la modalidad es aleatoria y los aportes solo los puede declarar el equipo.

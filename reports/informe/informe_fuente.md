@@ -444,7 +444,7 @@ Desplegar en Azure y comparar tiempos y planes con el entorno local; cifrar colu
 1. Ejecutar la verificación del entorno y la reproducción completa en la laptop Windows (`scripts/windows/verificar_entorno.ps1` y `python -m aerolinea reproducir`) y guardar las evidencias en `evidence/laptop_windows/`.
 2. Desplegar en Azure SQL Database con la oferta gratuita y pausa automática, siguiendo `docs/05_azure/guia_azure.md`, y completar la lista de evidencias antes de la entrega.
 3. Confirmar con el docente el número mínimo de páginas y la semana de entrega del avance, y completar los campos marcados como [POR COMPLETAR].
-4. Publicar el repositorio en GitHub desde las cuentas del equipo y registrar los aportes reales de cada integrante.
+4. Invitar a los integrantes al repositorio de GitHub, ya publicado en https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611, y registrar los aportes reales de cada integrante.
 5. Preparar la defensa con la guía de estudio común: como la exposición es aleatoria, cada integrante debe poder explicar cualquier sección.
 6. Si el proyecto continúa, priorizar el cifrado de columnas sensibles y el uso de datos reales para que las consultas pasen de validar el modelo a apoyar decisiones.
 

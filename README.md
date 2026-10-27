@@ -42,9 +42,13 @@ El contenedor **no** es la laptop ni Azure: demuestra que el código funciona so
 
 ## Reproducir desde cero en Windows
 
-En PowerShell, dentro de la carpeta del proyecto:
+En PowerShell:
 
 ```powershell
+# 0. Obtener el proyecto y entrar en su carpeta
+git clone https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611.git
+cd aerolinea-bd-psma00611
+
 # 1. Verificación del entorno (solo lectura)
 powershell -ExecutionPolicy Bypass -File .\scripts\windows\verificar_entorno.ps1
 
@@ -150,14 +154,14 @@ evidence/                  evidencias por entorno
 - No se requiere habilitar SQL Server Browser, SQL Server Agent ni acceso remoto a la instancia local.
 - Consultas desde Python siempre con parámetros enlazados; los valores del usuario nunca se concatenan en el SQL.
 
-## Publicar en GitHub (lo hace el equipo)
+## Repositorio en GitHub
 
-El repositorio está preparado, pero **no** se ha creado ni publicado nada. Cuando el equipo lo autorice:
+Publicado en <https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611> (público), a solicitud del propietario de la cuenta. El primer commit lo creó el asistente de IA usado en el desarrollo (autor «Claude»), no un integrante. Falta:
 
-1. El líder crea el repositorio (u organización) en GitHub e invita a los integrantes (requisito de las guías: F3 y F4, p. 22).
-2. Desde esta carpeta: `git init`, `git add .`, revisar con `git status` que no aparezcan `.env` ni CSV de `data/sintetico/`, `git commit` con la cuenta de quien sube, `git remote add origin …` y `git push`.
-3. Cada integrante registra sus aportes reales en [`docs/equipo/registro_aportes.md`](docs/equipo/registro_aportes.md) y trabaja con ramas y *pull requests* ([`CONTRIBUTING.md`](CONTRIBUTING.md)). No se fabrica historial de colaboración.
+1. Invitar a los integrantes como colaboradores (*Settings → Collaborators*), requisito de las guías (F3 y F4, p. 22).
+2. Que cada integrante clone el repositorio (`git clone https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611.git`), trabaje con ramas y *pull requests* ([`CONTRIBUTING.md`](CONTRIBUTING.md)) y registre sus aportes reales en [`docs/equipo/registro_aportes.md`](docs/equipo/registro_aportes.md). No se fabrica historial de colaboración.
+3. Antes de cada `git push`, revisar con `git status` que no aparezcan `.env` ni CSV de `data/sintetico/`.
 
 ## Pendientes del equipo
 
-Ver la lista completa en [`docs/registro_progreso.md`](docs/registro_progreso.md). Los principales: datos de carátula `[POR COMPLETAR]`, ejecución en la laptop, despliegue en Azure con autorización, publicación en GitHub, confirmación del número mínimo de páginas del informe y de la semana de entrega del avance (discrepancias D1, D2 y D12 en [`docs/00_fuentes/revision_fuentes.md`](docs/00_fuentes/revision_fuentes.md)).
+Ver la lista completa en [`docs/registro_progreso.md`](docs/registro_progreso.md). Los principales: datos de carátula `[POR COMPLETAR]`, ejecución en la laptop, despliegue en Azure con autorización, invitación de los integrantes al repositorio de GitHub, confirmación del número mínimo de páginas del informe y de la semana de entrega del avance (discrepancias D1, D2 y D12 en [`docs/00_fuentes/revision_fuentes.md`](docs/00_fuentes/revision_fuentes.md)).

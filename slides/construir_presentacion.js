@@ -439,7 +439,7 @@ function nuevo(master, titulo, seccion) {
   texto(s, [
     { text: "Reproducir en la laptop Windows", options: { bullet: true, breakLine: true } },
     { text: "Desplegar en Azure con autorización", options: { bullet: true, breakLine: true } },
-    { text: "Publicar el repositorio en GitHub", options: { bullet: true, breakLine: true } },
+    { text: "Invitar al equipo al repositorio", options: { bullet: true, breakLine: true } },
     { text: "Cifrar columnas sensibles", options: { bullet: true, breakLine: true } },
     { text: "Probar con datos abiertos reales", options: { bullet: true } },
   ], { x: 8.4, y: 2.35, w: 4.0, h: 2.7, fontSize: 16, color: C.background1, paraSpaceAfter: 8 });
