@@ -1,0 +1,22 @@
+-- sqlcmd -I -i sql/11_dml_seguro.sql  (2026-10-27T03:46:41Z)
+accion id_descuento codigo_descuento porcentaje vigente_desde vigente_hasta
+------ ------------ ---------------- ---------- ------------- -------------
+E1 insertado 8 NAVIDAD18 18.00 2026-11-20 2026-12-15
+E1 revertido (simulación)
+accion id_tarifa precio_base_usd vigente_desde hasta_antes hasta_despues
+------ --------- --------------- ------------- ----------- -------------
+E2 cerrada 77 354.99 2026-10-20 NULL 2026-11-30
+E2 nueva versión 151 372.99 2026-12-01 NULL NULL
+E2 revertido (simulación)
+E3 rechazado como se esperaba [50003] RN-20: la tarifa 1 ya se usó en tiquetes; no se puede cambiar su ruta, cabina, precio ni inicio de vigencia. Cierre su vigencia y cree una nueva versión.
+E4 filas afectadas: 2
+accion codigo_descuento vigente_hasta tiquetes_con_descuento
+------ ---------------- ------------- ----------------------
+E4 desactivado LANZAMIENTO20 2026-07-31 24580
+E4 desactivado OTONO12 2026-10-10 9502
+E4 revertido (simulación)
+accion id_descuento codigo_descuento porcentaje
+------ ------------ ---------------- ----------
+E5 eliminado 6 INVIERNO25 25.00
+E5 revertido (simulación)
+E6 rechazado como se esperaba [50059] RN-29: los pagos no se eliminan; un pago pendiente se anula y uno confirmado se reembolsa.

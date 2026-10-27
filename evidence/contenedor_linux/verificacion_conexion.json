@@ -1,0 +1,28 @@
+{
+  "servidor": "vm",
+  "edicion": "Developer Edition (64-bit)",
+  "version": "16.0.4305.5",
+  "usuario_actual": "sa",
+  "edicion_motor": "3",
+  "base_datos": "AerolineaDB",
+  "nivel_compatibilidad": "160",
+  "rcsi": "True",
+  "intercalacion": "SQL_Latin1_General_CP1_CI_AS",
+  "protocolo": "TCP",
+  "cifrado": "TRUE",
+  "autenticacion": "SQL",
+  "controlador_odbc": "libmsodbcsql-18.7.so.1.1 18.07.0001",
+  "python": "3.13.17",
+  "pyodbc": "5.2.0",
+  "sistema_cliente": "Linux 6.18.44-fc-v165",
+  "configuracion": {
+    "servidor": "localhost",
+    "base_datos": "AerolineaDB",
+    "autenticacion": "sql",
+    "controlador": "(autodetección)",
+    "cifrar": "yes",
+    "confiar_certificado": "yes",
+    "usuario": "sa"
+  },
+  "verificado_utc": "2026-10-27T03:40:40+00:00"
+}

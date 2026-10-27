@@ -1,0 +1,189 @@
+---
+title: Modelo físico - Red, flota, vuelos y tripulación
+---
+erDiagram
+    ref_localizacion {
+    int id_localizacion PK "NOT NULL"
+    varchar(12) codigo_localizacion UK "NOT NULL"
+    char(3) tipo_localizacion UK "NOT NULL"
+    nvarchar(100) nombre "NOT NULL"
+    nvarchar(60) ciudad "NULL"
+    char(2) codigo_estado FK "NULL"
+    nvarchar(150) direccion "NULL"
+    varchar(10) codigo_postal "NULL"
+    varchar(50) zona_horaria FK "NULL"
+    varchar(200) url UK "NULL"
+    bit vende_tiquetes "NOT NULL"
+    bit activa "NOT NULL"
+    date fecha_apertura "NOT NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    }
+    ref_aeropuerto {
+    int id_localizacion PK,FK "NOT NULL"
+    char(3) tipo_localizacion FK "calculada"
+    char(3) codigo_iata UK "NOT NULL"
+    char(4) codigo_icao UK "NOT NULL"
+    decimal(9,6) latitud "NOT NULL"
+    decimal(9,6) longitud "NOT NULL"
+    bit es_base_operaciones "NOT NULL"
+    }
+    ref_zona_horaria {
+    varchar(50) nombre_windows PK "NOT NULL"
+    varchar(50) nombre_iana "NOT NULL"
+    nvarchar(100) descripcion "NOT NULL"
+    bit observa_horario_verano "NOT NULL"
+    }
+    ref_estado_eeuu {
+    char(2) codigo_estado PK "NOT NULL"
+    nvarchar(40) nombre UK "NOT NULL"
+    }
+    ops_ruta {
+    smallint id_ruta PK "NOT NULL"
+    int id_aeropuerto_origen FK,UK "NOT NULL"
+    int id_aeropuerto_destino FK,UK "NOT NULL"
+    smallint distancia_millas "NOT NULL"
+    bit activa "NOT NULL"
+    date fecha_inicio_operacion "NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    }
+    ops_programacion {
+    int id_programacion PK "NOT NULL"
+    smallint numero_vuelo UK "NOT NULL"
+    smallint id_ruta FK "NOT NULL"
+    time(0) hora_salida_local "NOT NULL"
+    smallint duracion_programada_min "NOT NULL"
+    date vigente_desde UK "NOT NULL"
+    date vigente_hasta "NULL"
+    bit activa "NOT NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    }
+    ops_programacion_dia {
+    int id_programacion PK,FK "NOT NULL"
+    tinyint dia_semana PK "NOT NULL"
+    }
+    ops_vuelo {
+    int id_vuelo PK "NOT NULL"
+    int id_programacion FK,UK "NOT NULL"
+    datetimeoffset(0) salida_programada "NOT NULL"
+    datetimeoffset(0) llegada_programada "NOT NULL"
+    date fecha_salida_local UK "calculada"
+    datetimeoffset(0) salida_estimada "NULL"
+    datetimeoffset(0) salida_real "NULL"
+    datetimeoffset(0) llegada_real "NULL"
+    smallint id_avion FK "NULL"
+    varchar(15) codigo_estado FK "NOT NULL"
+    varchar(5) puerta_salida "NULL"
+    nvarchar(200) motivo_cancelacion "NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    timestamp version_fila "NOT NULL"
+    }
+    ops_vuelo_cabina {
+    int id_vuelo PK,FK "NOT NULL"
+    char(3) codigo_cabina PK,FK "NOT NULL"
+    smallint capacidad "NOT NULL"
+    smallint plazas_ocupadas "NOT NULL"
+    }
+    ops_avion {
+    smallint id_avion PK "NOT NULL"
+    varchar(10) matricula UK "NOT NULL"
+    varchar(20) numero_serie UK "NOT NULL"
+    smallint id_configuracion FK "NOT NULL"
+    date fecha_fabricacion "NOT NULL"
+    date fecha_incorporacion "NOT NULL"
+    varchar(15) estado_operativo "NOT NULL"
+    int id_aeropuerto_base FK "NOT NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    }
+    ops_configuracion_asientos {
+    smallint id_configuracion PK "NOT NULL"
+    varchar(20) codigo_configuracion UK "NOT NULL"
+    smallint id_modelo FK "NOT NULL"
+    nvarchar(150) descripcion "NOT NULL"
+    }
+    ops_asiento_configuracion {
+    smallint id_configuracion PK,FK "NOT NULL"
+    varchar(4) codigo_asiento PK "NOT NULL"
+    tinyint fila UK "NOT NULL"
+    char(1) letra UK "NOT NULL"
+    char(3) codigo_cabina FK "NOT NULL"
+    bit es_ventana "NOT NULL"
+    bit es_pasillo "NOT NULL"
+    bit es_salida_emergencia "NOT NULL"
+    }
+    ref_modelo_avion {
+    smallint id_modelo PK "NOT NULL"
+    nvarchar(40) fabricante UK "NOT NULL"
+    nvarchar(40) modelo UK "NOT NULL"
+    smallint alcance_millas "NOT NULL"
+    smallint velocidad_crucero_mph "NOT NULL"
+    }
+    ref_cabina {
+    char(3) codigo_cabina PK "NOT NULL"
+    nvarchar(40) nombre UK "NOT NULL"
+    nvarchar(200) descripcion "NOT NULL"
+    tinyint piezas_equipaje_bodega "NOT NULL"
+    tinyint peso_max_equipaje_kg "NOT NULL"
+    bit acceso_sala_vip "NOT NULL"
+    tinyint orden_abordaje UK "NOT NULL"
+    }
+    ops_asignacion_tripulacion {
+    int id_vuelo PK,FK "NOT NULL"
+    int id_empleado PK,FK "NOT NULL"
+    varchar(15) rol_vuelo "NOT NULL"
+    datetime2(0) asignado_utc "NOT NULL"
+    }
+    rh_empleado {
+    int id_empleado PK "NOT NULL"
+    char(6) numero_empleado UK "NOT NULL"
+    nvarchar(60) nombres "NOT NULL"
+    nvarchar(60) apellidos "NOT NULL"
+    date fecha_nacimiento "NOT NULL"
+    varchar(120) email_corporativo UK "NOT NULL"
+    varchar(20) telefono "NULL"
+    date fecha_contratacion "NOT NULL"
+    date fecha_terminacion "NULL"
+    varchar(15) codigo_cargo FK "NOT NULL"
+    int id_localizacion_base FK "NOT NULL"
+    int id_supervisor FK "NULL"
+    decimal(12,2) salario_anual_usd "NOT NULL"
+    datetime2(0) creado_utc "NOT NULL"
+    }
+    rh_cargo {
+    varchar(15) codigo_cargo PK "NOT NULL"
+    nvarchar(60) nombre UK "NOT NULL"
+    varchar(10) codigo_departamento FK "NOT NULL"
+    varchar(7) categoria_tripulacion "NULL"
+    }
+    rh_departamento {
+    varchar(10) codigo_departamento PK "NOT NULL"
+    nvarchar(60) nombre UK "NOT NULL"
+    }
+    ref_estado_vuelo {
+    varchar(15) codigo_estado PK "NOT NULL"
+    nvarchar(100) descripcion "NOT NULL"
+    bit es_estado_inicial "NOT NULL"
+    bit es_final "NOT NULL"
+    }
+    ref_localizacion ||--o{ ref_aeropuerto : "fk_aeropuerto_localizacion"
+    ref_cabina ||--o{ ops_asiento_configuracion : "fk_asiento_cabina"
+    ops_configuracion_asientos ||--o{ ops_asiento_configuracion : "fk_asiento_configuracion"
+    rh_empleado ||--o{ ops_asignacion_tripulacion : "fk_asignacion_empleado"
+    ops_vuelo ||--o{ ops_asignacion_tripulacion : "fk_asignacion_vuelo"
+    ref_aeropuerto ||--o{ ops_avion : "fk_avion_aeropuerto_base"
+    ops_configuracion_asientos ||--o{ ops_avion : "fk_avion_configuracion"
+    rh_departamento ||--o{ rh_cargo : "fk_cargo_departamento"
+    ref_modelo_avion ||--o{ ops_configuracion_asientos : "fk_configuracion_modelo"
+    rh_cargo ||--o{ rh_empleado : "fk_empleado_cargo"
+    ref_localizacion ||--o{ rh_empleado : "fk_empleado_localizacion"
+    rh_empleado |o--o{ rh_empleado : "fk_empleado_supervisor"
+    ref_estado_eeuu |o--o{ ref_localizacion : "fk_localizacion_estado"
+    ref_zona_horaria |o--o{ ref_localizacion : "fk_localizacion_zona_horaria"
+    ops_programacion ||--o{ ops_programacion_dia : "fk_programacion_dia_programacion"
+    ops_ruta ||--o{ ops_programacion : "fk_programacion_ruta"
+    ref_aeropuerto ||--o{ ops_ruta : "fk_ruta_destino"
+    ref_aeropuerto ||--o{ ops_ruta : "fk_ruta_origen"
+    ops_avion |o--o{ ops_vuelo : "fk_vuelo_avion"
+    ref_cabina ||--o{ ops_vuelo_cabina : "fk_vuelo_cabina_cabina"
+    ops_vuelo ||--o{ ops_vuelo_cabina : "fk_vuelo_cabina_vuelo"
+    ref_estado_vuelo ||--o{ ops_vuelo : "fk_vuelo_estado"
+    ops_programacion ||--o{ ops_vuelo : "fk_vuelo_programacion"

@@ -1,0 +1,4 @@
+# Opcional: solo para DB_AUTH=entra_token (token de Microsoft Entra ID con azure-identity).
+# Con DB_AUTH=entra_interactivo no hace falta: el controlador ODBC abre el inicio de sesión.
+-r requirements.txt
+azure-identity

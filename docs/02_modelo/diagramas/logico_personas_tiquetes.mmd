@@ -1,0 +1,69 @@
+---
+title: Modelo lógico relacional - Personas, compras y tiquetes (3FN)
+---
+erDiagram
+    PERSONA {
+        entero id_persona PK
+        texto nombres
+        texto apellidos
+        fecha fecha_nacimiento
+        texto tipo_documento "con número y país"
+        texto numero_documento
+        texto email_contacto
+    }
+    CLIENTE {
+        entero id_persona PK,FK "subtipo 1:0..1 de PERSONA"
+        texto numero_viajero UK
+        texto email_acceso UK
+        fechahora fecha_registro_utc
+        texto nivel_lealtad
+    }
+    COMPRA {
+        entero id_compra PK
+        texto codigo_reserva UK "PNR"
+        entero id_persona_comprador FK
+        entero id_localizacion_venta FK "oficina o canal web"
+        entero id_empleado_vendedor FK "solo venta física"
+        fechahora fecha_compra_utc
+    }
+    TIQUETE {
+        entero id_tiquete PK
+        texto numero_tiquete UK
+        entero id_compra FK
+        entero id_vuelo FK "con codigo_cabina"
+        texto codigo_cabina FK
+        entero id_persona_pasajero FK
+        texto codigo_asiento "único por vuelo si ocupa"
+        entero id_tarifa FK "con codigo_cabina"
+        decimal precio_base_usd "copia histórica"
+        entero id_descuento FK
+        decimal porcentaje_descuento "copia histórica"
+        decimal precio_final_usd "derivado"
+        texto codigo_estado FK
+        fechahora fecha_limite_pago_utc
+    }
+    VUELO_CABINA {
+        entero id_vuelo PK,FK
+        texto codigo_cabina PK,FK
+    }
+    LOCALIZACION {
+        entero id_localizacion PK
+    }
+    EMPLEADO {
+        entero id_empleado PK
+    }
+    TARIFA {
+        entero id_tarifa PK
+    }
+    DESCUENTO {
+        entero id_descuento PK
+    }
+    PERSONA ||--o| CLIENTE : "registrada"
+    PERSONA ||--o{ COMPRA : "comprador"
+    PERSONA ||--o{ TIQUETE : "pasajero"
+    LOCALIZACION ||--o{ COMPRA : "canal"
+    EMPLEADO |o--o{ COMPRA : "vendedor"
+    COMPRA ||--|{ TIQUETE : "incluye"
+    VUELO_CABINA ||--o{ TIQUETE : "plaza"
+    TARIFA ||--o{ TIQUETE : "precio"
+    DESCUENTO |o--o{ TIQUETE : "rebaja"

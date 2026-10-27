@@ -1,0 +1,30 @@
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+!.env.azure.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+*.egg-info/
+
+# Datos sintéticos regenerables (se conservan el manifiesto y sus SHA-256)
+data/sintetico/*.csv
+
+# Node (presentación)
+node_modules/
+
+# Sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+~$*
+
+# Artefactos intermedios del informe (se regeneran con python -m aerolinea informe)
+reports/informe/informe_generado.md
+reports/informe/plantilla_estilos.docx

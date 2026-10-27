@@ -1,0 +1,55 @@
+{
+  "resumen": {
+    "semilla": 20261106,
+    "fecha_corte_utc": "2026-11-01T00:00:00",
+    "filas": {
+      "vuelo_plan": 3588,
+      "tripulacion": 20064,
+      "vuelo_evento": 1795,
+      "persona": 232096,
+      "cliente": 30000,
+      "compra": 168928,
+      "tiquete": 323718,
+      "pago": 388003,
+      "reembolso": 18182
+    }
+  },
+  "archivos": {
+    "vuelo_plan.csv": {
+      "filas": 3588,
+      "sha256": "9f32fb19a7e3a31f9070a6ac9baecc05dfc1f5b3d1e922cd2cab2fd63c978748"
+    },
+    "tripulacion.csv": {
+      "filas": 20064,
+      "sha256": "854c33b780915ba914a852337108dfa10cbf340cd22ef0938e6b959761a93e8b"
+    },
+    "vuelo_evento.csv": {
+      "filas": 1795,
+      "sha256": "cad0d9192c415eedbfc74d5d1b11dab051bafd372c45468d6b7efffc320b78e2"
+    },
+    "persona.csv": {
+      "filas": 232096,
+      "sha256": "bc276446599f5ce286c3c5cb68572768284d0b27fdf7615f3c3e42e2e4000b08"
+    },
+    "cliente.csv": {
+      "filas": 30000,
+      "sha256": "7ea46bd54f188ab0d6fe7d476bcb166e376e783f55b3f5cce6a3be3caa059325"
+    },
+    "compra.csv": {
+      "filas": 168928,
+      "sha256": "2bea8b1a9fb80750248538ed837ecebc0720cb8ebe5f2048375c19281baa226e"
+    },
+    "tiquete.csv": {
+      "filas": 323718,
+      "sha256": "17c68a0e342ae7b2224851e4c99ab0b5e3985bdb2264f4681e187f3e49b86b7f"
+    },
+    "pago.csv": {
+      "filas": 388003,
+      "sha256": "706c780a8f26989ade3effec82ee2247faab4924fda9f87bb7fc33ef7b07ac0f"
+    },
+    "reembolso.csv": {
+      "filas": 18182,
+      "sha256": "3afd9fb2802ea127dbd3856775b8e97a2e6a7132c01f79d4cf0568bddce87108"
+    }
+  }
+}

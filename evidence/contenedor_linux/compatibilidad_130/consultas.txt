@@ -1,0 +1,20 @@
+  Q01 Ocupación por vuelo operado                                   1767 filas    200 ms
+  Q02 Ocupación por ruta y cabina (con total por cabina)              46 filas    158 ms
+  Q03 Ventas, cobros y reembolsos por mes                              4 filas    986 ms
+  Q04 Saldos pendientes de reservas a la fecha de corte                7 filas     52 ms
+  Q05 Cancelaciones con reembolso: motivo, regla y cabina              8 filas   1706 ms
+  Q06 Precio medio y descuento efectivo por ruta y cabina             44 filas    705 ms
+  Q07 Ventas por canal y punto de venta                               18 filas    929 ms
+  Q08 Compradores y pasajeros registrados frente a no registrados      2 filas   2302 ms
+  Q09 Tasa de cancelación por ruta y motivo                           22 filas    235 ms
+  Q10 Utilización de la flota                                         17 filas     22 ms
+  Q11 Distribución de la demanda por día de la semana y franja horaria    28 filas    152 ms
+  Q12 Anticipación de la compra y precio pagado                        5 filas    171 ms
+  Q13 Clientes registrados de mayor valor                             10 filas    518 ms
+  Q14 Registros sin actividad (anti-joins)                             5 filas     78 ms
+  Q15 Puntualidad y cancelaciones operativas por ruta                 22 filas     29 ms
+  Q16 Disponibilidad de los próximos vuelos                          170 filas     31 ms
+  Q17 Evolución mensual de las ventas (variación y acumulado)          8 filas    251 ms
+  Q18 Carga de vuelo de la tripulación en 672 horas consecutivas       4 filas     30 ms
+  Q19 Controles de integridad y conciliación                           9 filas   1555 ms
+  Q20 Uso y costo de los descuentos                                    6 filas    280 ms

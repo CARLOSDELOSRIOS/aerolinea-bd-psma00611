@@ -1,0 +1,11 @@
+[project]
+name = "aerolinea-bd-psma00611"
+version = "1.0.0"
+description = "Base de datos de una aerolínea comercial (PSMA00611): despliegue, datos sintéticos, consultas y pruebas"
+requires-python = ">=3.11"
+readme = "README.md"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"

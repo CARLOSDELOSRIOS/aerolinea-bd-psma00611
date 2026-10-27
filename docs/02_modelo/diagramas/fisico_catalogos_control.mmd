@@ -1,0 +1,81 @@
+---
+title: Modelo físico - Catálogos de estado, transiciones, parámetros y control
+---
+erDiagram
+    ref_estado_vuelo {
+    varchar(15) codigo_estado PK "NOT NULL"
+    nvarchar(100) descripcion "NOT NULL"
+    bit es_estado_inicial "NOT NULL"
+    bit es_final "NOT NULL"
+    }
+    ref_estado_tiquete {
+    varchar(15) codigo_estado PK "NOT NULL"
+    nvarchar(100) descripcion "NOT NULL"
+    bit es_estado_inicial "NOT NULL"
+    bit es_final "NOT NULL"
+    bit ocupa_inventario "NOT NULL"
+    }
+    ref_estado_pago {
+    varchar(15) codigo_estado PK "NOT NULL"
+    nvarchar(100) descripcion "NOT NULL"
+    bit es_estado_inicial "NOT NULL"
+    bit es_final "NOT NULL"
+    bit es_cobro "NOT NULL"
+    }
+    ref_transicion_vuelo {
+    varchar(15) estado_origen PK,FK "NOT NULL"
+    varchar(15) estado_destino PK,FK "NOT NULL"
+    }
+    ref_transicion_tiquete {
+    varchar(15) estado_origen PK,FK "NOT NULL"
+    varchar(15) estado_destino PK,FK "NOT NULL"
+    }
+    ref_transicion_pago {
+    varchar(15) estado_origen PK,FK "NOT NULL"
+    varchar(15) estado_destino PK,FK "NOT NULL"
+    }
+    ref_parametro {
+    varchar(40) clave PK "NOT NULL"
+    varchar(100) valor "NOT NULL"
+    varchar(10) tipo_dato "NOT NULL"
+    nvarchar(200) descripcion "NOT NULL"
+    }
+    ref_mensaje_error {
+    int numero_error PK "NOT NULL"
+    nvarchar(250) mensaje "NOT NULL"
+    varchar(10) regla "NULL"
+    }
+    aud_cambio_estado {
+    bigint id_cambio PK "NOT NULL"
+    varchar(10) entidad "NOT NULL"
+    int id_entidad "NOT NULL"
+    varchar(15) estado_anterior "NULL"
+    varchar(15) estado_nuevo "NOT NULL"
+    datetime2(3) registrado_utc "NOT NULL"
+    nvarchar(128) usuario "NOT NULL"
+    nvarchar(128) aplicacion "NULL"
+    }
+    adm_registro_despliegue {
+    int id_registro PK "NOT NULL"
+    varchar(80) script "NOT NULL"
+    nvarchar(400) descripcion "NULL"
+    datetime2(0) ejecutado_utc "NOT NULL"
+    nvarchar(128) usuario "NOT NULL"
+    nvarchar(128) version_motor "NOT NULL"
+    }
+    tst_resultado_prueba {
+    int id_resultado PK "NOT NULL"
+    uniqueidentifier id_ejecucion "NOT NULL"
+    varchar(20) id_prueba "NOT NULL"
+    varchar(20) regla "NULL"
+    nvarchar(300) descripcion "NOT NULL"
+    varchar(10) resultado "NOT NULL"
+    nvarchar(1000) detalle "NULL"
+    datetime2(3) ejecutado_utc "NOT NULL"
+    }
+    ref_estado_pago ||--o{ ref_transicion_pago : "fk_transicion_pago_destino"
+    ref_estado_pago ||--o{ ref_transicion_pago : "fk_transicion_pago_origen"
+    ref_estado_tiquete ||--o{ ref_transicion_tiquete : "fk_transicion_tiquete_destino"
+    ref_estado_tiquete ||--o{ ref_transicion_tiquete : "fk_transicion_tiquete_origen"
+    ref_estado_vuelo ||--o{ ref_transicion_vuelo : "fk_transicion_vuelo_destino"
+    ref_estado_vuelo ||--o{ ref_transicion_vuelo : "fk_transicion_vuelo_origen"

@@ -1,0 +1,7 @@
+codigo_descuento,porcentaje,codigo_cabina,solo_clientes_registrados,tiquetes,costo_descuento_usd,costo_relativo,participacion_registrados
+ANTICIPA15,15.00,ECO,False,25427,782256.45,0.1500,0.4230
+LANZAMIENTO20,20.00,ECO,False,22713,908578.40,0.2000,0.4095
+CLIENTE10,10.00,,True,9296,246608.70,0.1000,1.0000
+OTONO12,12.00,,False,8851,276077.40,0.1200,0.4271
+INVIERNO25,25.00,,False,0,0.00,,
+VIPPLUS5,5.00,VIP,True,0,0.00,,

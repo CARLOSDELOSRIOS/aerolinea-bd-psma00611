@@ -1,0 +1,28 @@
+---
+title: Modelo conceptual - entidades y relaciones de negocio
+---
+erDiagram
+    direction LR
+    AEROPUERTO ||--o{ RUTA : "origen y destino de"
+    RUTA ||--o{ PROGRAMACION : "se opera con"
+    PROGRAMACION ||--o{ VUELO : "genera por fecha"
+    CONFIGURACION ||--o{ AVION : "equipa"
+    AVION |o--o{ VUELO : "opera"
+    EMPLEADO }o--o{ VUELO : "tripula"
+    VUELO ||--|{ CUPO_CABINA : "ofrece"
+    CABINA ||--o{ CUPO_CABINA : "clasifica"
+    RUTA ||--o{ TARIFA : "tiene"
+    CABINA ||--o{ TARIFA : "diferencia"
+    CABINA ||--|{ POLITICA_CANCELACION : "fija"
+    CUPO_CABINA ||--o{ TIQUETE : "consume plaza"
+    TARIFA ||--o{ TIQUETE : "precio base"
+    DESCUENTO |o--o{ TIQUETE : "rebaja"
+    COMPRA ||--|{ TIQUETE : "incluye"
+    PERSONA ||--o{ TIQUETE : "pasajero"
+    PERSONA ||--o{ COMPRA : "comprador"
+    PERSONA ||--o| CLIENTE : "se registra"
+    LOCALIZACION ||--o{ COMPRA : "canal de venta"
+    LOCALIZACION ||--o| AEROPUERTO : "subtipo"
+    EMPLEADO |o--o{ COMPRA : "vende"
+    TIQUETE ||--o{ PAGO : "se paga con"
+    PAGO ||--o{ REEMBOLSO : "se devuelve con"

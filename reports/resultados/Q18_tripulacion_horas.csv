@@ -1,0 +1,5 @@
+rol_vuelo,tripulantes,asignaciones,horas_minimas,horas_promedio,horas_maximas,pilotos_sobre_100h,vuelos_operados_sin_pilotos
+AUXILIAR_VUELO,140,2115,17.3,52.1,94.5,0,0
+CAPITAN,52,815,17.3,51.1,94.5,0,0
+JEFE_CABINA,52,815,17.3,51.1,94.5,0,0
+PRIMER_OFICIAL,52,815,17.3,51.1,94.5,0,0

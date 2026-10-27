@@ -1,0 +1,29 @@
+dia_semana_iso,dia,franja,pasajeros_volados,asientos_ofrecidos,factor_ocupacion
+1,lunes,1. Madrugada-mañana (<09h),7288,10880,0.6699
+1,lunes,2. Media mañana (09-13h),7350,10448,0.7035
+1,lunes,3. Tarde (13-18h),6889,10272,0.6707
+1,lunes,4. Noche (>=18h),3067,4366,0.7025
+2,martes,1. Madrugada-mañana (<09h),6543,10594,0.6176
+2,martes,2. Media mañana (09-13h),6614,10220,0.6472
+2,martes,3. Tarde (13-18h),6759,11396,0.5931
+2,martes,4. Noche (>=18h),3175,5198,0.6108
+3,miércoles,1. Madrugada-mañana (<09h),6094,10330,0.5899
+3,miércoles,2. Media mañana (09-13h),6330,10296,0.6148
+3,miércoles,3. Tarde (13-18h),6526,11130,0.5863
+3,miércoles,4. Noche (>=18h),3223,5274,0.6111
+4,jueves,1. Madrugada-mañana (<09h),8420,12164,0.6922
+4,jueves,2. Media mañana (09-13h),8193,11594,0.7067
+4,jueves,3. Tarde (13-18h),7682,11480,0.6692
+4,jueves,4. Noche (>=18h),3662,5274,0.6943
+5,viernes,1. Madrugada-mañana (<09h),8786,11920,0.7371
+5,viernes,2. Media mañana (09-13h),9050,11594,0.7806
+5,viernes,3. Tarde (13-18h),8235,11394,0.7227
+5,viernes,4. Noche (>=18h),3834,5274,0.7270
+6,sábado,1. Madrugada-mañana (<09h),8201,12240,0.6700
+6,sábado,2. Media mañana (09-13h),7869,11754,0.6695
+6,sábado,3. Tarde (13-18h),6877,10992,0.6256
+6,sábado,4. Noche (>=18h),2959,4688,0.6312
+7,domingo,1. Madrugada-mañana (<09h),7808,10880,0.7176
+7,domingo,2. Media mañana (09-13h),7559,10288,0.7347
+7,domingo,3. Tarde (13-18h),7220,10272,0.7029
+7,domingo,4. Noche (>=18h),3348,4688,0.7142

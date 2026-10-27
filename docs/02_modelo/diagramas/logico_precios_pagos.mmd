@@ -1,0 +1,74 @@
+---
+title: Modelo lógico relacional - Precios, pagos y reembolsos (3FN)
+---
+erDiagram
+    TARIFA {
+        entero id_tarifa PK
+        entero id_ruta FK
+        texto codigo_cabina FK
+        decimal precio_base_usd
+        fecha vigente_desde
+        fecha vigente_hasta "sin solapes por ruta y cabina"
+    }
+    DESCUENTO {
+        entero id_descuento PK
+        texto codigo_descuento UK
+        decimal porcentaje
+        fecha vigente_desde
+        fecha vigente_hasta
+        booleano solo_clientes_registrados
+        texto codigo_cabina FK "nulo = todas"
+        entero dias_anticipacion_min
+    }
+    POLITICA_CANCELACION {
+        entero id_politica PK
+        texto codigo_cabina FK,UK
+        entero horas_antes_min UK
+        decimal porcentaje_reembolso
+    }
+    PAGO {
+        entero id_pago PK
+        entero id_tiquete FK
+        texto codigo_metodo FK
+        entero id_localizacion_cobro FK
+        decimal monto_usd
+        texto codigo_estado FK "PENDIENTE | CONFIRMADO | RECHAZADO | ANULADO"
+        fechahora fecha_creacion_utc
+        fechahora fecha_resolucion_utc
+    }
+    REEMBOLSO {
+        entero id_reembolso PK
+        entero id_pago FK
+        decimal monto_usd
+        fechahora fecha_reembolso_utc
+        texto codigo_motivo FK
+        decimal porcentaje_aplicado
+        texto regla_aplicada
+    }
+    TIQUETE {
+        entero id_tiquete PK
+        texto codigo_cabina FK
+        entero id_tarifa FK "con codigo_cabina"
+        decimal precio_base_usd "copia histórica"
+        entero id_descuento FK
+        decimal porcentaje_descuento "copia histórica"
+        decimal precio_final_usd "derivado"
+    }
+    RUTA {
+        entero id_ruta PK
+    }
+    CABINA {
+        texto codigo_cabina PK
+    }
+    LOCALIZACION {
+        entero id_localizacion PK
+    }
+    TARIFA ||--o{ TIQUETE : "precio"
+    DESCUENTO |o--o{ TIQUETE : "rebaja"
+    TIQUETE ||--o{ PAGO : "pagos"
+    LOCALIZACION ||--o{ PAGO : "cobro"
+    PAGO ||--o{ REEMBOLSO : "devolución"
+    RUTA ||--o{ TARIFA : "precio por ruta"
+    CABINA ||--o{ TARIFA : "precio por cabina"
+    CABINA |o--o{ DESCUENTO : "restringe"
+    CABINA ||--|{ POLITICA_CANCELACION : "reglas"

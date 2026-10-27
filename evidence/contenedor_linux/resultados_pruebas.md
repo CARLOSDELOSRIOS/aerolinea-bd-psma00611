@@ -1,0 +1,36 @@
+# Resultados de pruebas
+
+- Ejecución: 2026-10-27T03:50:40+00:00 a 2026-10-27T03:50:58+00:00 (UTC)
+- Servidor: `vm` · Developer Edition (64-bit) · 16.0.4305.5 · base `AerolineaDB`
+- Aislamiento: READ_COMMITTED_SNAPSHOT = True; conexión cifrada = TRUE
+- Resultado: **27 de 27 superadas**
+
+| ID | Tipo | Regla | Resultado | Descripción | Detalle observado |
+|---|---|---|---|---|---|
+| PR-01 | T-SQL | FK | SUPERADA | Un pago de un tiquete inexistente es rechazado (clave foránea) | 547: The INSERT statement conflicted with the FOREIGN KEY constraint "fk_pago_tiquete". The conflict occurred in database "AerolineaDB", table "ven.tiquete", column 'id_tiquete'. |
+| PR-02 | T-SQL | CHECK | SUPERADA | Valores inválidos rechazados: ruta circular, % > 100, correo, sobreocupación, IATA en minúsculas y subtipo incorrecto | 5 de 5 rechazos |
+| PR-03 | T-SQL | RE | SUPERADA | Una persona sin cuenta compra un tiquete en la web | tiquete 323980, precio 199.99, comprador no registrado |
+| PR-04 | T-SQL | RN-21 | SUPERADA | CLIENTE10: rechazado sin cuenta (50115) y aplicado al registrarse (10 %, 199,99 -> 179,99) | error sin registro 50115; con registro 10.00 % => 179.99 |
+| PR-05 | T-SQL | RN-19/20 | SUPERADA | Precio histórico: la tarifa usada no se edita (50003), una nueva versión no altera ventas previas y el precio del tiquete es inmutable (50040) | tiquete anterior 199.99 USD; tiquete nuevo 249.99 USD; rechazos 2 de 2 |
+| PR-06 | T-SQL | RN-23/24 | SUPERADA | Pago fallido sin efecto, pago parcial deja saldo y el pago final emite el tiquete | precio 499.99; tras fallido saldo 499.99; tras 200 en efectivo RESERVADO saldo 299.99; tras 299,99 EMITIDO saldo 0.00; cobrado 499.99 en 2 pagos y 1 fallido |
+| PR-07 | T-SQL | RN-23/25/37 | SUPERADA | Sobrepago rechazado por el procedimiento (50135) y por el trigger (50054); efectivo en web rechazado (50055) | 3 de 3 rechazos |
+| PR-08 | T-SQL | RN-12/13/14 | SUPERADA | Asiento duplicado (50120), asiento de otra cabina (50049) y pasajero repetido en el vuelo (50121) rechazados | 3 de 3 rechazos |
+| PR-09 | T-SQL | RN-11 | SUPERADA | Sin sobreventa: la venta 13 de una cabina de 12 se rechaza; cancelar libera la plaza | ocupadas tras 12 ventas: 12; tras cancelar una: 11; tras revender: 12; venta 13 => error 50020 RN-11: sin disponibilidad en la cabina VIP del vuelo 3661 (capacidad 12, ocupadas 12, solicitadas 1). |
+| PR-10 | T-SQL | ACID | SUPERADA | Si falla el tiquete, la compra creada en la misma transacción también se revierte | error 50049; compras antes 0, después 0 |
+| PR-11 | T-SQL | RN-08/24 | SUPERADA | Transiciones inválidas rechazadas: RESERVADO->USADO (50042), emisión sin pago (50047), PROGRAMADO->ATERRIZADO (50023) | 3 de 3 rechazos; errores observados: 50042 50047 50023 (RN-08: transición de vuelo no válida (vuelo 3665): PROGRAMADO -> ATERRIZADO.) |
+| PR-12 | T-SQL | RN-36 | SUPERADA | Política de reembolso: regla de 24 h, ECO 48 h antes (0 %) y VIP 10 días antes (90 %) repartido sobre dos pagos | a) REGLA_24H 199.99; b) ECO 48 h: 0.00 % reembolso 0.00 retenido 199.99; c) VIP 10 días: 90.00 % = 449.99 en 2 reembolsos |
+| PR-13 | T-SQL | SUP-07/11 | SUPERADA | Cancelar un vuelo cancela sus tiquetes con reembolso total y libera plazas; una reserva sin pago vence | tiquetes cancelados 2; reembolsado 199.99 de 199.99; plazas ocupadas 0 / vencidas 1; estado CANCELADO VENCIMIENTO |
+| PR-14 | T-SQL | RN-05/06 | SUPERADA | Desfase horario incorrecto (50026) y llegada anterior a la salida (CHECK) rechazados; el día ISO no depende de DATEFIRST | 2 de 2 rechazos; 2026-11-01 = día 7 / 7 (domingo = 7) |
+| PR-15 | T-SQL | RN-09/33/35 | SUPERADA | Solape de avión (50028) y de tripulante (50034), rol incompatible (50031) y despegue sin tripulación (50029) rechazados; con tripulación completa el vuelo opera | 4 de 4 rechazos; errores observados: avión 50028; solape tripulante 50034; rol incompatible 50031; despegue sin tripulación 50029; estado final ATERRIZADO |
+| PR-16 | T-SQL | RN-29 | SUPERADA | Pagos y tiquetes no se eliminan | 2 de 2 rechazos |
+| PR-17 | T-SQL | RN-03/18/32 | SUPERADA | Programación solapada (50001), tarifa solapada (50002) y venta web con vendedor (50012) rechazadas | 3 de 3 rechazos |
+| PR-18 | T-SQL | RN-04 | SUPERADA | Generar de nuevo los vuelos de una fecha no crea duplicados | vuelos creados en la segunda ejecución: 0 |
+| PR-19 | T-SQL | Seguridad | SUPERADA | Analista sin acceso a tablas base (229) y con acceso a rpt; la aplicación no escribe directo (229); el correo se muestra enmascarado | 4 de 4; analista->ven.persona: 229; analista->rpt.v_vuelo: 3588 filas; aplicación->DELETE: 229; correo visto por un usuario sin UNMASK: wXXX@XXXX.com |
+| PR-20 | T-SQL | Análisis | SUPERADA | El cobro agregado por la vista coincide con la suma directa; una unión ingenua lo infla | directo 72268243.29; vista 72268243.29; unión ingenua 87782299.24 |
+| PR-21 | T-SQL | RN-40 | SUPERADA | Datos cargados: inventario conciliado, sin sobrecobros y con identidad de caja exacta | diferencias de inventario 0; tiquetes incoherentes 0; diferencia de caja 0.00 USD |
+| PR-22 | T-SQL | RN-36 | SUPERADA | Cada reembolso cargado coincide con el que calcula ven.fn_politica_reembolso | tiquetes cancelados verificados 22728; discrepancias 0 |
+| PR-23 | T-SQL | Vistas/SP | SUPERADA | rpt.usp_resumen_financiero concilia con los pagos y rpt.v_vuelo no pierde ni duplica vuelos | 4 meses; cobros del resumen 72268243.29 = pagos 72268243.29; diferencia de filas en v_vuelo 0 |
+| PC-01 | Concurrencia | RN-11 | SUPERADA | 40 sesiones simultáneas compran en una cabina VIP de 12 asientos | éxitos 12, rechazos por capacidad 28, otros {'50020': 28, 'OK': 12}; plazas ocupadas 12/12; tiquetes activos 12; tiempo máximo 1.455 s |
+| PC-02 | Concurrencia | RN-12 | SUPERADA | 20 sesiones simultáneas eligen el asiento 12A del mismo vuelo | éxitos 1, rechazos por asiento ocupado 19, otros {'50120': 19, 'OK': 1}; tiquetes con 12A: 1 |
+| PC-03 | Concurrencia | RN-23 | SUPERADA | 10 sesiones registran a la vez el pago total del mismo tiquete | éxitos 1, rechazos {'50133': 9}; cobrado 199.99 de 199.99 USD; estado EMITIDO |
+| PC-04 | Concurrencia | RN-12 | SUPERADA | 30 sesiones piden a la vez la asignación automática de asiento | éxitos 30, errores {}; asientos asignados 30, distintos 30 (semáforo por vuelo y cabina) |

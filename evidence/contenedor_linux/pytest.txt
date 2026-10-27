@@ -1,0 +1,14 @@
+============================= test session starts ==============================
+platform linux -- Python 3.13.17, pytest-8.3.5, pluggy-1.7.0
+rootdir: /home/user/aerolinea-bd-psma00611
+configfile: pyproject.toml
+testpaths: tests
+collected 23 items
+
+tests/test_config.py .......                                             [ 30%]
+tests/test_consultas.py ..                                               [ 39%]
+tests/test_db.py ....                                                    [ 56%]
+tests/test_generador.py ....                                             [ 73%]
+tests/test_sql_script.py ......                                          [100%]
+
+============================== 23 passed in 0.15s ==============================

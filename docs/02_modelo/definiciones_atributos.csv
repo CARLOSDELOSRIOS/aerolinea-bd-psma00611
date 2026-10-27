@@ -1,0 +1,311 @@
+esquema;tabla;columna;definicion;dominio
+adm;registro_despliegue;;Bitácora de scripts desplegados y cargas aplicadas en la base;
+adm;registro_despliegue;id_registro;Identificador del registro;Entero autoincremental
+adm;registro_despliegue;script;Nombre del script o proceso ejecutado;Nombre de archivo sin extensión o CARGA_SINTETICA
+adm;registro_despliegue;descripcion;Descripción del despliegue o parámetros de la carga;Texto libre
+adm;registro_despliegue;ejecutado_utc;Instante de ejecución;UTC
+adm;registro_despliegue;usuario;Inicio de sesión que ejecutó el script;SUSER_SNAME()
+adm;registro_despliegue;version_motor;Versión del motor en el momento de la ejecución;SERVERPROPERTY('ProductVersion')
+aud;cambio_estado;;Historial técnico de cambios de estado de vuelos, tiquetes y pagos (lo alimentan los triggers);
+aud;cambio_estado;id_cambio;Identificador del cambio;Entero grande autoincremental
+aud;cambio_estado;entidad;Tipo de entidad que cambió de estado;VUELO, TIQUETE, PAGO
+aud;cambio_estado;id_entidad;Identificador de la fila que cambió;Clave de la entidad indicada
+aud;cambio_estado;estado_anterior;Estado previo (NULL en la creación);Código de estado de la entidad
+aud;cambio_estado;estado_nuevo;Estado resultante;Código de estado de la entidad
+aud;cambio_estado;registrado_utc;Instante en que la base registró el cambio (no la fecha de negocio);UTC con milisegundos
+aud;cambio_estado;usuario;Inicio de sesión que provocó el cambio;SUSER_SNAME()
+aud;cambio_estado;aplicacion;Aplicación cliente que provocó el cambio;APP_NAME()
+ops;asiento_configuracion;;Asientos de cada configuración de cabina (mapa de asientos);
+ops;asiento_configuracion;id_configuracion;Configuración a la que pertenece el asiento;FK a ops.configuracion_asientos
+ops;asiento_configuracion;codigo_asiento;Código visible del asiento (fila + letra);p. ej. 12A; igual a CONCAT(fila, letra)
+ops;asiento_configuracion;fila;Número de fila;1 a 60; la fila 13 no se usa por convención
+ops;asiento_configuracion;letra;Letra del asiento en la fila;A a K mayúscula
+ops;asiento_configuracion;codigo_cabina;Cabina a la que pertenece el asiento;VIP o ECO
+ops;asiento_configuracion;es_ventana;Indica asiento de ventana;0/1
+ops;asiento_configuracion;es_pasillo;Indica asiento de pasillo;0/1
+ops;asiento_configuracion;es_salida_emergencia;Indica fila de salida de emergencia;0/1
+ops;asignacion_tripulacion;;Asignación de un empleado de tripulación a un vuelo con un rol;
+ops;asignacion_tripulacion;id_vuelo;Vuelo asignado;FK a ops.vuelo
+ops;asignacion_tripulacion;id_empleado;Tripulante asignado;FK a rh.empleado
+ops;asignacion_tripulacion;rol_vuelo;Rol que desempeña en el vuelo;CAPITAN, PRIMER_OFICIAL, JEFE_CABINA, AUXILIAR_VUELO
+ops;asignacion_tripulacion;asignado_utc;Instante de la asignación;UTC
+ops;avion;;Aeronave de la flota (datos sintéticos);
+ops;avion;id_avion;Identificador del avión;Entero pequeño autoincremental
+ops;avion;matricula;Matrícula de registro (N-number);N + 1-5 caracteres; sintética
+ops;avion;numero_serie;Número de serie del fabricante (MSN);Sintético
+ops;avion;id_configuracion;Configuración de asientos instalada;FK a ops.configuracion_asientos
+ops;avion;fecha_fabricacion;Fecha de fabricación;Fecha
+ops;avion;fecha_incorporacion;Fecha de incorporación a la flota;Igual o posterior a la fabricación
+ops;avion;estado_operativo;Situación operativa del avión;ACTIVO, MANTENIMIENTO, RETIRADO
+ops;avion;id_aeropuerto_base;Aeropuerto base del avión;FK a ref.aeropuerto
+ops;avion;creado_utc;Instante de alta del registro;UTC
+ops;configuracion_asientos;;Distribución de cabinas y asientos de un modelo de avión;
+ops;configuracion_asientos;id_configuracion;Identificador de la configuración;Entero pequeño autoincremental
+ops;configuracion_asientos;codigo_configuracion;Código legible de la configuración;Único; p. ej. A21N-20V168E
+ops;configuracion_asientos;id_modelo;Modelo de avión al que corresponde;FK a ref.modelo_avion
+ops;configuracion_asientos;descripcion;Resumen de asientos por cabina;Texto
+ops;programacion;;Programación recurrente de un número de vuelo sobre una ruta con hora local y vigencia;
+ops;programacion;id_programacion;Identificador de la programación;Entero autoincremental
+ops;programacion;numero_vuelo;Número comercial del vuelo (se muestra como XX + número);1 a 9999
+ops;programacion;id_ruta;Ruta que opera;FK a ops.ruta
+ops;programacion;hora_salida_local;Hora prevista de salida en la hora local del origen;Hora sin segundos
+ops;programacion;duracion_programada_min;Duración de bloque programada;20 a 1080 minutos
+ops;programacion;vigente_desde;Primer día de vigencia;Fecha local
+ops;programacion;vigente_hasta;Último día de vigencia (NULL = sin fin);Igual o posterior a vigente_desde
+ops;programacion;activa;Indica si la programación genera vuelos;0/1
+ops;programacion;creado_utc;Instante de alta del registro;UTC
+ops;programacion_dia;;Días de la semana en que opera cada programación (1FN: un día por fila);
+ops;programacion_dia;id_programacion;Programación;FK a ops.programacion
+ops;programacion_dia;dia_semana;Día de la semana ISO 8601;1 = lunes … 7 = domingo
+ops;ruta;;Par dirigido origen-destino que la aerolínea puede operar;
+ops;ruta;id_ruta;Identificador de la ruta;Entero pequeño autoincremental
+ops;ruta;id_aeropuerto_origen;Aeropuerto de salida;FK a ref.aeropuerto; distinto del destino
+ops;ruta;id_aeropuerto_destino;Aeropuerto de llegada;FK a ref.aeropuerto
+ops;ruta;distancia_millas;Distancia ortodrómica entre aeropuertos;50 a 6000 millas; calculada con geography (WGS 84)
+ops;ruta;activa;Indica si la ruta está en operación;0/1
+ops;ruta;fecha_inicio_operacion;Fecha de inicio de operación (NULL si está en evaluación);Fecha
+ops;ruta;creado_utc;Instante de alta del registro;UTC
+ops;vuelo;;Ocurrencia de una programación en una fecha concreta;
+ops;vuelo;id_vuelo;Identificador del vuelo;Entero autoincremental
+ops;vuelo;id_programacion;Programación que generó el vuelo;FK a ops.programacion; inmutable
+ops;vuelo;salida_programada;Hora programada de salida con el desfase del aeropuerto de origen;datetimeoffset coherente con la zona horaria del origen
+ops;vuelo;llegada_programada;Hora programada de llegada con el desfase del aeropuerto de destino;Posterior a la salida; 20 a 1080 min
+ops;vuelo;fecha_salida_local;Fecha operativa (fecha local de salida);Calculada: CAST(salida_programada AS date)
+ops;vuelo;salida_estimada;Nueva hora estimada en caso de demora;Posterior a la salida programada; solo en DEMORADO
+ops;vuelo;salida_real;Hora real de despegue;Desde 30 min antes hasta 24 h después de la programada
+ops;vuelo;llegada_real;Hora real de aterrizaje;Posterior a la salida real
+ops;vuelo;id_avion;Avión asignado (NULL hasta la asignación);FK a ops.avion
+ops;vuelo;codigo_estado;Estado del vuelo;PROGRAMADO, DEMORADO, EN_VUELO, ATERRIZADO, CANCELADO
+ops;vuelo;puerta_salida;Puerta de embarque;Texto corto
+ops;vuelo;motivo_cancelacion;Motivo informado si el vuelo se cancela;Obligatorio solo en CANCELADO
+ops;vuelo;creado_utc;Instante de generación del vuelo;UTC
+ops;vuelo;version_fila;Versión de fila para control de concurrencia optimista;rowversion automático
+ops;vuelo_cabina;;Inventario por vuelo y cabina: capacidad y plazas ocupadas (desnormalización controlada);
+ops;vuelo_cabina;id_vuelo;Vuelo;FK a ops.vuelo
+ops;vuelo_cabina;codigo_cabina;Cabina;FK a ref.cabina
+ops;vuelo_cabina;capacidad;Asientos de la cabina en la configuración del avión asignado;Mayor que 0
+ops;vuelo_cabina;plazas_ocupadas;Tiquetes que ocupan plaza (estados con ocupa_inventario = 1);0 a capacidad; mantenido por trigger
+ref;aeropuerto;;Subtipo de localización: aeropuerto donde salen y llegan los vuelos;
+ref;aeropuerto;id_localizacion;Localización de la que es subtipo;PK y FK a ref.localizacion
+ref;aeropuerto;tipo_localizacion;Tipo fijo del subtipo, para la FK compuesta;Calculada: AER
+ref;aeropuerto;codigo_iata;Código IATA del aeropuerto;3 letras mayúsculas
+ref;aeropuerto;codigo_icao;Código OACI (ICAO) del aeropuerto;4 letras mayúsculas
+ref;aeropuerto;latitud;Latitud geográfica;-90 a 90 grados (WGS 84)
+ref;aeropuerto;longitud;Longitud geográfica;-180 a 180 grados (WGS 84)
+ref;aeropuerto;es_base_operaciones;Indica si es base de la aerolínea;0/1
+ref;cabina;;Clase de servicio a bordo;
+ref;cabina;codigo_cabina;Código de cabina;VIP, ECO
+ref;cabina;nombre;Nombre comercial;Texto único
+ref;cabina;descripcion;Beneficios de la cabina;Texto
+ref;cabina;piezas_equipaje_bodega;Piezas de equipaje de bodega incluidas;0 a 5
+ref;cabina;peso_max_equipaje_kg;Peso máximo por pieza;1 a 50 kg
+ref;cabina;acceso_sala_vip;Indica acceso a sala VIP;0/1
+ref;cabina;orden_abordaje;Prioridad de abordaje;Entero único
+ref;estado_eeuu;;Estados de EE. UU. y Distrito de Columbia;
+ref;estado_eeuu;codigo_estado;Código postal USPS;2 letras mayúsculas
+ref;estado_eeuu;nombre;Nombre del estado;Texto único
+ref;estado_pago;;Catálogo de estados de pago;
+ref;estado_pago;codigo_estado;Código del estado;PENDIENTE, CONFIRMADO, FALLIDO, ANULADO
+ref;estado_pago;descripcion;Significado del estado;Texto
+ref;estado_pago;es_estado_inicial;Indica si un pago puede crearse en este estado;0/1
+ref;estado_pago;es_final;Indica si el estado no admite transiciones;0/1
+ref;estado_pago;es_cobro;Indica si el pago cuenta como dinero recibido;0/1
+ref;estado_tiquete;;Catálogo de estados de tiquete;
+ref;estado_tiquete;codigo_estado;Código del estado;RESERVADO, EMITIDO, USADO, NO_PRESENTADO, CANCELADO
+ref;estado_tiquete;descripcion;Significado del estado;Texto
+ref;estado_tiquete;es_estado_inicial;Indica si un tiquete puede crearse en este estado;0/1
+ref;estado_tiquete;es_final;Indica si el estado no admite transiciones;0/1
+ref;estado_tiquete;ocupa_inventario;Indica si el tiquete consume una plaza del vuelo;0/1
+ref;estado_vuelo;;Catálogo de estados de vuelo;
+ref;estado_vuelo;codigo_estado;Código del estado;PROGRAMADO, DEMORADO, EN_VUELO, ATERRIZADO, CANCELADO
+ref;estado_vuelo;descripcion;Significado del estado;Texto
+ref;estado_vuelo;es_estado_inicial;Indica si un vuelo puede crearse en este estado;0/1
+ref;estado_vuelo;es_final;Indica si el estado no admite transiciones;0/1
+ref;localizacion;;Generalización de áreas físicas (aeropuertos y oficinas) y ubicaciones web de venta;
+ref;localizacion;id_localizacion;Identificador de la localización;Entero autoincremental
+ref;localizacion;codigo_localizacion;Código interno legible;Único; p. ej. AER-JFK, OFI-NYC, WEB-SITIO
+ref;localizacion;tipo_localizacion;Tipo de localización;AER aeropuerto, OFI oficina física, WEB canal web
+ref;localizacion;nombre;Nombre de la localización;Texto
+ref;localizacion;ciudad;Ciudad (solo físicas);Obligatoria en AER y OFI; nula en WEB
+ref;localizacion;codigo_estado;Estado de EE. UU. (solo físicas);FK a ref.estado_eeuu
+ref;localizacion;direccion;Dirección postal (opcional, solo físicas);Texto
+ref;localizacion;codigo_postal;Código ZIP (opcional, solo físicas);5 dígitos
+ref;localizacion;zona_horaria;Zona horaria (solo físicas);FK a ref.zona_horaria
+ref;localizacion;url;Dirección web (solo WEB);https://… única
+ref;localizacion;vende_tiquetes;Indica si es canal de venta;0/1
+ref;localizacion;activa;Indica si está en operación;0/1
+ref;localizacion;fecha_apertura;Fecha de apertura;Fecha
+ref;localizacion;creado_utc;Instante de alta del registro;UTC
+ref;mensaje_error;;Catálogo de errores de negocio lanzados con THROW;
+ref;mensaje_error;numero_error;Número del error;50000 a 50999
+ref;mensaje_error;mensaje;Descripción del error;Texto
+ref;mensaje_error;regla;Regla de negocio asociada;RN-xx o SUP-xx
+ref;metodo_pago;;Medios de pago aceptados;
+ref;metodo_pago;codigo_metodo;Código del medio de pago;TC, TD, EFECTIVO, BILLETERA
+ref;metodo_pago;nombre;Nombre del medio de pago;Texto único
+ref;metodo_pago;es_tarjeta;Indica si requiere últimos 4 dígitos y marca;0/1
+ref;metodo_pago;permite_web;Indica si se acepta en canales web;0/1
+ref;metodo_pago;permite_fisico;Indica si se acepta en puntos físicos;0/1
+ref;modelo_avion;;Modelos de aeronave de la flota (valores aproximados de referencia);
+ref;modelo_avion;id_modelo;Identificador del modelo;Entero pequeño autoincremental
+ref;modelo_avion;fabricante;Fabricante;Texto
+ref;modelo_avion;modelo;Designación del modelo;Único por fabricante
+ref;modelo_avion;alcance_millas;Alcance aproximado;Mayor que 0
+ref;modelo_avion;velocidad_crucero_mph;Velocidad de crucero aproximada;200 a 700 mph
+ref;motivo_cancelacion;;Causas de cancelación de tiquetes;
+ref;motivo_cancelacion;codigo_motivo;Código de la causa;VOLUNTARIA, VUELO_CANCELADO, VENCIMIENTO
+ref;motivo_cancelacion;descripcion;Significado;Texto
+ref;motivo_cancelacion;iniciado_por;Quién origina la cancelación;CLIENTE, AEROLINEA, SISTEMA
+ref;motivo_cancelacion;reembolso_total;Indica si la causa da derecho al 100 % de lo cobrado;0/1
+ref;pais;;Países (ISO 3166-1);
+ref;pais;codigo_pais;Código alfa-2;2 letras mayúsculas
+ref;pais;nombre;Nombre del país;Texto único
+ref;parametro;;Parámetros configurables del negocio;
+ref;parametro;clave;Nombre del parámetro;Texto en mayúsculas
+ref;parametro;valor;Valor como texto;Se convierte según tipo_dato
+ref;parametro;tipo_dato;Tipo del valor;INT, DECIMAL, DATE, DATETIME, TEXT
+ref;parametro;descripcion;Significado y uso;Texto
+ref;transicion_pago;;Transiciones permitidas entre estados de pago (reglas como datos);
+ref;transicion_pago;estado_origen;Estado de partida;FK a ref.estado_pago
+ref;transicion_pago;estado_destino;Estado de llegada;FK a ref.estado_pago
+ref;transicion_tiquete;;Transiciones permitidas entre estados de tiquete;
+ref;transicion_tiquete;estado_origen;Estado de partida;FK a ref.estado_tiquete
+ref;transicion_tiquete;estado_destino;Estado de llegada;FK a ref.estado_tiquete
+ref;transicion_vuelo;;Transiciones permitidas entre estados de vuelo;
+ref;transicion_vuelo;estado_origen;Estado de partida;FK a ref.estado_vuelo
+ref;transicion_vuelo;estado_destino;Estado de llegada;FK a ref.estado_vuelo
+ref;zona_horaria;;Zonas horarias de EE. UU. usadas por las localizaciones físicas;
+ref;zona_horaria;nombre_windows;Nombre que acepta AT TIME ZONE en SQL Server;Debe existir en sys.time_zone_info
+ref;zona_horaria;nombre_iana;Nombre equivalente IANA (tz database);Texto
+ref;zona_horaria;descripcion;Descripción;Texto
+ref;zona_horaria;observa_horario_verano;Indica si aplica horario de verano;0/1 (Phoenix y Honolulu: 0)
+rh;cargo;;Puestos de trabajo;
+rh;cargo;codigo_cargo;Código del cargo;Texto en mayúsculas
+rh;cargo;nombre;Nombre del cargo;Texto único
+rh;cargo;codigo_departamento;Departamento al que pertenece;FK a rh.departamento
+rh;cargo;categoria_tripulacion;Tipo de tripulación (NULL = personal de tierra);TECNICA (pilotos) o CABINA
+rh;departamento;;Unidades organizativas;
+rh;departamento;codigo_departamento;Código del departamento;Texto corto
+rh;departamento;nombre;Nombre del departamento;Texto único
+rh;empleado;;Personas que trabajan en la aerolínea (datos sintéticos);
+rh;empleado;id_empleado;Identificador del empleado;Entero autoincremental
+rh;empleado;numero_empleado;Número de nómina;E + 5 dígitos
+rh;empleado;nombres;Nombres;Texto Unicode
+rh;empleado;apellidos;Apellidos;Texto Unicode
+rh;empleado;fecha_nacimiento;Fecha de nacimiento;Mayor de 18 años al contratarse
+rh;empleado;email_corporativo;Correo corporativo;Único; dominio ficticio .test
+rh;empleado;telefono;Teléfono;Rango ficticio 555-01xx
+rh;empleado;fecha_contratacion;Fecha de ingreso;Fecha
+rh;empleado;fecha_terminacion;Fecha de salida (NULL = activo);Igual o posterior a la contratación
+rh;empleado;codigo_cargo;Cargo;FK a rh.cargo
+rh;empleado;id_localizacion_base;Base de trabajo;FK a ref.localizacion
+rh;empleado;id_supervisor;Jefe directo;FK a rh.empleado (jerarquía); distinto de sí mismo
+rh;empleado;salario_anual_usd;Salario anual bruto (confidencial; enmascarado);Mayor que 0 USD
+rh;empleado;creado_utc;Instante de alta del registro;UTC
+tst;resultado_prueba;;Resultados de las ejecuciones de la suite de pruebas;
+tst;resultado_prueba;id_resultado;Identificador del resultado;Entero autoincremental
+tst;resultado_prueba;id_ejecucion;Identificador de la ejecución de la suite;GUID
+tst;resultado_prueba;id_prueba;Identificador de la prueba;PR-xx
+tst;resultado_prueba;regla;Regla verificada;RN-xx, SUP-xx u otro
+tst;resultado_prueba;descripcion;Qué se prueba;Texto
+tst;resultado_prueba;resultado;Resultado observado;SUPERADA, FALLIDA
+tst;resultado_prueba;detalle;Valores observados;Texto
+tst;resultado_prueba;ejecutado_utc;Instante de ejecución;UTC
+ven;cliente;;Subtipo de persona: cliente registrado con cuenta;
+ven;cliente;id_persona;Persona registrada;PK y FK a ven.persona (relación 1:0..1)
+ven;cliente;numero_viajero;Número de viajero frecuente;VF + 8 dígitos; único
+ven;cliente;email_acceso;Correo de inicio de sesión (enmascarado);Único
+ven;cliente;fecha_registro_utc;Instante de creación de la cuenta;UTC; define si una compra fue de un cliente registrado
+ven;cliente;nivel_lealtad;Nivel del programa de clientes;BASICO, PLATA, ORO, PLATINO
+ven;cliente;acepta_marketing;Consentimiento de comunicaciones comerciales;0/1
+ven;cliente;estado_cuenta;Estado de la cuenta;ACTIVA, SUSPENDIDA, CERRADA
+ven;cliente;id_aeropuerto_preferido;Aeropuerto preferido (opcional);FK a ref.aeropuerto
+ven;compra;;Transacción de venta: un comprador, un canal y uno o más tiquetes;
+ven;compra;id_compra;Identificador de la compra;Entero autoincremental
+ven;compra;codigo_reserva;Localizador (PNR);6 caracteres A-Z y 2-9 sin O, I, 0 ni 1; único
+ven;compra;id_persona_comprador;Persona que compra (registrada o no);FK a ven.persona
+ven;compra;id_localizacion_venta;Canal de venta;FK a ref.localizacion con vende_tiquetes = 1
+ven;compra;id_empleado_vendedor;Agente que vendió (solo venta física);FK a rh.empleado; nulo en web
+ven;compra;fecha_compra_utc;Instante de la compra;UTC
+ven;compra;email_confirmacion;Correo al que se envió la confirmación;Texto
+ven;descuento;;Descuentos porcentuales sobre el precio original;
+ven;descuento;id_descuento;Identificador del descuento;Entero pequeño autoincremental
+ven;descuento;codigo_descuento;Código promocional;Único
+ven;descuento;descripcion;Descripción de la campaña;Texto
+ven;descuento;porcentaje;Porcentaje sobre el precio base;Mayor que 0 y hasta 100
+ven;descuento;vigente_desde;Primer día de venta en que aplica;Fecha (UTC)
+ven;descuento;vigente_hasta;Último día de venta en que aplica;Igual o posterior a vigente_desde
+ven;descuento;solo_clientes_registrados;Exige que el comprador tenga cuenta;0/1
+ven;descuento;codigo_cabina;Cabina a la que se limita (NULL = cualquiera);FK a ref.cabina
+ven;descuento;dias_anticipacion_min;Días mínimos entre venta y vuelo (NULL = sin requisito);0 a 365
+ven;descuento;activo;Indica si puede aplicarse;0/1
+ven;descuento;creado_utc;Instante de alta del registro;UTC
+ven;pago;;Movimiento de cobro asociado a un tiquete (uno o más por tiquete);
+ven;pago;id_pago;Identificador del pago;Entero autoincremental
+ven;pago;id_tiquete;Tiquete que se paga;FK a ven.tiquete
+ven;pago;codigo_metodo;Medio de pago;FK a ref.metodo_pago
+ven;pago;id_localizacion_cobro;Lugar donde se cobró;FK a ref.localizacion; efectivo solo en físicas
+ven;pago;monto_usd;Importe del pago;Mayor que 0 USD
+ven;pago;codigo_estado;Estado del pago;PENDIENTE, CONFIRMADO, FALLIDO, ANULADO
+ven;pago;fecha_creacion_utc;Instante del intento de pago;UTC; no anterior a la venta del tiquete
+ven;pago;fecha_resolucion_utc;Instante de confirmación, rechazo o anulación;UTC; nulo si está pendiente
+ven;pago;referencia_autorizacion;Código de autorización de la pasarela;Obligatorio si está confirmado
+ven;pago;ultimos4_tarjeta;Últimos 4 dígitos de la tarjeta (nunca el número completo);4 dígitos; solo TC y TD
+ven;pago;marca_tarjeta;Marca de la tarjeta;VISA, MASTERCARD, AMEX, DISCOVER
+ven;pago;motivo_rechazo;Causa informada del rechazo;Obligatorio si falló
+ven;persona;;Individuo identificado en una compra: comprador o pasajero;
+ven;persona;id_persona;Identificador de la persona;Entero autoincremental
+ven;persona;nombres;Nombres como en el documento;Texto Unicode
+ven;persona;apellidos;Apellidos como en el documento;Texto Unicode
+ven;persona;fecha_nacimiento;Fecha de nacimiento (obligatoria para pasajeros; enmascarada);Desde 1900 y no posterior al alta
+ven;persona;genero;Género como figura en el documento (obligatorio para pasajeros);F, M, X
+ven;persona;email_contacto;Correo de contacto (enmascarado);Formato de correo
+ven;persona;telefono;Teléfono de contacto (enmascarado);Texto
+ven;persona;codigo_pais_nacionalidad;Nacionalidad;FK a ref.pais
+ven;persona;tipo_documento;Tipo de documento de identidad;PASAPORTE, LICENCIA, ID_ESTATAL
+ven;persona;numero_documento;Número del documento (enmascarado);Obligatorio si hay tipo de documento
+ven;persona;codigo_pais_documento;País emisor del documento;FK a ref.pais
+ven;persona;creado_utc;Instante de alta de la persona;UTC
+ven;politica_cancelacion;;Porcentaje de reembolso por cabina según las horas que faltan para la salida;
+ven;politica_cancelacion;id_politica;Identificador del tramo de la política;Entero pequeño autoincremental
+ven;politica_cancelacion;codigo_cabina;Cabina;FK a ref.cabina
+ven;politica_cancelacion;horas_antes_min;Horas mínimas antes de la salida para aplicar el tramo;0 o más; debe existir el tramo 0
+ven;politica_cancelacion;porcentaje_reembolso;Porcentaje de lo cobrado que se reembolsa;0 a 100
+ven;reembolso;;Devolución de dinero sobre un pago confirmado de un tiquete cancelado;
+ven;reembolso;id_reembolso;Identificador del reembolso;Entero autoincremental
+ven;reembolso;id_pago;Pago que se reembolsa;FK a ven.pago (confirmado)
+ven;reembolso;monto_usd;Importe devuelto;Mayor que 0; la suma por pago no supera el pago
+ven;reembolso;fecha_reembolso_utc;Instante del reembolso;No anterior a la cancelación
+ven;reembolso;codigo_motivo;Causa de la cancelación;Igual al motivo del tiquete
+ven;reembolso;porcentaje_aplicado;Porcentaje de la política aplicado;Mayor que 0 y hasta 100
+ven;reembolso;regla_aplicada;Regla que determinó el porcentaje;REEMBOLSO_TOTAL, REGLA_24H, POLITICA_CABINA
+ven;reembolso;referencia;Referencia del movimiento;Texto
+ven;tarifa;;Precio base por ruta y cabina en un período de venta (versionado);
+ven;tarifa;id_tarifa;Identificador de la versión de tarifa;Entero autoincremental
+ven;tarifa;id_ruta;Ruta;FK a ops.ruta
+ven;tarifa;codigo_cabina;Cabina;FK a ref.cabina
+ven;tarifa;precio_base_usd;Precio base antes de descuentos;Mayor que 0 USD
+ven;tarifa;vigente_desde;Primer día de venta;Fecha (UTC); sin solapes por ruta y cabina
+ven;tarifa;vigente_hasta;Último día de venta (NULL = abierta);Igual o posterior a vigente_desde
+ven;tarifa;creado_utc;Instante de alta del registro;UTC
+ven;tiquete;;Derecho de un pasajero a viajar en un vuelo y cabina (un tramo);
+ven;tiquete;id_tiquete;Identificador del tiquete;Entero autoincremental
+ven;tiquete;numero_tiquete;Número del documento de transporte;13 dígitos (prefijo ficticio 000)
+ven;tiquete;id_compra;Compra a la que pertenece;FK a ven.compra
+ven;tiquete;id_vuelo;Vuelo;FK compuesta (id_vuelo, codigo_cabina) a ops.vuelo_cabina
+ven;tiquete;codigo_cabina;Cabina;VIP o ECO; debe existir en el vuelo
+ven;tiquete;id_persona_pasajero;Pasajero (registrado o no);FK a ven.persona
+ven;tiquete;codigo_asiento;Asiento asignado (opcional al comprar);Debe existir en la configuración del avión y en la cabina
+ven;tiquete;id_tarifa;Versión de tarifa aplicada;FK compuesta (id_tarifa, codigo_cabina) a ven.tarifa
+ven;tiquete;precio_base_usd;Precio base pactado en la venta (hecho histórico);Igual al de la tarifa vigente en la venta; inmutable
+ven;tiquete;id_descuento;Descuento aplicado (como máximo uno);FK a ven.descuento
+ven;tiquete;porcentaje_descuento;Porcentaje aplicado en la venta (copia histórica);0 sin descuento; inmutable
+ven;tiquete;monto_descuento_usd;Importe descontado;Calculada: ROUND(base × % / 100, 2)
+ven;tiquete;precio_final_usd;Importe a pagar;Calculada: base − descuento
+ven;tiquete;codigo_estado;Estado del tiquete;RESERVADO, EMITIDO, USADO, NO_PRESENTADO, CANCELADO
+ven;tiquete;fecha_limite_pago_utc;Vencimiento de la reserva;Mínimo entre venta + 72 h y salida − 3 h
+ven;tiquete;fecha_emision_utc;Instante en que quedó pagado;Obligatoria en EMITIDO, USADO y NO_PRESENTADO
+ven;tiquete;fecha_cancelacion_utc;Instante de cancelación;Obligatoria solo en CANCELADO
+ven;tiquete;codigo_motivo_cancelacion;Causa de la cancelación;FK a ref.motivo_cancelacion
+ven;tiquete;creado_utc;Instante de la venta del tiquete;UTC; inmutable
+ven;tiquete;version_fila;Versión de fila para control de concurrencia optimista;rowversion automático

@@ -1,0 +1,8 @@
+situacion,plazo,tiquetes,valor_reservado_usd,abonado_usd,saldo_pendiente_usd
+1. Sin pagos,a. vence en menos de 24 h,40,9955.55,0.00,9955.55
+1. Sin pagos,b. vence en 24-48 h,44,10013.56,0.00,10013.56
+1. Sin pagos,c. vence en 48 h o más,64,15357.21,0.00,15357.21
+2. Pago en espera de confirmación,c. vence en 48 h o más,11,2466.14,0.00,2466.14
+3. Pago parcial,a. vence en menos de 24 h,78,17536.07,8497.72,9038.35
+3. Pago parcial,b. vence en 24-48 h,225,56266.65,27204.83,29061.82
+3. Pago parcial,c. vence en 48 h o más,362,87919.23,40868.30,47050.93

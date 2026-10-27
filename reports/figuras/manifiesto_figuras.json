@@ -1,0 +1,42 @@
+{
+  "F01_ocupacion_ruta_cabina": {
+    "archivo": "reports/figuras/F01_ocupacion_ruta_cabina.png",
+    "consulta": "Q02",
+    "csv": "reports/resultados/Q02_ocupacion_ruta_cabina.csv"
+  },
+  "F02_flujo_mensual": {
+    "archivo": "reports/figuras/F02_flujo_mensual.png",
+    "consulta": "Q03",
+    "csv": "reports/resultados/Q03_ventas_cobros_reembolsos_mes.csv"
+  },
+  "F03_ventas_canal": {
+    "archivo": "reports/figuras/F03_ventas_canal.png",
+    "consulta": "Q07",
+    "csv": "reports/resultados/Q07_ventas_por_canal.csv"
+  },
+  "F04_anticipacion_compra": {
+    "archivo": "reports/figuras/F04_anticipacion_compra.png",
+    "consulta": "Q12",
+    "csv": "reports/resultados/Q12_anticipacion_compra.csv"
+  },
+  "F05_puntualidad_ruta": {
+    "archivo": "reports/figuras/F05_puntualidad_ruta.png",
+    "consulta": "Q15",
+    "csv": "reports/resultados/Q15_puntualidad.csv"
+  },
+  "F06_demanda_dia_franja": {
+    "archivo": "reports/figuras/F06_demanda_dia_franja.png",
+    "consulta": "Q11",
+    "csv": "reports/resultados/Q11_demanda_dia_hora.csv"
+  },
+  "F07_distribucion_ocupacion": {
+    "archivo": "reports/figuras/F07_distribucion_ocupacion.png",
+    "consulta": "Q01",
+    "csv": "reports/resultados/Q01_ocupacion_por_vuelo.csv"
+  },
+  "F08_utilizacion_flota": {
+    "archivo": "reports/figuras/F08_utilizacion_flota.png",
+    "consulta": "Q10",
+    "csv": "reports/resultados/Q10_utilizacion_flota.csv"
+  }
+}

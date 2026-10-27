@@ -1,0 +1,422 @@
+{
+  "servidor": "vm",
+  "version": "16.0.4305.5",
+  "edicion": "Developer Edition (64-bit)",
+  "base_datos": "AerolineaDB",
+  "ejecutado_utc": "2026-10-27T03:50:58+00:00",
+  "consultas": {
+    "Q01": {
+      "titulo": "Ocupación por vuelo operado",
+      "sql": "sql/consultas/Q01_ocupacion_por_vuelo.sql",
+      "sha256_sql": "165790af3bda05f020ddf7a539569accdbd72d3bbc2a257a010417b418205646",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 1767,
+      "columnas": [
+        "id_vuelo",
+        "codigo_vuelo",
+        "ruta",
+        "fecha_salida_local",
+        "matricula",
+        "modelo",
+        "asientos_ofrecidos",
+        "plazas_vendidas",
+        "pasajeros_volados",
+        "no_presentados",
+        "factor_ocupacion",
+        "rango_en_ruta"
+      ],
+      "duracion_ms": 192,
+      "csv": "reports/resultados/Q01_ocupacion_por_vuelo.csv"
+    },
+    "Q02": {
+      "titulo": "Ocupación por ruta y cabina (con total por cabina)",
+      "sql": "sql/consultas/Q02_ocupacion_ruta_cabina.sql",
+      "sha256_sql": "e401d0424bf1eefa997d66e2d7ecf647c0e918cf74802dd0bc15fb669ba33d56",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31",
+        "min_vuelos": "20"
+      },
+      "filas": 46,
+      "columnas": [
+        "ruta",
+        "codigo_cabina",
+        "vuelos",
+        "asientos_ofrecidos",
+        "pasajeros_volados",
+        "factor_ponderado",
+        "promedio_simple_factores",
+        "factor_minimo",
+        "factor_maximo",
+        "vuelos_agotados_al_cierre"
+      ],
+      "duracion_ms": 170,
+      "csv": "reports/resultados/Q02_ocupacion_ruta_cabina.csv"
+    },
+    "Q03": {
+      "titulo": "Ventas, cobros y reembolsos por mes",
+      "sql": "sql/consultas/Q03_ventas_cobros_reembolsos_mes.sql",
+      "sha256_sql": "979c4c5ad1936defbec31ecb5741b5b74c1d9766ea9695bf1f268ddcc1a86fcb",
+      "parametros": {
+        "fecha_desde": "2026-07-01",
+        "fecha_hasta": "2026-12-31"
+      },
+      "filas": 4,
+      "columnas": [
+        "mes",
+        "tiquetes_vendidos",
+        "ventas_brutas_usd",
+        "ventas_vigentes_usd",
+        "pagos_confirmados",
+        "cobros_usd",
+        "reembolsos_usd",
+        "cobro_neto_usd"
+      ],
+      "duracion_ms": 974,
+      "csv": "reports/resultados/Q03_ventas_cobros_reembolsos_mes.csv"
+    },
+    "Q04": {
+      "titulo": "Saldos pendientes de reservas a la fecha de corte",
+      "sql": "sql/consultas/Q04_saldos_pendientes.sql",
+      "sha256_sql": "929c8729336ee2c0fa6b32d76e2d1fa629a2b56e1e6a9dcb6b1bd5a74ad720ea",
+      "parametros": {},
+      "filas": 7,
+      "columnas": [
+        "situacion",
+        "plazo",
+        "tiquetes",
+        "valor_reservado_usd",
+        "abonado_usd",
+        "saldo_pendiente_usd"
+      ],
+      "duracion_ms": 54,
+      "csv": "reports/resultados/Q04_saldos_pendientes.csv"
+    },
+    "Q05": {
+      "titulo": "Cancelaciones con reembolso: motivo, regla y cabina",
+      "sql": "sql/consultas/Q05_reembolsos.sql",
+      "sha256_sql": "e8efa33ae7134784230a01d0ccd14ff1d5f1896ddfaef70ac77c2daa97c417c8",
+      "parametros": {},
+      "filas": 8,
+      "columnas": [
+        "motivo",
+        "regla",
+        "codigo_cabina",
+        "tiquetes",
+        "sin_cobro",
+        "porcentaje_politica_medio",
+        "cobrado_usd",
+        "reembolsado_usd",
+        "penalidad_retenida_usd",
+        "tasa_reembolso"
+      ],
+      "duracion_ms": 1724,
+      "csv": "reports/resultados/Q05_reembolsos.csv"
+    },
+    "Q06": {
+      "titulo": "Precio medio y descuento efectivo por ruta y cabina",
+      "sql": "sql/consultas/Q06_precios_y_descuentos.sql",
+      "sha256_sql": "524a2b4b25bf0336eeae5f81659f1a2e3c7ea0abc52dbd3d1d7aa99c7f7546ee",
+      "parametros": {
+        "fecha_desde": "2026-07-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 44,
+      "columnas": [
+        "ruta",
+        "codigo_cabina",
+        "tiquetes",
+        "precio_base_medio_usd",
+        "precio_final_medio_usd",
+        "tasa_descuento_efectiva",
+        "penetracion_descuentos",
+        "precio_final_minimo_usd",
+        "precio_final_maximo_usd"
+      ],
+      "duracion_ms": 280,
+      "csv": "reports/resultados/Q06_precios_y_descuentos.csv"
+    },
+    "Q07": {
+      "titulo": "Ventas por canal y punto de venta",
+      "sql": "sql/consultas/Q07_ventas_por_canal.sql",
+      "sha256_sql": "4f0c56bfc0beb69baa6d468a84d900298f28752866f62f30853ee327c283d471",
+      "parametros": {
+        "fecha_desde": "2026-07-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 18,
+      "columnas": [
+        "canal",
+        "tipo_localizacion",
+        "codigo_localizacion",
+        "compras",
+        "tiquetes",
+        "ventas_usd",
+        "participacion_total",
+        "participacion_en_canal"
+      ],
+      "duracion_ms": 299,
+      "csv": "reports/resultados/Q07_ventas_por_canal.csv"
+    },
+    "Q08": {
+      "titulo": "Compradores y pasajeros registrados frente a no registrados",
+      "sql": "sql/consultas/Q08_registrados_vs_no_registrados.sql",
+      "sha256_sql": "802d69eae0c4dd0e4760fa2475ef62a7a584d2dd1e6ab2ce583be9374ed661ba",
+      "parametros": {},
+      "filas": 2,
+      "columnas": [
+        "comprador",
+        "compras",
+        "compradores_distintos",
+        "tiquetes",
+        "tiquetes_por_compra",
+        "pasajeros_registrados",
+        "ventas_brutas_usd",
+        "precio_medio_usd",
+        "tasa_cancelacion",
+        "proporcion_web"
+      ],
+      "duracion_ms": 403,
+      "csv": "reports/resultados/Q08_registrados_vs_no_registrados.csv"
+    },
+    "Q09": {
+      "titulo": "Tasa de cancelación por ruta y motivo",
+      "sql": "sql/consultas/Q09_cancelaciones_por_ruta.sql",
+      "sha256_sql": "457b4711c9fc3fd037dd24259dbc440eed62786d8d0fd1d2ca6acd003ce85542",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 22,
+      "columnas": [
+        "ruta",
+        "tiquetes_vendidos",
+        "cancel_voluntarias",
+        "cancel_por_vuelo",
+        "cancel_por_vencimiento",
+        "tasa_voluntaria",
+        "tasa_por_vuelo",
+        "tasa_total"
+      ],
+      "duracion_ms": 133,
+      "csv": "reports/resultados/Q09_cancelaciones_por_ruta.csv"
+    },
+    "Q10": {
+      "titulo": "Utilización de la flota",
+      "sql": "sql/consultas/Q10_utilizacion_flota.sql",
+      "sha256_sql": "06d48afff48b9606245192665a87aeee1e41c4d1ee74a34a7eec73636d391fbd",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 17,
+      "columnas": [
+        "matricula",
+        "modelo",
+        "estado_operativo",
+        "dias_activos",
+        "vuelos",
+        "horas_bloque_programadas",
+        "horas_bloque_reales",
+        "horas_promedio_por_dia",
+        "rango_utilizacion"
+      ],
+      "duracion_ms": 25,
+      "csv": "reports/resultados/Q10_utilizacion_flota.csv"
+    },
+    "Q11": {
+      "titulo": "Distribución de la demanda por día de la semana y franja horaria",
+      "sql": "sql/consultas/Q11_demanda_dia_hora.sql",
+      "sha256_sql": "7eaffb31e003b05d825d8caf9e92cbd11a1ec78380a7e2b9b8a1b3068cb54c2b",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 28,
+      "columnas": [
+        "dia_semana_iso",
+        "dia",
+        "franja",
+        "pasajeros_volados",
+        "asientos_ofrecidos",
+        "factor_ocupacion"
+      ],
+      "duracion_ms": 140,
+      "csv": "reports/resultados/Q11_demanda_dia_hora.csv"
+    },
+    "Q12": {
+      "titulo": "Anticipación de la compra y precio pagado",
+      "sql": "sql/consultas/Q12_anticipacion_compra.sql",
+      "sha256_sql": "3375160bb1d756a2e6cf5737cc018131f4b3139d37347ced0659c00ea1faa96f",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 5,
+      "columnas": [
+        "tramo",
+        "tiquetes",
+        "participacion",
+        "precio_medio_eco_usd",
+        "precio_medio_vip_usd",
+        "penetracion_descuentos"
+      ],
+      "duracion_ms": 133,
+      "csv": "reports/resultados/Q12_anticipacion_compra.csv"
+    },
+    "Q13": {
+      "titulo": "Clientes registrados de mayor valor",
+      "sql": "sql/consultas/Q13_clientes_mayor_valor.sql",
+      "sha256_sql": "2e5cf84f717de29ad38a04766b5f00a5039433c3a14ca4c0aaaab529b9284eec",
+      "parametros": {
+        "top": "10"
+      },
+      "filas": 10,
+      "columnas": [
+        "rango",
+        "numero_viajero",
+        "nivel_lealtad",
+        "compras",
+        "tiquetes",
+        "cobro_neto_usd",
+        "cobro_neto_por_tiquete_usd"
+      ],
+      "duracion_ms": 550,
+      "csv": "reports/resultados/Q13_clientes_mayor_valor.csv"
+    },
+    "Q14": {
+      "titulo": "Registros sin actividad (anti-joins)",
+      "sql": "sql/consultas/Q14_registros_sin_actividad.sql",
+      "sha256_sql": "ede367476344946c7ea7284d342f9e20b1016170bf4e51e8e66de5b29dc35bd0",
+      "parametros": {},
+      "filas": 5,
+      "columnas": [
+        "categoria",
+        "cantidad"
+      ],
+      "duracion_ms": 83,
+      "csv": "reports/resultados/Q14_registros_sin_actividad.csv"
+    },
+    "Q15": {
+      "titulo": "Puntualidad y cancelaciones operativas por ruta",
+      "sql": "sql/consultas/Q15_puntualidad.sql",
+      "sha256_sql": "925697cbe522c51b1ecb544f66c362e82ac2d247045f917e8d5a7714a5e8ab19",
+      "parametros": {
+        "fecha_desde": "2026-09-01",
+        "fecha_hasta": "2026-10-31"
+      },
+      "filas": 22,
+      "columnas": [
+        "ruta",
+        "vuelos_operados",
+        "vuelos_cancelados",
+        "puntualidad",
+        "demora_media_llegada_min",
+        "p90_demora_llegada_min",
+        "tasa_cancelacion"
+      ],
+      "duracion_ms": 49,
+      "csv": "reports/resultados/Q15_puntualidad.csv"
+    },
+    "Q16": {
+      "titulo": "Disponibilidad de los próximos vuelos",
+      "sql": "sql/consultas/Q16_disponibilidad_proximos_vuelos.sql",
+      "sha256_sql": "92191b23d16b5ae1a2bbec0823d16008a40bc51af5a372eb8a4d826bb5e00230",
+      "parametros": {
+        "dias": "3",
+        "origen": null
+      },
+      "filas": 170,
+      "columnas": [
+        "codigo_vuelo",
+        "ruta",
+        "salida_programada",
+        "codigo_cabina",
+        "estado_vuelo",
+        "capacidad",
+        "plazas_ocupadas",
+        "plazas_disponibles",
+        "factor_ocupacion_vendido",
+        "tarifa_vigente_usd"
+      ],
+      "duracion_ms": 52,
+      "csv": "reports/resultados/Q16_disponibilidad_proximos_vuelos.csv"
+    },
+    "Q17": {
+      "titulo": "Evolución mensual de las ventas (variación y acumulado)",
+      "sql": "sql/consultas/Q17_evolucion_mensual.sql",
+      "sha256_sql": "a10a164c0c1c37e251d81ea12ee6fd5fb91023f654fea6ee668d562ae9db0387",
+      "parametros": {},
+      "filas": 8,
+      "columnas": [
+        "mes",
+        "codigo_cabina",
+        "tiquetes",
+        "ventas_usd",
+        "ventas_mes_anterior_usd",
+        "variacion",
+        "ventas_acumuladas_usd"
+      ],
+      "duracion_ms": 115,
+      "csv": "reports/resultados/Q17_evolucion_mensual.csv"
+    },
+    "Q18": {
+      "titulo": "Carga de vuelo de la tripulación en 672 horas consecutivas",
+      "sql": "sql/consultas/Q18_tripulacion_horas.sql",
+      "sha256_sql": "d28261d5d0fec6d1e63924720c531ca9d2f06b8031fb8ede3ae8a327d03d7ea9",
+      "parametros": {
+        "fecha_desde": "2026-10-01",
+        "fecha_hasta": "2026-10-28"
+      },
+      "filas": 4,
+      "columnas": [
+        "rol_vuelo",
+        "tripulantes",
+        "asignaciones",
+        "horas_minimas",
+        "horas_promedio",
+        "horas_maximas",
+        "pilotos_sobre_100h",
+        "vuelos_operados_sin_pilotos"
+      ],
+      "duracion_ms": 33,
+      "csv": "reports/resultados/Q18_tripulacion_horas.csv"
+    },
+    "Q19": {
+      "titulo": "Controles de integridad y conciliación",
+      "sql": "sql/consultas/Q19_controles_conciliacion.sql",
+      "sha256_sql": "01c6128d37c47e00d01471873d51d46eec86ca3b2d5b417816ada83738ca11ed",
+      "parametros": {},
+      "filas": 9,
+      "columnas": [
+        "control",
+        "filas_con_diferencia",
+        "diferencia_usd"
+      ],
+      "duracion_ms": 960,
+      "csv": "reports/resultados/Q19_controles_conciliacion.csv"
+    },
+    "Q20": {
+      "titulo": "Uso y costo de los descuentos",
+      "sql": "sql/consultas/Q20_uso_descuentos.sql",
+      "sha256_sql": "7ffd4e8939dbf60d396dd95128d1ae79640ec2170bfbee51b7732a0bec4c8ee1",
+      "parametros": {},
+      "filas": 6,
+      "columnas": [
+        "codigo_descuento",
+        "porcentaje",
+        "codigo_cabina",
+        "solo_clientes_registrados",
+        "tiquetes",
+        "costo_descuento_usd",
+        "costo_relativo",
+        "participacion_registrados"
+      ],
+      "duracion_ms": 190,
+      "csv": "reports/resultados/Q20_uso_descuentos.csv"
+    }
+  }
+}

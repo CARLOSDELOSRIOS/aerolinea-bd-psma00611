@@ -1,0 +1,15 @@
+# python -m aerolinea demo  (2026-10-27T03:47:17Z)
+A. Atomicidad: un error de negocio revierte toda la transacción
+   Vuelo: XX111 LAX-JFK, salida 2026-11-03T22:30:00-08:00 (plazas ECO libres: 57)
+A1. Persona 232239 sin cuenta; tiquete 0000000323850 RESERVADO por 354.99 USD
+A2. Pago parcial 142.00 USD -> saldo 212.99 USD
+A3. Sobrepago rechazado por la base: [50135] RN-37: el monto (9999.00 USD) supera el saldo disponible para pagar (212.99 USD).
+A4. Después del error, filas del tiquete 0000000323850: 0 (se revirtieron la persona, la reserva y el pago parcial: no quedan operaciones a medias)
+B. Flujo completo: compra sin registro, pago en dos partes, emisión y cancelación
+   Vuelo: XX111 LAX-JFK, salida 2026-11-03T22:30:00-08:00 (plazas ECO libres: 57)
+B1. Tiquete 0000000323851 (reserva 9FHJ9R) RESERVADO; precio final 354.99 USD
+B2. Pago parcial con tarjeta 142.00 USD -> estado RESERVADO, saldo 212.99 USD
+B3. Pago del saldo con billetera -> estado EMITIDO, saldo 0.00 USD
+B4. Cancelación voluntaria: regla REGLA_24H (100.00 %), reembolso 354.99 USD, retenido 0.00 USD
+B5. Situación financiera: codigo_estado=CANCELADO, precio_final_usd=354.99, cobrado_usd=354.99, reembolsado_usd=354.99, penalidad_retenida_usd=0.00
+Demostración revertida (ROLLBACK): los datos del informe no cambian.

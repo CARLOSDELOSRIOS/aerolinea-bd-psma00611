@@ -1,0 +1,79 @@
+---
+title: Modelo lógico relacional - Red, horarios y vuelos (3FN)
+---
+erDiagram
+    ZONA_HORARIA {
+        texto nombre_windows PK
+        texto nombre_iana UK
+        booleano observa_horario_verano
+    }
+    LOCALIZACION {
+        entero id_localizacion PK
+        texto codigo_localizacion UK
+        texto tipo_localizacion "AER | OFI | WEB"
+        texto nombre
+        texto ciudad "nulo si WEB"
+        texto codigo_estado FK "nulo si WEB"
+        texto zona_horaria FK "nulo si WEB"
+        texto url UK "solo WEB"
+        booleano vende_tiquetes
+    }
+    AEROPUERTO {
+        entero id_localizacion PK,FK "subtipo de LOCALIZACION"
+        texto tipo_localizacion FK "constante AER"
+        texto codigo_iata UK
+        texto codigo_icao UK
+        decimal latitud
+        decimal longitud
+    }
+    RUTA {
+        entero id_ruta PK
+        entero id_aeropuerto_origen FK,UK
+        entero id_aeropuerto_destino FK,UK
+        entero distancia_millas
+        booleano activa
+    }
+    PROGRAMACION {
+        entero id_programacion PK
+        entero numero_vuelo UK "con vigente_desde"
+        entero id_ruta FK
+        hora hora_salida_local
+        entero duracion_programada_min
+        fecha vigente_desde
+        fecha vigente_hasta "nulo = abierta"
+    }
+    PROGRAMACION_DIA {
+        entero id_programacion PK,FK
+        entero dia_semana PK "1 lunes .. 7 domingo (ISO)"
+    }
+    VUELO {
+        entero id_vuelo PK
+        entero id_programacion FK,UK "con fecha_salida_local"
+        fechahora salida_programada "con desfase local"
+        fechahora llegada_programada "con desfase local"
+        fecha fecha_salida_local "derivada"
+        fechahora salida_estimada
+        fechahora salida_real
+        fechahora llegada_real
+        entero id_avion FK "nulo hasta asignar"
+        texto codigo_estado FK
+    }
+    VUELO_CABINA {
+        entero id_vuelo PK,FK
+        texto codigo_cabina PK,FK
+        entero capacidad
+        entero plazas_ocupadas "desnormalización controlada"
+    }
+    CABINA {
+        texto codigo_cabina PK "VIP | ECO"
+        texto nombre
+    }
+    LOCALIZACION ||--o| AEROPUERTO : "subtipo"
+    ZONA_HORARIA ||--o{ LOCALIZACION : "rige"
+    AEROPUERTO ||--o{ RUTA : "origen"
+    AEROPUERTO ||--o{ RUTA : "destino"
+    RUTA ||--o{ PROGRAMACION : "programa"
+    PROGRAMACION ||--|{ PROGRAMACION_DIA : "días"
+    PROGRAMACION ||--o{ VUELO : "genera"
+    VUELO ||--|{ VUELO_CABINA : "cupo"
+    CABINA ||--o{ VUELO_CABINA : "tipo"

@@ -1,0 +1,270 @@
+﻿esquema;tabla;orden;columna;tipo;nulo;predeterminado;claves;restricciones_check;notas;definicion;dominio;filas_tabla
+adm;registro_despliegue;1;id_registro;int;No;;PK;;IDENTITY;Identificador del registro;Entero autoincremental;12
+adm;registro_despliegue;2;script;varchar(80);No;;;;;Nombre del script o proceso ejecutado;Nombre de archivo sin extensión o CARGA_SINTETICA;12
+adm;registro_despliegue;3;descripcion;nvarchar(400);Sí;;;;;Descripción del despliegue o parámetros de la carga;Texto libre;12
+adm;registro_despliegue;4;ejecutado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de ejecución;UTC;12
+adm;registro_despliegue;5;usuario;nvarchar(128);No;(suser_sname());;;;Inicio de sesión que ejecutó el script;SUSER_SNAME();12
+adm;registro_despliegue;6;version_motor;nvarchar(128);No;(CONVERT(nvarchar(128),serverproperty('ProductVersion')));;;;Versión del motor en el momento de la ejecución;SERVERPROPERTY('ProductVersion');12
+aud;cambio_estado;1;id_cambio;bigint;No;;PK;;IDENTITY;Identificador del cambio;Entero grande autoincremental;1248064
+aud;cambio_estado;2;entidad;varchar(10);No;;;ck_cambio_estado_entidad;;Tipo de entidad que cambió de estado;VUELO, TIQUETE, PAGO;1248064
+aud;cambio_estado;3;id_entidad;int;No;;;;;Identificador de la fila que cambió;Clave de la entidad indicada;1248064
+aud;cambio_estado;4;estado_anterior;varchar(15);Sí;;;;;Estado previo (NULL en la creación);Código de estado de la entidad;1248064
+aud;cambio_estado;5;estado_nuevo;varchar(15);No;;;;;Estado resultante;Código de estado de la entidad;1248064
+aud;cambio_estado;6;registrado_utc;datetime2(3);No;(sysutcdatetime());;;;Instante en que la base registró el cambio (no la fecha de negocio);UTC con milisegundos;1248064
+aud;cambio_estado;7;usuario;nvarchar(128);No;(suser_sname());;;;Inicio de sesión que provocó el cambio;SUSER_SNAME();1248064
+aud;cambio_estado;8;aplicacion;nvarchar(128);Sí;(app_name());;;;Aplicación cliente que provocó el cambio;APP_NAME();1248064
+ops;asiento_configuracion;1;id_configuracion;smallint;No;;"PK; UQ uq_asiento_fila_letra; FK → ops.configuracion_asientos.id_configuracion";;;Configuración a la que pertenece el asiento;FK a ops.configuracion_asientos;586
+ops;asiento_configuracion;2;codigo_asiento;varchar(4);No;;PK;ck_asiento_codigo;;Código visible del asiento (fila + letra);p. ej. 12A;586
+ops;asiento_configuracion;3;fila;tinyint;No;;UQ uq_asiento_fila_letra;ck_asiento_codigo, ck_asiento_fila_letra;;Número de fila;1 a 60;586
+ops;asiento_configuracion;4;letra;char(1);No;;UQ uq_asiento_fila_letra;ck_asiento_codigo, ck_asiento_fila_letra;;Letra del asiento en la fila;A a K mayúscula;586
+ops;asiento_configuracion;5;codigo_cabina;char(3);No;;FK → ref.cabina.codigo_cabina;;;Cabina a la que pertenece el asiento;VIP o ECO;586
+ops;asiento_configuracion;6;es_ventana;bit;No;;;;;Indica asiento de ventana;0/1;586
+ops;asiento_configuracion;7;es_pasillo;bit;No;;;;;Indica asiento de pasillo;0/1;586
+ops;asiento_configuracion;8;es_salida_emergencia;bit;No;((0));;;;Indica fila de salida de emergencia;0/1;586
+ops;asignacion_tripulacion;1;id_vuelo;int;No;;"PK; UX ux_asignacion_capitan (filtrado: (rol_vuelo='CAPITAN')); UX ux_asignacion_jefe_cabina (filtrado: (rol_vuelo='JEFE_CABINA')); UX ux_asignacion_primer_oficial (filtrado: (rol_vuelo='PRIMER_OFICIAL')); FK → ops.vuelo.id_vuelo";;;Vuelo asignado;FK a ops.vuelo;20064
+ops;asignacion_tripulacion;2;id_empleado;int;No;;"PK; FK → rh.empleado.id_empleado";;;Tripulante asignado;FK a rh.empleado;20064
+ops;asignacion_tripulacion;3;rol_vuelo;varchar(15);No;;;ck_asignacion_rol;;Rol que desempeña en el vuelo;CAPITAN, PRIMER_OFICIAL, JEFE_CABINA, AUXILIAR_VUELO;20064
+ops;asignacion_tripulacion;4;asignado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de la asignación;UTC;20064
+ops;avion;1;id_avion;smallint;No;;PK;;IDENTITY;Identificador del avión;Entero pequeño autoincremental;17
+ops;avion;2;matricula;varchar(10);No;;UQ uq_avion_matricula;ck_avion_matricula;;Matrícula de registro (N-number);N + 1-5 caracteres;17
+ops;avion;3;numero_serie;varchar(20);No;;UQ uq_avion_numero_serie;;;Número de serie del fabricante (MSN);Sintético;17
+ops;avion;4;id_configuracion;smallint;No;;FK → ops.configuracion_asientos.id_configuracion;;;Configuración de asientos instalada;FK a ops.configuracion_asientos;17
+ops;avion;5;fecha_fabricacion;date;No;;;ck_avion_fechas;;Fecha de fabricación;Fecha;17
+ops;avion;6;fecha_incorporacion;date;No;;;ck_avion_fechas;;Fecha de incorporación a la flota;Igual o posterior a la fabricación;17
+ops;avion;7;estado_operativo;varchar(15);No;('ACTIVO');;ck_avion_estado;;Situación operativa del avión;ACTIVO, MANTENIMIENTO, RETIRADO;17
+ops;avion;8;id_aeropuerto_base;int;No;;FK → ref.aeropuerto.id_localizacion;;;Aeropuerto base del avión;FK a ref.aeropuerto;17
+ops;avion;9;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;17
+ops;configuracion_asientos;1;id_configuracion;smallint;No;;PK;;IDENTITY;Identificador de la configuración;Entero pequeño autoincremental;4
+ops;configuracion_asientos;2;codigo_configuracion;varchar(20);No;;UQ uq_configuracion_codigo;;;Código legible de la configuración;Único;4
+ops;configuracion_asientos;3;id_modelo;smallint;No;;FK → ref.modelo_avion.id_modelo;;;Modelo de avión al que corresponde;FK a ref.modelo_avion;4
+ops;configuracion_asientos;4;descripcion;nvarchar(150);No;;;;;Resumen de asientos por cabina;Texto;4
+ops;programacion;1;id_programacion;int;No;;PK;;IDENTITY;Identificador de la programación;Entero autoincremental;32
+ops;programacion;2;numero_vuelo;smallint;No;;UQ uq_programacion_numero_vigencia;ck_programacion_numero;;Número comercial del vuelo (se muestra como XX + número);1 a 9999;32
+ops;programacion;3;id_ruta;smallint;No;;FK → ops.ruta.id_ruta;;;Ruta que opera;FK a ops.ruta;32
+ops;programacion;4;hora_salida_local;time(0);No;;;;;Hora prevista de salida en la hora local del origen;Hora sin segundos;32
+ops;programacion;5;duracion_programada_min;smallint;No;;;ck_programacion_duracion;;Duración de bloque programada;20 a 1080 minutos;32
+ops;programacion;6;vigente_desde;date;No;;UQ uq_programacion_numero_vigencia;ck_programacion_vigencia;;Primer día de vigencia;Fecha local;32
+ops;programacion;7;vigente_hasta;date;Sí;;;ck_programacion_vigencia;;Último día de vigencia (NULL = sin fin);Igual o posterior a vigente_desde;32
+ops;programacion;8;activa;bit;No;((1));;;;Indica si la programación genera vuelos;0/1;32
+ops;programacion;9;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;32
+ops;programacion_dia;1;id_programacion;int;No;;"PK; FK → ops.programacion.id_programacion";;;Programación;FK a ops.programacion;220
+ops;programacion_dia;2;dia_semana;tinyint;No;;PK;ck_programacion_dia_semana;;Día de la semana ISO 8601;1 = lunes … 7 = domingo;220
+ops;ruta;1;id_ruta;smallint;No;;PK;;IDENTITY;Identificador de la ruta;Entero pequeño autoincremental;24
+ops;ruta;2;id_aeropuerto_origen;int;No;;"UQ uq_ruta_origen_destino; FK → ref.aeropuerto.id_localizacion";ck_ruta_origen_destino;;Aeropuerto de salida;FK a ref.aeropuerto;24
+ops;ruta;3;id_aeropuerto_destino;int;No;;"UQ uq_ruta_origen_destino; FK → ref.aeropuerto.id_localizacion";ck_ruta_origen_destino;;Aeropuerto de llegada;FK a ref.aeropuerto;24
+ops;ruta;4;distancia_millas;smallint;No;;;ck_ruta_distancia;;Distancia ortodrómica entre aeropuertos;50 a 6000 millas;24
+ops;ruta;5;activa;bit;No;((1));;;;Indica si la ruta está en operación;0/1;24
+ops;ruta;6;fecha_inicio_operacion;date;Sí;;;;;Fecha de inicio de operación (NULL si está en evaluación);Fecha;24
+ops;ruta;7;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;24
+ops;vuelo;1;id_vuelo;int;No;;PK;;IDENTITY;Identificador del vuelo;Entero autoincremental;3588
+ops;vuelo;2;id_programacion;int;No;;"UQ uq_vuelo_programacion_fecha; FK → ops.programacion.id_programacion";;;Programación que generó el vuelo;FK a ops.programacion;3588
+ops;vuelo;3;salida_programada;datetimeoffset(0);No;;;ck_vuelo_estado_horas, ck_vuelo_horario, ck_vuelo_salida_real;;Hora programada de salida con el desfase del aeropuerto de origen;datetimeoffset coherente con la zona horaria del origen;3588
+ops;vuelo;4;llegada_programada;datetimeoffset(0);No;;;ck_vuelo_horario;;Hora programada de llegada con el desfase del aeropuerto de destino;Posterior a la salida;3588
+ops;vuelo;5;fecha_salida_local;date;Sí;;UQ uq_vuelo_programacion_fecha;;calculada persistida: (CONVERT(date,salida_programada));Fecha operativa (fecha local de salida);Calculada: CAST(salida_programada AS date);3588
+ops;vuelo;6;salida_estimada;datetimeoffset(0);Sí;;;ck_vuelo_estado_horas;;Nueva hora estimada en caso de demora;Posterior a la salida programada;3588
+ops;vuelo;7;salida_real;datetimeoffset(0);Sí;;;ck_vuelo_estado_horas, ck_vuelo_salida_real;;Hora real de despegue;Desde 30 min antes hasta 24 h después de la programada;3588
+ops;vuelo;8;llegada_real;datetimeoffset(0);Sí;;;ck_vuelo_estado_horas;;Hora real de aterrizaje;Posterior a la salida real;3588
+ops;vuelo;9;id_avion;smallint;Sí;;FK → ops.avion.id_avion;;;Avión asignado (NULL hasta la asignación);FK a ops.avion;3588
+ops;vuelo;10;codigo_estado;varchar(15);No;('PROGRAMADO');FK → ref.estado_vuelo.codigo_estado;ck_vuelo_estado_horas;;Estado del vuelo;PROGRAMADO, DEMORADO, EN_VUELO, ATERRIZADO, CANCELADO;3588
+ops;vuelo;11;puerta_salida;varchar(5);Sí;;;;;Puerta de embarque;Texto corto;3588
+ops;vuelo;12;motivo_cancelacion;nvarchar(200);Sí;;;ck_vuelo_estado_horas;;Motivo informado si el vuelo se cancela;Obligatorio solo en CANCELADO;3588
+ops;vuelo;13;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de generación del vuelo;UTC;3588
+ops;vuelo;14;version_fila;timestamp;No;;;;;Versión de fila para control de concurrencia optimista;rowversion automático;3588
+ops;vuelo_cabina;1;id_vuelo;int;No;;"PK; FK → ops.vuelo.id_vuelo";;;Vuelo;FK a ops.vuelo;7176
+ops;vuelo_cabina;2;codigo_cabina;char(3);No;;"PK; FK → ref.cabina.codigo_cabina";;;Cabina;FK a ref.cabina;7176
+ops;vuelo_cabina;3;capacidad;smallint;No;;;ck_vuelo_cabina_capacidad;;Asientos de la cabina en la configuración del avión asignado;Mayor que 0;7176
+ops;vuelo_cabina;4;plazas_ocupadas;smallint;No;((0));;ck_vuelo_cabina_capacidad;;Tiquetes que ocupan plaza (estados con ocupa_inventario = 1);0 a capacidad;7176
+ref;aeropuerto;1;id_localizacion;int;No;;"PK; FK → ref.localizacion.id_localizacion";;;Localización de la que es subtipo;PK y FK a ref.localizacion;13
+ref;aeropuerto;2;tipo_localizacion;char(3);No;;FK → ref.localizacion.tipo_localizacion;;calculada persistida: (CONVERT(char(3),'AER'));Tipo fijo del subtipo, para la FK compuesta;Calculada: AER;13
+ref;aeropuerto;3;codigo_iata;char(3);No;;UQ uq_aeropuerto_iata;ck_aeropuerto_iata;;Código IATA del aeropuerto;3 letras mayúsculas;13
+ref;aeropuerto;4;codigo_icao;char(4);No;;UQ uq_aeropuerto_icao;ck_aeropuerto_icao;;Código OACI (ICAO) del aeropuerto;4 letras mayúsculas;13
+ref;aeropuerto;5;latitud;decimal(9,6);No;;;ck_aeropuerto_coordenadas;;Latitud geográfica;-90 a 90 grados (WGS 84);13
+ref;aeropuerto;6;longitud;decimal(9,6);No;;;ck_aeropuerto_coordenadas;;Longitud geográfica;-180 a 180 grados (WGS 84);13
+ref;aeropuerto;7;es_base_operaciones;bit;No;((0));;;;Indica si es base de la aerolínea;0/1;13
+ref;cabina;1;codigo_cabina;char(3);No;;PK;ck_cabina_codigo;;Código de cabina;VIP, ECO;2
+ref;cabina;2;nombre;nvarchar(40);No;;UQ uq_cabina_nombre;;;Nombre comercial;Texto único;2
+ref;cabina;3;descripcion;nvarchar(200);No;;;;;Beneficios de la cabina;Texto;2
+ref;cabina;4;piezas_equipaje_bodega;tinyint;No;;;ck_cabina_equipaje;;Piezas de equipaje de bodega incluidas;0 a 5;2
+ref;cabina;5;peso_max_equipaje_kg;tinyint;No;;;ck_cabina_equipaje;;Peso máximo por pieza;1 a 50 kg;2
+ref;cabina;6;acceso_sala_vip;bit;No;;;;;Indica acceso a sala VIP;0/1;2
+ref;cabina;7;orden_abordaje;tinyint;No;;UQ uq_cabina_orden_abordaje;;;Prioridad de abordaje;Entero único;2
+ref;estado_eeuu;1;codigo_estado;char(2);No;;PK;ck_estado_eeuu_codigo;;Código postal USPS;2 letras mayúsculas;51
+ref;estado_eeuu;2;nombre;nvarchar(40);No;;UQ uq_estado_eeuu_nombre;;;Nombre del estado;Texto único;51
+ref;estado_pago;1;codigo_estado;varchar(15);No;;PK;;;Código del estado;PENDIENTE, CONFIRMADO, FALLIDO, ANULADO;4
+ref;estado_pago;2;descripcion;nvarchar(100);No;;;;;Significado del estado;Texto;4
+ref;estado_pago;3;es_estado_inicial;bit;No;;;;;Indica si un pago puede crearse en este estado;0/1;4
+ref;estado_pago;4;es_final;bit;No;;;;;Indica si el estado no admite transiciones;0/1;4
+ref;estado_pago;5;es_cobro;bit;No;;;;;Indica si el pago cuenta como dinero recibido;0/1;4
+ref;estado_tiquete;1;codigo_estado;varchar(15);No;;PK;;;Código del estado;RESERVADO, EMITIDO, USADO, NO_PRESENTADO, CANCELADO;5
+ref;estado_tiquete;2;descripcion;nvarchar(100);No;;;;;Significado del estado;Texto;5
+ref;estado_tiquete;3;es_estado_inicial;bit;No;;;;;Indica si un tiquete puede crearse en este estado;0/1;5
+ref;estado_tiquete;4;es_final;bit;No;;;;;Indica si el estado no admite transiciones;0/1;5
+ref;estado_tiquete;5;ocupa_inventario;bit;No;;;;;Indica si el tiquete consume una plaza del vuelo;0/1;5
+ref;estado_vuelo;1;codigo_estado;varchar(15);No;;PK;;;Código del estado;PROGRAMADO, DEMORADO, EN_VUELO, ATERRIZADO, CANCELADO;5
+ref;estado_vuelo;2;descripcion;nvarchar(100);No;;;;;Significado del estado;Texto;5
+ref;estado_vuelo;3;es_estado_inicial;bit;No;;;;;Indica si un vuelo puede crearse en este estado;0/1;5
+ref;estado_vuelo;4;es_final;bit;No;;;;;Indica si el estado no admite transiciones;0/1;5
+ref;localizacion;1;id_localizacion;int;No;;"PK; UQ uq_localizacion_id_tipo";;IDENTITY;Identificador de la localización;Entero autoincremental;19
+ref;localizacion;2;codigo_localizacion;varchar(12);No;;UQ uq_localizacion_codigo;;;Código interno legible;Único;19
+ref;localizacion;3;tipo_localizacion;char(3);No;;UQ uq_localizacion_id_tipo;ck_localizacion_datos_tipo, ck_localizacion_tipo;;Tipo de localización;AER aeropuerto, OFI oficina física, WEB canal web;19
+ref;localizacion;4;nombre;nvarchar(100);No;;;;;Nombre de la localización;Texto;19
+ref;localizacion;5;ciudad;nvarchar(60);Sí;;;ck_localizacion_datos_tipo;;Ciudad (solo físicas);Obligatoria en AER y OFI;19
+ref;localizacion;6;codigo_estado;char(2);Sí;;FK → ref.estado_eeuu.codigo_estado;ck_localizacion_datos_tipo;;Estado de EE. UU. (solo físicas);FK a ref.estado_eeuu;19
+ref;localizacion;7;direccion;nvarchar(150);Sí;;;ck_localizacion_datos_tipo;;Dirección postal (opcional, solo físicas);Texto;19
+ref;localizacion;8;codigo_postal;varchar(10);Sí;;;ck_localizacion_codigo_postal, ck_localizacion_datos_tipo;;Código ZIP (opcional, solo físicas);5 dígitos;19
+ref;localizacion;9;zona_horaria;varchar(50);Sí;;FK → ref.zona_horaria.nombre_windows;ck_localizacion_datos_tipo;;Zona horaria (solo físicas);FK a ref.zona_horaria;19
+ref;localizacion;10;url;varchar(200);Sí;;UX ux_localizacion_url (filtrado: (url IS NOT NULL));ck_localizacion_datos_tipo, ck_localizacion_url;;Dirección web (solo WEB);https://… única;19
+ref;localizacion;11;vende_tiquetes;bit;No;((1));;;;Indica si es canal de venta;0/1;19
+ref;localizacion;12;activa;bit;No;((1));;;;Indica si está en operación;0/1;19
+ref;localizacion;13;fecha_apertura;date;No;;;;;Fecha de apertura;Fecha;19
+ref;localizacion;14;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;19
+ref;mensaje_error;1;numero_error;int;No;;PK;ck_mensaje_error_numero;;Número del error;50000 a 50999;89
+ref;mensaje_error;2;mensaje;nvarchar(250);No;;;;;Descripción del error;Texto;89
+ref;mensaje_error;3;regla;varchar(10);Sí;;;;;Regla de negocio asociada;RN-xx o SUP-xx;89
+ref;metodo_pago;1;codigo_metodo;varchar(15);No;;PK;;;Código del medio de pago;TC, TD, EFECTIVO, BILLETERA;4
+ref;metodo_pago;2;nombre;nvarchar(40);No;;UQ uq_metodo_pago_nombre;;;Nombre del medio de pago;Texto único;4
+ref;metodo_pago;3;es_tarjeta;bit;No;;;;;Indica si requiere últimos 4 dígitos y marca;0/1;4
+ref;metodo_pago;4;permite_web;bit;No;;;ck_metodo_pago_canal;;Indica si se acepta en canales web;0/1;4
+ref;metodo_pago;5;permite_fisico;bit;No;;;ck_metodo_pago_canal;;Indica si se acepta en puntos físicos;0/1;4
+ref;modelo_avion;1;id_modelo;smallint;No;;PK;;IDENTITY;Identificador del modelo;Entero pequeño autoincremental;4
+ref;modelo_avion;2;fabricante;nvarchar(40);No;;UQ uq_modelo_avion;;;Fabricante;Texto;4
+ref;modelo_avion;3;modelo;nvarchar(40);No;;UQ uq_modelo_avion;;;Designación del modelo;Único por fabricante;4
+ref;modelo_avion;4;alcance_millas;smallint;No;;;ck_modelo_avion_datos;;Alcance aproximado;Mayor que 0;4
+ref;modelo_avion;5;velocidad_crucero_mph;smallint;No;;;ck_modelo_avion_datos;;Velocidad de crucero aproximada;200 a 700 mph;4
+ref;motivo_cancelacion;1;codigo_motivo;varchar(15);No;;PK;;;Código de la causa;VOLUNTARIA, VUELO_CANCELADO, VENCIMIENTO;3
+ref;motivo_cancelacion;2;descripcion;nvarchar(150);No;;;;;Significado;Texto;3
+ref;motivo_cancelacion;3;iniciado_por;varchar(10);No;;;ck_motivo_cancelacion_iniciador;;Quién origina la cancelación;CLIENTE, AEROLINEA, SISTEMA;3
+ref;motivo_cancelacion;4;reembolso_total;bit;No;;;;;Indica si la causa da derecho al 100 % de lo cobrado;0/1;3
+ref;pais;1;codigo_pais;char(2);No;;PK;ck_pais_codigo;;Código alfa-2;2 letras mayúsculas;20
+ref;pais;2;nombre;nvarchar(60);No;;UQ uq_pais_nombre;;;Nombre del país;Texto único;20
+ref;parametro;1;clave;varchar(40);No;;PK;;;Nombre del parámetro;Texto en mayúsculas;11
+ref;parametro;2;valor;varchar(100);No;;;;;Valor como texto;Se convierte según tipo_dato;11
+ref;parametro;3;tipo_dato;varchar(10);No;;;ck_parametro_tipo;;Tipo del valor;INT, DECIMAL, DATE, DATETIME, TEXT;11
+ref;parametro;4;descripcion;nvarchar(200);No;;;;;Significado y uso;Texto;11
+ref;transicion_pago;1;estado_origen;varchar(15);No;;"PK; FK → ref.estado_pago.codigo_estado";;;Estado de partida;FK a ref.estado_pago;3
+ref;transicion_pago;2;estado_destino;varchar(15);No;;"PK; FK → ref.estado_pago.codigo_estado";;;Estado de llegada;FK a ref.estado_pago;3
+ref;transicion_tiquete;1;estado_origen;varchar(15);No;;"PK; FK → ref.estado_tiquete.codigo_estado";;;Estado de partida;FK a ref.estado_tiquete;5
+ref;transicion_tiquete;2;estado_destino;varchar(15);No;;"PK; FK → ref.estado_tiquete.codigo_estado";;;Estado de llegada;FK a ref.estado_tiquete;5
+ref;transicion_vuelo;1;estado_origen;varchar(15);No;;"PK; FK → ref.estado_vuelo.codigo_estado";;;Estado de partida;FK a ref.estado_vuelo;7
+ref;transicion_vuelo;2;estado_destino;varchar(15);No;;"PK; FK → ref.estado_vuelo.codigo_estado";;;Estado de llegada;FK a ref.estado_vuelo;7
+ref;zona_horaria;1;nombre_windows;varchar(50);No;;PK;;;Nombre que acepta AT TIME ZONE en SQL Server;Debe existir en sys.time_zone_info;7
+ref;zona_horaria;2;nombre_iana;varchar(50);No;;;;;Nombre equivalente IANA (tz database);Texto;7
+ref;zona_horaria;3;descripcion;nvarchar(100);No;;;;;Descripción;Texto;7
+ref;zona_horaria;4;observa_horario_verano;bit;No;;;;;Indica si aplica horario de verano;0/1 (Phoenix y Honolulu: 0);7
+rh;cargo;1;codigo_cargo;varchar(15);No;;PK;;;Código del cargo;Texto en mayúsculas;11
+rh;cargo;2;nombre;nvarchar(60);No;;UQ uq_cargo_nombre;;;Nombre del cargo;Texto único;11
+rh;cargo;3;codigo_departamento;varchar(10);No;;FK → rh.departamento.codigo_departamento;;;Departamento al que pertenece;FK a rh.departamento;11
+rh;cargo;4;categoria_tripulacion;varchar(7);Sí;;;ck_cargo_categoria;;Tipo de tripulación (NULL = personal de tierra);TECNICA (pilotos) o CABINA;11
+rh;departamento;1;codigo_departamento;varchar(10);No;;PK;;;Código del departamento;Texto corto;6
+rh;departamento;2;nombre;nvarchar(60);No;;UQ uq_departamento_nombre;;;Nombre del departamento;Texto único;6
+rh;empleado;1;id_empleado;int;No;;PK;ck_empleado_supervisor;IDENTITY;Identificador del empleado;Entero autoincremental;353
+rh;empleado;2;numero_empleado;char(6);No;;UQ uq_empleado_numero;ck_empleado_numero;;Número de nómina;E + 5 dígitos;353
+rh;empleado;3;nombres;nvarchar(60);No;;;;;Nombres;Texto Unicode;353
+rh;empleado;4;apellidos;nvarchar(60);No;;;;;Apellidos;Texto Unicode;353
+rh;empleado;5;fecha_nacimiento;date;No;;;ck_empleado_mayor_edad;;Fecha de nacimiento;Mayor de 18 años al contratarse;353
+rh;empleado;6;email_corporativo;varchar(120);No;;UQ uq_empleado_email;ck_empleado_email;;Correo corporativo;Único;353
+rh;empleado;7;telefono;varchar(20);Sí;;;;;Teléfono;Rango ficticio 555-01xx;353
+rh;empleado;8;fecha_contratacion;date;No;;;ck_empleado_mayor_edad, ck_empleado_terminacion;;Fecha de ingreso;Fecha;353
+rh;empleado;9;fecha_terminacion;date;Sí;;;ck_empleado_terminacion;;Fecha de salida (NULL = activo);Igual o posterior a la contratación;353
+rh;empleado;10;codigo_cargo;varchar(15);No;;FK → rh.cargo.codigo_cargo;;;Cargo;FK a rh.cargo;353
+rh;empleado;11;id_localizacion_base;int;No;;FK → ref.localizacion.id_localizacion;;;Base de trabajo;FK a ref.localizacion;353
+rh;empleado;12;id_supervisor;int;Sí;;FK → rh.empleado.id_empleado;ck_empleado_supervisor;;Jefe directo;FK a rh.empleado (jerarquía);353
+rh;empleado;13;salario_anual_usd;decimal(12,2);No;;;ck_empleado_salario;enmascarada: default();Salario anual bruto (confidencial; enmascarado);353
+rh;empleado;14;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;353
+tst;resultado_prueba;1;id_resultado;int;No;;PK;;IDENTITY;Identificador del resultado;Entero autoincremental;69
+tst;resultado_prueba;2;id_ejecucion;uniqueidentifier;No;;;;;Identificador de la ejecución de la suite;GUID;69
+tst;resultado_prueba;3;id_prueba;varchar(20);No;;;;;Identificador de la prueba;PR-xx;69
+tst;resultado_prueba;4;regla;varchar(20);Sí;;;;;Regla verificada;RN-xx, SUP-xx u otro;69
+tst;resultado_prueba;5;descripcion;nvarchar(300);No;;;;;Qué se prueba;Texto;69
+tst;resultado_prueba;6;resultado;varchar(10);No;;;ck_resultado_prueba_resultado;;Resultado observado;SUPERADA, FALLIDA;69
+tst;resultado_prueba;7;detalle;nvarchar(1000);Sí;;;;;Valores observados;Texto;69
+tst;resultado_prueba;8;ejecutado_utc;datetime2(3);No;(sysutcdatetime());;;;Instante de ejecución;UTC;69
+ven;cliente;1;id_persona;int;No;;"PK; FK → ven.persona.id_persona";;;Persona registrada;PK y FK a ven.persona (relación 1:0..1);30000
+ven;cliente;2;numero_viajero;char(10);No;;UQ uq_cliente_numero_viajero;ck_cliente_numero_viajero;;Número de viajero frecuente;VF + 8 dígitos;30000
+ven;cliente;3;email_acceso;varchar(120);No;;UQ uq_cliente_email_acceso;ck_cliente_email;enmascarada: email();Correo de inicio de sesión (enmascarado);Único;30000
+ven;cliente;4;fecha_registro_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de creación de la cuenta;UTC;30000
+ven;cliente;5;nivel_lealtad;varchar(10);No;('BASICO');;ck_cliente_nivel;;Nivel del programa de clientes;BASICO, PLATA, ORO, PLATINO;30000
+ven;cliente;6;acepta_marketing;bit;No;((0));;;;Consentimiento de comunicaciones comerciales;0/1;30000
+ven;cliente;7;estado_cuenta;varchar(10);No;('ACTIVA');;ck_cliente_estado;;Estado de la cuenta;ACTIVA, SUSPENDIDA, CERRADA;30000
+ven;cliente;8;id_aeropuerto_preferido;int;Sí;;FK → ref.aeropuerto.id_localizacion;;;Aeropuerto preferido (opcional);FK a ref.aeropuerto;30000
+ven;compra;1;id_compra;int;No;;PK;;IDENTITY;Identificador de la compra;Entero autoincremental;168928
+ven;compra;2;codigo_reserva;char(6);No;;UQ uq_compra_codigo_reserva;ck_compra_codigo_reserva;;Localizador (PNR);6 caracteres A-Z y 2-9 sin O, I, 0 ni 1;168928
+ven;compra;3;id_persona_comprador;int;No;;FK → ven.persona.id_persona;;;Persona que compra (registrada o no);FK a ven.persona;168928
+ven;compra;4;id_localizacion_venta;int;No;;FK → ref.localizacion.id_localizacion;;;Canal de venta;FK a ref.localizacion con vende_tiquetes = 1;168928
+ven;compra;5;id_empleado_vendedor;int;Sí;;FK → rh.empleado.id_empleado;;;Agente que vendió (solo venta física);FK a rh.empleado;168928
+ven;compra;6;fecha_compra_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de la compra;UTC;168928
+ven;compra;7;email_confirmacion;varchar(120);Sí;;;;;Correo al que se envió la confirmación;Texto;168928
+ven;descuento;1;id_descuento;smallint;No;;PK;;IDENTITY;Identificador del descuento;Entero pequeño autoincremental;6
+ven;descuento;2;codigo_descuento;varchar(20);No;;UQ uq_descuento_codigo;;;Código promocional;Único;6
+ven;descuento;3;descripcion;nvarchar(150);No;;;;;Descripción de la campaña;Texto;6
+ven;descuento;4;porcentaje;decimal(5,2);No;;;ck_descuento_porcentaje;;Porcentaje sobre el precio base;Mayor que 0 y hasta 100;6
+ven;descuento;5;vigente_desde;date;No;;;ck_descuento_vigencia;;Primer día de venta en que aplica;Fecha (UTC);6
+ven;descuento;6;vigente_hasta;date;No;;;ck_descuento_vigencia;;Último día de venta en que aplica;Igual o posterior a vigente_desde;6
+ven;descuento;7;solo_clientes_registrados;bit;No;((0));;;;Exige que el comprador tenga cuenta;0/1;6
+ven;descuento;8;codigo_cabina;char(3);Sí;;FK → ref.cabina.codigo_cabina;;;Cabina a la que se limita (NULL = cualquiera);FK a ref.cabina;6
+ven;descuento;9;dias_anticipacion_min;smallint;Sí;;;ck_descuento_anticipacion;;Días mínimos entre venta y vuelo (NULL = sin requisito);0 a 365;6
+ven;descuento;10;activo;bit;No;((1));;;;Indica si puede aplicarse;0/1;6
+ven;descuento;11;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;6
+ven;pago;1;id_pago;int;No;;PK;;IDENTITY;Identificador del pago;Entero autoincremental;388003
+ven;pago;2;id_tiquete;int;No;;FK → ven.tiquete.id_tiquete;;;Tiquete que se paga;FK a ven.tiquete;388003
+ven;pago;3;codigo_metodo;varchar(15);No;;FK → ref.metodo_pago.codigo_metodo;ck_pago_tarjeta;;Medio de pago;FK a ref.metodo_pago;388003
+ven;pago;4;id_localizacion_cobro;int;No;;FK → ref.localizacion.id_localizacion;;;Lugar donde se cobró;FK a ref.localizacion;388003
+ven;pago;5;monto_usd;decimal(10,2);No;;;ck_pago_monto;;Importe del pago;Mayor que 0 USD;388003
+ven;pago;6;codigo_estado;varchar(15);No;('PENDIENTE');FK → ref.estado_pago.codigo_estado;ck_pago_estado_datos;;Estado del pago;PENDIENTE, CONFIRMADO, FALLIDO, ANULADO;388003
+ven;pago;7;fecha_creacion_utc;datetime2(0);No;(sysutcdatetime());;ck_pago_fechas;;Instante del intento de pago;UTC;388003
+ven;pago;8;fecha_resolucion_utc;datetime2(0);Sí;;;ck_pago_estado_datos, ck_pago_fechas;;Instante de confirmación, rechazo o anulación;UTC;388003
+ven;pago;9;referencia_autorizacion;varchar(30);Sí;;;ck_pago_estado_datos;;Código de autorización de la pasarela;Obligatorio si está confirmado;388003
+ven;pago;10;ultimos4_tarjeta;char(4);Sí;;;ck_pago_tarjeta, ck_pago_ultimos4;;Últimos 4 dígitos de la tarjeta (nunca el número completo);4 dígitos;388003
+ven;pago;11;marca_tarjeta;varchar(15);Sí;;;ck_pago_marca, ck_pago_tarjeta;;Marca de la tarjeta;VISA, MASTERCARD, AMEX, DISCOVER;388003
+ven;pago;12;motivo_rechazo;nvarchar(100);Sí;;;ck_pago_estado_datos;;Causa informada del rechazo;Obligatorio si falló;388003
+ven;persona;1;id_persona;int;No;;PK;;IDENTITY;Identificador de la persona;Entero autoincremental;232096
+ven;persona;2;nombres;nvarchar(60);No;;;;;Nombres como en el documento;Texto Unicode;232096
+ven;persona;3;apellidos;nvarchar(60);No;;;;;Apellidos como en el documento;Texto Unicode;232096
+ven;persona;4;fecha_nacimiento;date;Sí;;;ck_persona_fecha_nacimiento;enmascarada: default();Fecha de nacimiento (obligatoria para pasajeros; enmascarada);232096
+ven;persona;5;genero;char(1);Sí;;;ck_persona_genero;;Género como figura en el documento (obligatorio para pasajeros);F, M, X;232096
+ven;persona;6;email_contacto;varchar(120);Sí;;;ck_persona_email;enmascarada: email();Correo de contacto (enmascarado);Formato de correo;232096
+ven;persona;7;telefono;varchar(20);Sí;;;;"enmascarada: partial(0, ""XXX-XXX-"", 4)";Teléfono de contacto (enmascarado);Texto;232096
+ven;persona;8;codigo_pais_nacionalidad;char(2);Sí;;FK → ref.pais.codigo_pais;;;Nacionalidad;FK a ref.pais;232096
+ven;persona;9;tipo_documento;varchar(10);Sí;;;ck_persona_documento;;Tipo de documento de identidad;PASAPORTE, LICENCIA, ID_ESTATAL;232096
+ven;persona;10;numero_documento;varchar(20);Sí;;;ck_persona_documento;"enmascarada: partial(0, ""XXXXXX"", 3)";Número del documento (enmascarado);Obligatorio si hay tipo de documento;232096
+ven;persona;11;codigo_pais_documento;char(2);Sí;;FK → ref.pais.codigo_pais;ck_persona_documento;;País emisor del documento;FK a ref.pais;232096
+ven;persona;12;creado_utc;datetime2(0);No;(sysutcdatetime());;ck_persona_fecha_nacimiento;;Instante de alta de la persona;UTC;232096
+ven;politica_cancelacion;1;id_politica;smallint;No;;PK;;IDENTITY;Identificador del tramo de la política;Entero pequeño autoincremental;6
+ven;politica_cancelacion;2;codigo_cabina;char(3);No;;"UQ uq_politica_cabina_horas; FK → ref.cabina.codigo_cabina";;;Cabina;FK a ref.cabina;6
+ven;politica_cancelacion;3;horas_antes_min;smallint;No;;UQ uq_politica_cabina_horas;ck_politica_valores;;Horas mínimas antes de la salida para aplicar el tramo;0 o más;6
+ven;politica_cancelacion;4;porcentaje_reembolso;decimal(5,2);No;;;ck_politica_valores;;Porcentaje de lo cobrado que se reembolsa;0 a 100;6
+ven;reembolso;1;id_reembolso;int;No;;PK;;IDENTITY;Identificador del reembolso;Entero autoincremental;18182
+ven;reembolso;2;id_pago;int;No;;FK → ven.pago.id_pago;;;Pago que se reembolsa;FK a ven.pago (confirmado);18182
+ven;reembolso;3;monto_usd;decimal(10,2);No;;;ck_reembolso_valores;;Importe devuelto;Mayor que 0;18182
+ven;reembolso;4;fecha_reembolso_utc;datetime2(0);No;(sysutcdatetime());;;;Instante del reembolso;No anterior a la cancelación;18182
+ven;reembolso;5;codigo_motivo;varchar(15);No;;FK → ref.motivo_cancelacion.codigo_motivo;;;Causa de la cancelación;Igual al motivo del tiquete;18182
+ven;reembolso;6;porcentaje_aplicado;decimal(5,2);No;;;ck_reembolso_valores;;Porcentaje de la política aplicado;Mayor que 0 y hasta 100;18182
+ven;reembolso;7;regla_aplicada;varchar(20);No;;;ck_reembolso_regla;;Regla que determinó el porcentaje;REEMBOLSO_TOTAL, REGLA_24H, POLITICA_CABINA;18182
+ven;reembolso;8;referencia;varchar(30);Sí;;;;;Referencia del movimiento;Texto;18182
+ven;tarifa;1;id_tarifa;int;No;;"PK; UQ uq_tarifa_id_cabina";;IDENTITY;Identificador de la versión de tarifa;Entero autoincremental;96
+ven;tarifa;2;id_ruta;smallint;No;;"UQ uq_tarifa_ruta_cabina_desde; FK → ops.ruta.id_ruta";;;Ruta;FK a ops.ruta;96
+ven;tarifa;3;codigo_cabina;char(3);No;;"UQ uq_tarifa_id_cabina; UQ uq_tarifa_ruta_cabina_desde; FK → ref.cabina.codigo_cabina";;;Cabina;FK a ref.cabina;96
+ven;tarifa;4;precio_base_usd;decimal(10,2);No;;;ck_tarifa_precio;;Precio base antes de descuentos;Mayor que 0 USD;96
+ven;tarifa;5;vigente_desde;date;No;;UQ uq_tarifa_ruta_cabina_desde;ck_tarifa_vigencia;;Primer día de venta;Fecha (UTC);96
+ven;tarifa;6;vigente_hasta;date;Sí;;;ck_tarifa_vigencia;;Último día de venta (NULL = abierta);Igual o posterior a vigente_desde;96
+ven;tarifa;7;creado_utc;datetime2(0);No;(sysutcdatetime());;;;Instante de alta del registro;UTC;96
+ven;tiquete;1;id_tiquete;int;No;;PK;;IDENTITY;Identificador del tiquete;Entero autoincremental;323718
+ven;tiquete;2;numero_tiquete;char(13);No;;UQ uq_tiquete_numero;ck_tiquete_numero;;Número del documento de transporte;13 dígitos (prefijo ficticio 000);323718
+ven;tiquete;3;id_compra;int;No;;FK → ven.compra.id_compra;;;Compra a la que pertenece;FK a ven.compra;323718
+ven;tiquete;4;id_vuelo;int;No;;"UX ux_tiquete_vuelo_asiento (filtrado: (codigo_asiento IS NOT NULL AND (codigo_estado IN ('RESERVADO', 'EMITIDO', 'USADO', 'NO_PRESENTADO')))); UX ux_tiquete_vuelo_pasajero (filtrado: (codigo_estado IN ('RESERVADO', 'EMITIDO', 'USADO', 'NO_PRESENTADO'))); FK → ops.vuelo_cabina.id_vuelo";;;Vuelo;FK compuesta (id_vuelo, codigo_cabina) a ops.vuelo_cabina;323718
+ven;tiquete;5;codigo_cabina;char(3);No;;"FK → ven.tarifa.codigo_cabina; FK → ops.vuelo_cabina.codigo_cabina";;;Cabina;VIP o ECO;323718
+ven;tiquete;6;id_persona_pasajero;int;No;;"UX ux_tiquete_vuelo_pasajero (filtrado: (codigo_estado IN ('RESERVADO', 'EMITIDO', 'USADO', 'NO_PRESENTADO'))); FK → ven.persona.id_persona";;;Pasajero (registrado o no);FK a ven.persona;323718
+ven;tiquete;7;codigo_asiento;varchar(4);Sí;;UX ux_tiquete_vuelo_asiento (filtrado: (codigo_asiento IS NOT NULL AND (codigo_estado IN ('RESERVADO', 'EMITIDO', 'USADO', 'NO_PRESENTADO'))));;;Asiento asignado (opcional al comprar);Debe existir en la configuración del avión y en la cabina;323718
+ven;tiquete;8;id_tarifa;int;No;;FK → ven.tarifa.id_tarifa;;;Versión de tarifa aplicada;FK compuesta (id_tarifa, codigo_cabina) a ven.tarifa;323718
+ven;tiquete;9;precio_base_usd;decimal(10,2);No;;;ck_tiquete_precio;;Precio base pactado en la venta (hecho histórico);Igual al de la tarifa vigente en la venta;323718
+ven;tiquete;10;id_descuento;smallint;Sí;;FK → ven.descuento.id_descuento;ck_tiquete_descuento;;Descuento aplicado (como máximo uno);FK a ven.descuento;323718
+ven;tiquete;11;porcentaje_descuento;decimal(5,2);No;((0));;ck_tiquete_descuento;;Porcentaje aplicado en la venta (copia histórica);0 sin descuento;323718
+ven;tiquete;12;monto_descuento_usd;decimal(10,2);Sí;;;;calculada persistida: (CONVERT(decimal(10,2),round((precio_base_usd*porcentaje_descuento)/(100.0),(2))));Importe descontado;Calculada: ROUND(base × % / 100, 2);323718
+ven;tiquete;13;precio_final_usd;decimal(10,2);Sí;;;;calculada persistida: (CONVERT(decimal(10,2),precio_base_usd-round((precio_base_usd*porcentaje_descuento)/(100.0),(2))));Importe a pagar;Calculada: base − descuento;323718
+ven;tiquete;14;codigo_estado;varchar(15);No;('RESERVADO');FK → ref.estado_tiquete.codigo_estado;ck_tiquete_cancelacion, ck_tiquete_emision;;Estado del tiquete;RESERVADO, EMITIDO, USADO, NO_PRESENTADO, CANCELADO;323718
+ven;tiquete;15;fecha_limite_pago_utc;datetime2(0);No;;;ck_tiquete_fechas;;Vencimiento de la reserva;Mínimo entre venta + 72 h y salida − 3 h;323718
+ven;tiquete;16;fecha_emision_utc;datetime2(0);Sí;;;ck_tiquete_emision, ck_tiquete_fechas;;Instante en que quedó pagado;Obligatoria en EMITIDO, USADO y NO_PRESENTADO;323718
+ven;tiquete;17;fecha_cancelacion_utc;datetime2(0);Sí;;;ck_tiquete_cancelacion, ck_tiquete_fechas;;Instante de cancelación;Obligatoria solo en CANCELADO;323718
+ven;tiquete;18;codigo_motivo_cancelacion;varchar(15);Sí;;FK → ref.motivo_cancelacion.codigo_motivo;ck_tiquete_cancelacion;;Causa de la cancelación;FK a ref.motivo_cancelacion;323718
+ven;tiquete;19;creado_utc;datetime2(0);No;(sysutcdatetime());;ck_tiquete_fechas;;Instante de la venta del tiquete;UTC;323718
+ven;tiquete;20;version_fila;timestamp;No;;;;;Versión de fila para control de concurrencia optimista;rowversion automático;323718

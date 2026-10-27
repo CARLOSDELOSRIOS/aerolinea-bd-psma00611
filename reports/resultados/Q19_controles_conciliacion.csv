@@ -1,0 +1,10 @@
+control,filas_con_diferencia,diferencia_usd
+Asientos duplicados en tiquetes activos,0,
+Cobros confirmados mayores que el precio final,0,
+Identidad de conciliación de caja (USD),0,0.00
+Inventario distinto de tiquetes que ocupan plaza,0,
+Plazas ocupadas por encima de la capacidad,0,
+Reembolsos mayores que lo cobrado,0,
+Tiquetes con precio base distinto de su tarifa,0,
+"Tiquetes emitidos, usados o no presentados sin pago total",0,
+Vuelos operados con reservas sin pagar,0,

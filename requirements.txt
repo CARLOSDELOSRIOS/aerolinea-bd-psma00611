@@ -1,0 +1,9 @@
+# Dependencias del proyecto, fijadas a las versiones con las que se ejecutaron las pruebas
+# (Python 3.13; se recomienda Python 3.11 o superior).
+pyodbc==5.2.0          # conexión ODBC con SQL Server / Azure SQL Database
+pandas==2.2.3          # resultados tabulares y CSV
+numpy==2.5.4           # dependencia de pandas y matplotlib (versión probada)
+matplotlib==3.9.4      # gráficos
+python-dotenv==1.0.1   # lectura del archivo .env
+openpyxl==3.1.5        # diccionario de datos en Excel
+pytest==8.3.5          # pruebas de la aplicación

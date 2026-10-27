@@ -1,0 +1,22 @@
+---
+title: Arquitectura de la solución
+---
+flowchart TB
+    subgraph Laptop["Laptop Windows del equipo"]
+        direction LR
+        REPO[("Repositorio Git<br/>sql · src · docs · reports")]
+        SSMS["SSMS<br/>administración y scripts"]
+        PY["Python · python -m aerolinea<br/>despliegue, carga, consultas,<br/>CSV, gráficos y pruebas"]
+        REPO --> SSMS
+        REPO --> PY
+    end
+    subgraph Local["SQL Server local (MSSQLSERVER)"]
+        DBL[("AerolineaDB<br/>esquemas ref, ops, rh, ven, rpt, aud")]
+    end
+    subgraph Nube["Azure SQL Database · pendiente"]
+        DBA[("AerolineaDB<br/>mismo código T-SQL")]
+    end
+    SSMS -- "Windows · cifrado" --> DBL
+    PY -- "ODBC 18 · Windows · cifrado" --> DBL
+    SSMS -. "Entra ID · firewall por IP" .-> DBA
+    PY -. "ODBC 18 · Entra ID · certificado validado" .-> DBA

@@ -1,0 +1,73 @@
+---
+title: Modelo lógico relacional - Flota y tripulación (3FN)
+---
+erDiagram
+    MODELO_AVION {
+        entero id_modelo PK
+        texto fabricante
+        texto modelo
+        entero alcance_millas
+    }
+    CONFIGURACION_ASIENTOS {
+        entero id_configuracion PK
+        texto codigo_configuracion UK
+        entero id_modelo FK
+    }
+    ASIENTO_CONFIGURACION {
+        entero id_configuracion PK,FK
+        texto codigo_asiento PK
+        texto codigo_cabina FK
+        booleano es_salida_emergencia
+    }
+    AVION {
+        entero id_avion PK
+        texto matricula UK
+        entero id_configuracion FK
+        texto estado_operativo
+        entero id_aeropuerto_base FK
+    }
+    EMPLEADO {
+        entero id_empleado PK
+        texto numero_empleado UK
+        texto codigo_cargo FK
+        entero id_localizacion_base FK
+        entero id_supervisor FK "recursiva"
+        fecha fecha_contratacion
+        fecha fecha_terminacion
+        decimal salario_anual_usd "enmascarado"
+    }
+    CARGO {
+        texto codigo_cargo PK
+        texto codigo_departamento FK
+        texto categoria_tripulacion "TECNICA | CABINA | nulo"
+    }
+    ASIGNACION_TRIPULACION {
+        entero id_vuelo PK,FK
+        entero id_empleado PK,FK
+        texto rol_vuelo "CAPITAN | PRIMER_OFICIAL | JEFE_CABINA | AUXILIAR_VUELO"
+    }
+    VUELO {
+        entero id_vuelo PK
+        entero id_avion FK "nulo hasta asignar"
+    }
+    CABINA {
+        texto codigo_cabina PK "VIP | ECO"
+    }
+    AEROPUERTO {
+        entero id_localizacion PK,FK "subtipo de LOCALIZACION"
+    }
+    LOCALIZACION {
+        entero id_localizacion PK
+    }
+    LOCALIZACION ||--o| AEROPUERTO : "subtipo"
+    AVION |o--o{ VUELO : "opera"
+    MODELO_AVION ||--o{ CONFIGURACION_ASIENTOS : "versión"
+    CONFIGURACION_ASIENTOS ||--|{ ASIENTO_CONFIGURACION : "mapa"
+    CABINA ||--o{ ASIENTO_CONFIGURACION : "zona"
+    CONFIGURACION_ASIENTOS ||--o{ AVION : "instalada en"
+    AEROPUERTO ||--o{ AVION : "base"
+    CARGO ||--o{ EMPLEADO : "puesto"
+    LOCALIZACION ||--o{ EMPLEADO : "base"
+    EMPLEADO |o--o{ EMPLEADO : "supervisa"
+    VUELO ||--o{ ASIGNACION_TRIPULACION : "tripulación"
+    EMPLEADO ||--o{ ASIGNACION_TRIPULACION : "asignado"

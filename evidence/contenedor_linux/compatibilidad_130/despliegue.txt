@@ -1,0 +1,11 @@
+  02_esquemas_y_tablas.sql              12 lotes    0.02 s
+  03_claves_y_restricciones.sql          7 lotes    0.05 s
+  04_indices.sql                         4 lotes    0.08 s
+  05_funciones_y_triggers.sql           17 lotes    0.08 s
+  06_vistas.sql                         12 lotes    0.04 s
+  07_procedimientos.sql                 19 lotes    0.08 s
+  08_seguridad.sql                       7 lotes    0.06 s
+  09_datos_referencia.sql               10 lotes    0.55 s
+  10_carga_staging.sql                   6 lotes    0.02 s
+  12_pruebas_integridad.sql              7 lotes    0.08 s
+  13_descripciones.sql                   4 lotes    0.64 s

@@ -1,0 +1,6 @@
+name compatibility_level
+---- -------------------
+AerolineaDB 130
+
+(1 rows affected)
+FIN
