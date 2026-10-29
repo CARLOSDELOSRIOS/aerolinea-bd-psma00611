@@ -6,6 +6,8 @@ Tablas de datos:   se insertan desde reports/resultados/*.csv, los manifiestos y
                    resultados guardados (marcadores [[TABLA:ID]]).
 Salidas:           reports/informe/informe_PSMA00611.docx  (pandoc + plantilla de estilos)
                    reports/informe/informe_PSMA00611.pdf   (LibreOffice, con el índice actualizado)
+Avance del PA:     reports/avance/avance_fuente.md -> avance_PSMA00611.docx y .pdf
+                   (mismo proceso y plantilla; construir_avance)
 
 Requiere pandoc y, para el PDF, LibreOffice con su módulo de Python (uno).
 """
@@ -29,6 +31,8 @@ FUENTE = DIR_INFORME / "informe_fuente.md"
 PLANTILLA = DIR_INFORME / "plantilla_estilos.docx"
 SALIDA_DOCX = DIR_INFORME / "informe_PSMA00611.docx"
 SALIDA_PDF = DIR_INFORME / "informe_PSMA00611.pdf"
+DIR_AVANCE = RAIZ_PROYECTO / "reports" / "avance"
+FUENTE_AVANCE = DIR_AVANCE / "avance_fuente.md"
 NBSP = "\u00a0"
 
 
@@ -212,8 +216,8 @@ TABLAS = {
 
 
 # ---------------------------------------------------------- preparación del texto
-def preparar_markdown() -> tuple[str, list[str], list[str]]:
-    texto = FUENTE.read_text(encoding="utf-8")
+def preparar_markdown(fuente: Path = FUENTE) -> tuple[str, list[str], list[str]]:
+    texto = fuente.read_text(encoding="utf-8")
     for clave, funcion in TABLAS.items():
         texto = texto.replace(f"[[TABLA:{clave}]]", funcion())
     pendientes = re.findall(r"\[\[TABLA:(\w+)\]\]", texto)
@@ -439,34 +443,44 @@ def exportar_pdf_con_indice(docx: Path, pdf: Path) -> None:
 
 
 def _posprocesar_docx(ruta: Path) -> None:
-    """Asigna a los párrafos de las celdas el estilo «CompactTabla» (9 pt) sin afectar a las listas."""
+    """Asigna a las celdas el estilo «CompactTabla» (9 pt) sin afectar a las listas y separa el texto que sigue a una tabla."""
     with zipfile.ZipFile(ruta) as z:
         partes = {n: z.read(n) for n in z.namelist()}
     documento = partes["word/document.xml"].decode("utf-8")
     documento = re.sub(r"<w:tbl>.*?</w:tbl>",
                        lambda m: m.group(0).replace('<w:pStyle w:val="Compact" />', '<w:pStyle w:val="CompactTabla" />'),
                        documento, flags=re.S)
+    # El párrafo de texto que sigue directamente a una tabla quedaba pegado a ella: 8 pt de separación.
+    documento = documento.replace('</w:tbl><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr>',
+                                  '</w:tbl><w:p><w:pPr><w:pStyle w:val="BodyText" /><w:spacing w:before="160" /></w:pPr>')
     partes["word/document.xml"] = documento.encode("utf-8")
     with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
         for nombre, contenido in partes.items():
             z.writestr(nombre, contenido)
 
 
-def construir_informe(pdf: bool = True, eco=print) -> dict:
+def construir_informe(pdf: bool = True, eco=print, fuente: Path = FUENTE,
+                      salida_docx: Path = SALIDA_DOCX, salida_pdf: Path = SALIDA_PDF) -> dict:
     if not shutil.which("pandoc"):
         raise RuntimeError("pandoc no está instalado (https://pandoc.org/installing.html).")
-    texto, tablas, figuras = preparar_markdown()
+    texto, tablas, figuras = preparar_markdown(fuente)
     construir_plantilla()
-    intermedio = DIR_INFORME / "informe_generado.md"
+    intermedio = fuente.with_name(fuente.stem.replace("_fuente", "_generado") + ".md")
     intermedio.write_text(texto, encoding="utf-8")
-    subprocess.run(["pandoc", str(intermedio), "-f", "markdown", "-t", "docx", "-o", str(SALIDA_DOCX),
-                    f"--reference-doc={PLANTILLA}", f"--resource-path={DIR_INFORME}", "--metadata", "lang=es-PE"],
+    subprocess.run(["pandoc", str(intermedio), "-f", "markdown", "-t", "docx", "-o", str(salida_docx),
+                    f"--reference-doc={PLANTILLA}", f"--resource-path={fuente.parent}", "--metadata", "lang=es-PE"],
                    check=True)
-    _posprocesar_docx(SALIDA_DOCX)
-    eco(f"  {SALIDA_DOCX.relative_to(RAIZ_PROYECTO)}: {len(tablas)} tablas, {len(figuras)} figuras")
+    _posprocesar_docx(salida_docx)
+    eco(f"  {salida_docx.relative_to(RAIZ_PROYECTO)}: {len(tablas)} tablas, {len(figuras)} figuras")
     for i, f in enumerate(figuras, 1):
         eco(f"    Figura {i}: {f[:70]}")
     if pdf:
-        exportar_pdf_con_indice(SALIDA_DOCX, SALIDA_PDF)
-        eco(f"  {SALIDA_PDF.relative_to(RAIZ_PROYECTO)}")
-    return {"docx": str(SALIDA_DOCX), "pdf": str(SALIDA_PDF) if pdf else None, "tablas": tablas, "figuras": figuras}
+        exportar_pdf_con_indice(salida_docx, salida_pdf)
+        eco(f"  {salida_pdf.relative_to(RAIZ_PROYECTO)}")
+    return {"docx": str(salida_docx), "pdf": str(salida_pdf) if pdf else None, "tablas": tablas, "figuras": figuras}
+
+
+def construir_avance(pdf: bool = True, eco=print) -> dict:
+    """Documento de avance del PA, con la misma plantilla y el mismo proceso que el informe."""
+    return construir_informe(pdf, eco, FUENTE_AVANCE,
+                             DIR_AVANCE / "avance_PSMA00611.docx", DIR_AVANCE / "avance_PSMA00611.pdf")

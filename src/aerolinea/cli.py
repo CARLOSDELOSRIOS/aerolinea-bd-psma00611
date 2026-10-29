@@ -98,6 +98,11 @@ def cmd_informe(args) -> None:
     construir_informe(pdf=not args.sin_pdf)
 
 
+def cmd_avance(args) -> None:
+    from .informe import construir_avance
+    construir_avance(pdf=not args.sin_pdf)
+
+
 def cmd_demo(args) -> None:
     from .operaciones import demostracion
     demostracion(_cfg(args))
@@ -172,6 +177,9 @@ def construir_parser() -> argparse.ArgumentParser:
     s = sub.add_parser("informe", help="genera el informe académico (DOCX con pandoc y PDF con LibreOffice)")
     s.add_argument("--sin-pdf", action="store_true", help="solo DOCX")
     s.set_defaults(func=cmd_informe)
+    s = sub.add_parser("avance", help="genera el documento de avance del PA (DOCX y PDF)")
+    s.add_argument("--sin-pdf", action="store_true", help="solo DOCX")
+    s.set_defaults(func=cmd_avance)
 
     s = sub.add_parser("emitir-tiquete", help="invoca ven.usp_emitir_tiquete")
     for nombre in ("vuelo", "pasajero", "comprador", "localizacion"):

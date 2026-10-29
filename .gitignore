@@ -27,4 +27,5 @@ Thumbs.db
 
 # Artefactos intermedios del informe (se regeneran con python -m aerolinea informe)
 reports/informe/informe_generado.md
+reports/avance/avance_generado.md
 reports/informe/plantilla_estilos.docx

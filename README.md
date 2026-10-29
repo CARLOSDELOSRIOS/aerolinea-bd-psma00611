@@ -21,6 +21,7 @@ El contenedor **no** es la laptop ni Azure: demuestra que el código funciona so
 
 | Entregable | Archivo | Estado |
 |---|---|---|
+| Documento de avance del PA (18 páginas: estado, verificación, plan de trabajo, riesgos y consultas al docente) | [`reports/avance/avance_PSMA00611.docx`](reports/avance/avance_PSMA00611.docx) (editable) y [`.pdf`](reports/avance/avance_PSMA00611.pdf) | Generado; carátula `[POR COMPLETAR]` |
 | Informe académico (16 secciones, APA 7) | [`reports/informe/informe_PSMA00611.docx`](reports/informe/informe_PSMA00611.docx) (editable) y [`.pdf`](reports/informe/informe_PSMA00611.pdf) | Generado; carátula `[POR COMPLETAR]` |
 | Presentación (14 diapositivas, 20 minutos, notas del expositor) | [`slides/presentacion_PSMA00611.pptx`](slides/presentacion_PSMA00611.pptx) | Generada |
 | Guion, demostración, guía de estudio y 24 preguntas de defensa | [`docs/defensa/`](docs/defensa/) | Preparados; la asignación real de exposiciones es del equipo |
@@ -86,6 +87,7 @@ El paso 5 **elimina y recrea la base local** `AerolineaDB` (por eso exige `--con
 | `consultas [--id Q01 …] [--param nombre=valor …] [--salida CARPETA]` | Ejecuta el catálogo Q01–Q20 con parámetros enlazados y exporta CSV |
 | `graficos` | Genera las figuras F01–F08 a partir de los CSV |
 | `documentar` | Diccionario de datos, `sql/13_descripciones.sql` y diagramas físicos desde el catálogo |
+| `informe`, `avance` | Informe final y documento de avance en DOCX y PDF |
 | `demo` | Demostración: atomicidad ante un error y flujo completo emitir → pagar en dos partes → cancelar (se revierte) |
 | `emitir-tiquete`, `registrar-pago`, `cancelar-tiquete` | Invocan los procedimientos almacenados con parámetros |
 | `reproducir --confirmar-destruccion` | Secuencia completa de los pasos anteriores |
@@ -99,6 +101,7 @@ No hacen falta para usar la base de datos; sirven para volver a producir los doc
 | Herramienta | Para qué | Comando |
 |---|---|---|
 | pandoc 3.x y LibreOffice | Informe DOCX y PDF con índice actualizado (`reports/informe/informe_fuente.md` → `.docx` → `.pdf`) | `python -m aerolinea informe` (`--sin-pdf` si no hay LibreOffice) |
+| pandoc 3.x y LibreOffice | Documento de avance (`reports/avance/avance_fuente.md`), con la misma plantilla | `python -m aerolinea avance` |
 | Graphviz (`dot`) | Exportar los diagramas `.mmd` a PNG, SVG y PDF | `python -m aerolinea documentar` (si falta, intenta con `mmdc` de Mermaid CLI) |
 | Node.js 18+ | Presentación con `pptxgenjs` (versiones fijadas en `slides/package-lock.json`) | `cd slides; npm ci; node construir_presentacion.js` |
 

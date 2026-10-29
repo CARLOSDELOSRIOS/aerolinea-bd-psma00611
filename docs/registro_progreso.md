@@ -16,6 +16,7 @@ Este registro describe el trabajo de preparación hecho en el entorno de desarro
 | 7 · Azure | Guía, script de creación (simulación por defecto), verificación de solo lectura, configuración segura | **No ejecutado en Azure** | `docs/05_azure/guia_azure.md` |
 | 8 · Informe | DOCX editable y PDF (A4, 16 secciones, 21 tablas, 15 figuras, índice actualizado) | Generado en el contenedor | `reports/informe/` |
 | 9 · Presentación y defensa | 14 diapositivas con notas (20:00), guion, demostración, guía de estudio, 24 preguntas | Generado y validado en el contenedor | `slides/`, `docs/defensa/` |
+| 10 · Documento de avance del PA | DOCX y PDF de 18 páginas: estado por componente, verificación, plan de trabajo propuesto, riesgos y consultas al docente | Generado en el contenedor | `reports/avance/` |
 
 ## 2. Pendientes efectivos
 
