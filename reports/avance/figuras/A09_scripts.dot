@@ -1,0 +1,25 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.35, ranksep=0.45, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+ s00 [label=<<B>00</B><BR/><FONT POINT-SIZE="9.5">Verificar<BR/>el entorno</FONT>>, width=1.6, ];
+ s01 [label=<<B>01</B><BR/><FONT POINT-SIZE="9.5">Crear la base<BR/>(solo local)</FONT>>, width=1.6, ];
+ s02 [label=<<B>02–04</B><BR/><FONT POINT-SIZE="9.5">Tablas, claves<BR/>e índices</FONT>>, width=1.6, ];
+ s05 [label=<<B>05</B><BR/><FONT POINT-SIZE="9.5">Funciones<BR/>y triggers</FONT>>, width=1.6, ];
+ {rank=same; s00 -> s01 -> s02 -> s05;}
+ s06 [label=<<B>06–07</B><BR/><FONT POINT-SIZE="9.5">Vistas y<BR/>procedimientos</FONT>>, width=1.6, ];
+ s08 [label=<<B>08</B><BR/><FONT POINT-SIZE="9.5">Seguridad</FONT>>, width=1.6, ];
+ s09 [label=<<B>09</B><BR/><FONT POINT-SIZE="9.5">Datos de<BR/>referencia</FONT>>, width=1.6, ];
+ s10 [label=<<B>10</B><BR/><FONT POINT-SIZE="9.5">Área de carga</FONT>>, width=1.6, ];
+ {rank=same; s06 -> s08 -> s09 -> s10;}
+ py [label=<<B>Python</B><BR/><FONT POINT-SIZE="9.5">Datos sintéticos<BR/>(semilla fija)</FONT>>, width=1.6, fillcolor="#FFF4D6", color="#E3C77A"];
+ s12 [label=<<B>12–13</B><BR/><FONT POINT-SIZE="9.5">Pruebas y<BR/>descripciones</FONT>>, width=1.6, ];
+ q [label=<<B>Q01–Q20</B><BR/><FONT POINT-SIZE="9.5">Consultas</FONT>>, width=1.6, fillcolor="#E7F6E7", color="#9FD49F"];
+ {rank=same; py -> s12 -> q;}
+ s05 -> s06 [constraint=false]; s10 -> py [constraint=false]; s00 -> s06 [style=invis]; s06 -> py [style=invis];
+ subgraph cluster_x { label=<<B>Fuera del despliegue normal</B>>; fontcolor="#1F3864"; style="rounded,dashed"; color="#9EB6D8";
+  s11 [label=<<B>11</B><BR/><FONT POINT-SIZE="9.5">Ejemplos de DML<BR/>(simulan por defecto)</FONT>>, fillcolor="white", style="rounded,dashed,filled", width=1.6];
+  s99 [label=<<B>99 · DESTRUCTIVO</B><BR/><FONT POINT-SIZE="9.5">Elimina la base local<BR/>exige confirmación</FONT>>, fillcolor="#FBE9E9", color="#d03b3b", style="rounded,dashed,filled", width=1.6];
+  {rank=same; s11; s99;} s11 -> s99 [style=invis]; }
+ py -> s11 [style=invis];
+}

@@ -1,0 +1,16 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.3, ranksep=0.5, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+
+ ruta [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Ruta  JFK → LAX</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Par origen-destino (ops.ruta)</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Nueva York → Los Ángeles</FONT></TD></TR></TABLE>>];
+ prog [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Programación  XX101</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Sale 07:00, hora de Nueva York</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Todos los días · 370 min</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Vigente desde el 1-sep-2026</FONT></TD></TR></TABLE>>];
+ v1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Vuelo XX101</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">2-nov-2026</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">avión, tripulación, estado</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ v2 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Vuelo XX101</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">3-nov-2026</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ v3 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Vuelo XX101</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">4-nov-2026</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ vn [label="…", shape=plaintext, style=""];
+ ruta -> prog [label=" se opera con"];
+ prog -> v1; prog -> v2 [label=" genera (ops.usp_generar_vuelos)"]; prog -> v3; prog -> vn [style=dashed];
+ nota [shape=note, fillcolor="#FFFDF5", color="#D9C9A3", label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#7A5C00">Un horario puede cambiar sin tocar el pasado</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">XX703 ATL → MIA sale a las 16:00 hasta el 30-nov-2026</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">y a las 16:30 desde el 1-dic-2026: dos vigencias</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">del mismo número de vuelo.</FONT></TD></TR></TABLE>>];
+ {rank=same; prog; nota;} prog -> nota [style=dotted, arrowhead=none];
+}

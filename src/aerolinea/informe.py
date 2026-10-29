@@ -21,6 +21,7 @@ import subprocess
 import tempfile
 import time
 import zipfile
+from datetime import datetime
 from pathlib import Path
 
 from .config import RAIZ_PROYECTO
@@ -34,6 +35,8 @@ SALIDA_PDF = DIR_INFORME / "informe_PSMA00611.pdf"
 DIR_AVANCE = RAIZ_PROYECTO / "reports" / "avance"
 FUENTE_AVANCE = DIR_AVANCE / "avance_fuente.md"
 NBSP = "\u00a0"
+MESES = {1: "enero", 2: "febrero", 3: "marzo", 4: "abril", 5: "mayo", 6: "junio", 7: "julio", 8: "agosto",
+         9: "septiembre", 10: "octubre", 11: "noviembre", 12: "diciembre"}
 
 
 # --------------------------------------------------------------------- formatos
@@ -215,12 +218,81 @@ TABLAS = {
 }
 
 
+# ------------------------------------------------- bloques del documento de avance
+def _xml(texto: str) -> str:
+    return texto.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+
+def _bloque_prompts() -> str:
+    """Prompts literales (docs/equipo/prompts.json) como párrafos con estilo «Prompt», sin pasar por Markdown."""
+    datos = json.loads((RAIZ_PROYECTO / "docs" / "equipo" / "prompts.json").read_text(encoding="utf-8"))
+    partes = []
+    for r in datos["registros"]:
+        fecha = datetime.strptime(r["fecha_utc"], "%Y-%m-%d %H:%M")
+        partes.append(f"### {r['id']} · {r['tipo']} · {fecha.day} de {MESES[fecha.month]} de {fecha.year}, {fecha:%H:%M} UTC\n")
+        datos_r = []
+        if r.get("pregunta"):
+            datos_r.append(f"**Pregunta del asistente:** {r['pregunta']}")
+        if r.get("adjuntos"):
+            datos_r.append(f"**Adjuntos:** {r['adjuntos']}")
+        datos_r.append(f"**Resultado:** {r['resultado']}")
+        partes.append("\n\n".join(datos_r) + "\n")
+        parrafos = []
+        for bloque in re.split(r"\n\s*\n", r["texto"].strip()):
+            lineas = [_xml(l.rstrip()) for l in bloque.split("\n")]
+            runs = '<w:r><w:br /></w:r>'.join(f'<w:r><w:t xml:space="preserve">{l}</w:t></w:r>' for l in lineas)
+            parrafos.append(f'<w:p><w:pPr><w:pStyle w:val="Prompt" /></w:pPr>{runs}</w:p>')
+        partes.append("```{=openxml}\n" + "\n".join(parrafos) + "\n```\n")
+    return "\n".join(partes)
+
+
+def _bloque_arbol() -> str:
+    """Árbol de archivos del repositorio; los formatos de un mismo archivo se agrupan entre llaves."""
+    from .figuras_avance import archivos_proyecto
+    arbol: dict = {}
+    for ruta in archivos_proyecto():
+        nodo = arbol
+        *carpetas, archivo = ruta.split("/")
+        for c in carpetas:
+            nodo = nodo.setdefault(c + "/", {})
+        nodo.setdefault("", []).append(archivo)
+    lineas = ["aerolinea-bd-psma00611/"]
+
+    def nombres(archivos: list[str]) -> list[str]:
+        grupos: dict[str, list[str]] = {}
+        for a in archivos:
+            base, punto, ext = a.rpartition(".")
+            clave = base if punto and base else a
+            grupos.setdefault(clave, []).append(ext if punto and base else "")
+        salida = []
+        for base, exts in grupos.items():
+            exts = sorted(e for e in exts if e)
+            salida.append(f"{base}.{exts[0]}" if len(exts) == 1 else f"{base}.{{{','.join(exts)}}}" if exts else base)
+        return sorted(salida, key=str.lower)
+
+    def recorrer(nodo: dict, prefijo: str) -> None:
+        elementos = [(c, True) for c in sorted(k for k in nodo if k)] + [(n, False) for n in nombres(nodo.get("", []))]
+        for i, (nombre, es_carpeta) in enumerate(elementos):
+            ultimo = i == len(elementos) - 1
+            lineas.append(f"{prefijo}{'└── ' if ultimo else '├── '}{nombre}")
+            if es_carpeta:
+                recorrer(nodo[nombre], prefijo + ("    " if ultimo else "│   "))
+
+    recorrer(arbol, "")
+    return "```text\n" + "\n".join(lineas) + "\n```\n"
+
+
+BLOQUES = {"PROMPTS": _bloque_prompts, "ARBOL": _bloque_arbol}
+
+
 # ---------------------------------------------------------- preparación del texto
 def preparar_markdown(fuente: Path = FUENTE) -> tuple[str, list[str], list[str]]:
     texto = fuente.read_text(encoding="utf-8")
-    for clave, funcion in TABLAS.items():
-        texto = texto.replace(f"[[TABLA:{clave}]]", funcion())
-    pendientes = re.findall(r"\[\[TABLA:(\w+)\]\]", texto)
+    for marcador, funciones in (("TABLA", TABLAS), ("BLOQUE", BLOQUES)):
+        for clave, funcion in funciones.items():
+            if f"[[{marcador}:{clave}]]" in texto:
+                texto = texto.replace(f"[[{marcador}:{clave}]]", funcion())
+    pendientes = re.findall(r"\[\[(?:TABLA|BLOQUE):(\w+)\]\]", texto)
     if pendientes:
         raise ValueError(f"Marcadores de tabla sin definir: {pendientes}")
     tablas, figuras = [], []
@@ -327,6 +399,16 @@ def construir_plantilla(destino: Path = PLANTILLA) -> Path:
                         '<w:b /><w:bCs /><w:sz w:val="22" /><w:szCs w:val="22" />'),
         _estilo_parrafo("TOC2", "toc 2", '<w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9060" /></w:tabs><w:spacing w:before="0" w:after="0" /><w:ind w:left="284" />',
                         '<w:sz w:val="20" /><w:szCs w:val="20" />'),
+        # Nivel 3 del índice: lo usan los índices de figuras y de tablas (campos TOC \\t "… Caption,3").
+        _estilo_parrafo("TOC3", "toc 3", '<w:tabs><w:tab w:val="right" w:leader="dot" w:pos="9060" /></w:tabs><w:spacing w:before="0" w:after="60" />',
+                        '<w:sz w:val="20" /><w:szCs w:val="20" />'),
+        _estilo_parrafo("FuenteFigura", "Fuente Figura", '<w:spacing w:before="0" w:after="240" w:line="240" w:lineRule="auto" /><w:jc w:val="center" />',
+                        '<w:color w:val="52514E" /><w:sz w:val="16" /><w:szCs w:val="16" />'),
+        # Texto literal de los prompts (anexos): letra menor, filete izquierdo y fondo suave.
+        _estilo_parrafo("Prompt", "Prompt", '<w:pBdr><w:left w:val="single" w:sz="18" w:space="8" w:color="256ABF" /></w:pBdr>'
+                        '<w:shd w:val="clear" w:color="auto" w:fill="F3F6FB" /><w:spacing w:before="0" w:after="100" w:line="260" w:lineRule="auto" />'
+                        '<w:ind w:left="340" w:right="113" />',
+                        '<w:color w:val="262626" /><w:sz w:val="19" /><w:szCs w:val="19" />'),
     ])
     estilos = estilos.replace("</w:styles>", nuevos + "</w:styles>")
     partes["word/styles.xml"] = estilos.encode("utf-8")
@@ -386,8 +468,11 @@ def _importar_uno():
     return None
 
 
-def exportar_pdf_con_indice(docx: Path, pdf: Path) -> None:
-    """Abre el DOCX con LibreOffice (UNO), actualiza el índice y exporta a PDF."""
+def exportar_pdf_con_indice(docx: Path, pdf: Path) -> list[str]:
+    """Abre el DOCX con LibreOffice (UNO), actualiza los índices y exporta a PDF.
+
+    Devuelve el texto de cada índice ya actualizado (una entrada por línea, «título<TAB>página»),
+    para guardarlo también dentro del DOCX."""
     programa = shutil.which("soffice") or shutil.which("libreoffice")
     if not programa:
         raise RuntimeError("LibreOffice no está instalado: abra el DOCX en Word, actualice el índice y guárdelo como PDF.")
@@ -399,7 +484,7 @@ def exportar_pdf_con_indice(docx: Path, pdf: Path) -> None:
         (pdf.parent / (docx.stem + ".pdf")).replace(pdf)
         print("  Aviso: sin el módulo 'uno' el índice del PDF no se actualiza; abra el DOCX en Word, "
               "actualice los campos (F9) y guarde como PDF.")
-        return
+        return []
     from com.sun.star.beans import PropertyValue
 
     def prop(nombre, valor):
@@ -431,8 +516,10 @@ def exportar_pdf_con_indice(docx: Path, pdf: Path) -> None:
         doc.refresh()
         for i in range(indices.getCount()):      # segunda pasada: los números de página ya incluyen el índice
             indices.getByIndex(i).update()
+        textos = [indices.getByIndex(i).getAnchor().getString() for i in range(indices.getCount())]
         doc.storeToURL(uno.systemPathToFileUrl(str(pdf.resolve())), (prop("FilterName", "writer_pdf_Export"),))
         doc.close(True)
+        return textos
     finally:
         try:
             escritorio.terminate()
@@ -450,9 +537,65 @@ def _posprocesar_docx(ruta: Path) -> None:
     documento = re.sub(r"<w:tbl>.*?</w:tbl>",
                        lambda m: m.group(0).replace('<w:pStyle w:val="Compact" />', '<w:pStyle w:val="CompactTabla" />'),
                        documento, flags=re.S)
+    # Un pie de figura seguido de su fuente: la fuente va pegada al pie y en la misma página.
+    documento = re.sub(r'<w:pStyle w:val="ImageCaption" />(</w:pPr>(?:(?!</w:p>).)*</w:p>)(?=<w:p><w:pPr><w:pStyle w:val="FuenteFigura" />)',
+                       r'<w:pStyle w:val="ImageCaption" /><w:keepNext /><w:spacing w:after="20" />\1', documento, flags=re.S)
     # El párrafo de texto que sigue directamente a una tabla quedaba pegado a ella: 8 pt de separación.
     documento = documento.replace('</w:tbl><w:p><w:pPr><w:pStyle w:val="BodyText" /></w:pPr>',
                                   '</w:tbl><w:p><w:pPr><w:pStyle w:val="BodyText" /><w:spacing w:before="160" /></w:pPr>')
+    partes["word/document.xml"] = documento.encode("utf-8")
+    # Pandoc declara cada imagen con un «Override»; se añade además la extensión por defecto (más compatible).
+    tipos = partes["[Content_Types].xml"].decode("utf-8")
+    if 'Extension="png"' not in tipos:
+        tipos = tipos.replace("<Default ", '<Default Extension="png" ContentType="image/png" /><Default ', 1)
+        partes["[Content_Types].xml"] = tipos.encode("utf-8")
+    with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
+        for nombre, contenido in partes.items():
+            z.writestr(nombre, contenido)
+
+
+def _rellenar_indices(ruta: Path, textos: list[str], niveles: dict[str, int]) -> None:
+    """Guarda en el DOCX las entradas de los índices calculadas por LibreOffice.
+
+    Los campos TOC se conservan (Word puede actualizarlos con F9), pero ya traen su resultado:
+    el índice se ve al abrir el archivo en cualquier visor, sin «actualizar campos»."""
+    entradas = {}
+    for texto in textos:
+        lineas = [l.rsplit("\t", 1) for l in texto.splitlines() if "\t" in l]
+        if not lineas:
+            continue
+        clase = ("figuras" if lineas[0][0].startswith("Figura ") else
+                 "tablas" if lineas[0][0].startswith("Tabla ") else "contenido")
+        entradas.setdefault(clase, lineas)
+
+    def esc(t: str) -> str:
+        return t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+
+    def campo(m: re.Match) -> str:
+        instr = m.group("instr")
+        clase = "figuras" if "Image Caption" in instr else "tablas" if "Table Caption" in instr else "contenido"
+        lineas = entradas.get(clase)
+        if not lineas:
+            return m.group(0)
+        inicio = ('<w:r><w:fldChar w:fldCharType="begin" /></w:r>'
+                  f'<w:r><w:instrText xml:space="preserve"> TOC {esc(instr.strip())} </w:instrText></w:r>'
+                  '<w:r><w:fldChar w:fldCharType="separate" /></w:r>')
+        fin = '<w:r><w:fldChar w:fldCharType="end" /></w:r>'
+        parrafos = []
+        for i, (titulo, pagina) in enumerate(lineas):
+            estilo = "TOC3" if clase != "contenido" else f"TOC{min(niveles.get(titulo.strip(), 1), 2)}"
+            parrafos.append(f'<w:p><w:pPr><w:pStyle w:val="{estilo}" /></w:pPr>'
+                            + (inicio if i == 0 else "")
+                            + f'<w:r><w:t xml:space="preserve">{esc(titulo.strip())}</w:t></w:r><w:r><w:tab /></w:r>'
+                            + f'<w:r><w:t>{esc(pagina.strip())}</w:t></w:r>'
+                            + (fin if i == len(lineas) - 1 else "") + "</w:p>")
+        return "".join(parrafos)
+
+    with zipfile.ZipFile(ruta) as z:
+        partes = {n: z.read(n) for n in z.namelist()}
+    documento = partes["word/document.xml"].decode("utf-8")
+    documento = re.sub(r'<w:p>(?:(?!<w:p>).)*?<w:instrText xml:space="preserve">\s*TOC (?P<instr>[^<]*)</w:instrText>(?:(?!<w:p>).)*?</w:p>',
+                       campo, documento, flags=re.S)
     partes["word/document.xml"] = documento.encode("utf-8")
     with zipfile.ZipFile(ruta, "w", zipfile.ZIP_DEFLATED) as z:
         for nombre, contenido in partes.items():
@@ -475,12 +618,18 @@ def construir_informe(pdf: bool = True, eco=print, fuente: Path = FUENTE,
     for i, f in enumerate(figuras, 1):
         eco(f"    Figura {i}: {f[:70]}")
     if pdf:
-        exportar_pdf_con_indice(salida_docx, salida_pdf)
+        textos = exportar_pdf_con_indice(salida_docx, salida_pdf)
         eco(f"  {salida_pdf.relative_to(RAIZ_PROYECTO)}")
+        if textos:
+            niveles = {m.group(2).strip(): len(m.group(1)) for m in re.finditer(r"^(#{1,2}) (.+)$", texto, flags=re.M)}
+            _rellenar_indices(salida_docx, textos, niveles)
     return {"docx": str(salida_docx), "pdf": str(salida_pdf) if pdf else None, "tablas": tablas, "figuras": figuras}
 
 
 def construir_avance(pdf: bool = True, eco=print) -> dict:
     """Documento de avance del PA, con la misma plantilla y el mismo proceso que el informe."""
+    from .figuras_avance import archivos_proyecto, generar_todas
+    figuras = generar_todas(archivos_proyecto())
+    eco(f"  {len(figuras)} diagramas en {figuras[0].parent.relative_to(RAIZ_PROYECTO)}")
     return construir_informe(pdf, eco, FUENTE_AVANCE,
                              DIR_AVANCE / "avance_PSMA00611.docx", DIR_AVANCE / "avance_PSMA00611.pdf")

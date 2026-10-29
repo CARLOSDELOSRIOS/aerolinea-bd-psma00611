@@ -1,0 +1,14 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.3, ranksep=0.5, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+
+ persona [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">PERSONA  (ven.persona)</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Toda persona que compra o viaja</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Nombre, documento, contacto</FONT></TD></TR></TABLE>>, fillcolor="white", color="#256ABF", penwidth=2];
+ comprador [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Comprador</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Paga la compra (ven.compra)</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Puede no tener cuenta</FONT></TD></TR></TABLE>>];
+ pasajero [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Pasajero</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Viaja con un tiquete (ven.tiquete)</FONT></TD></TR></TABLE>>];
+ cliente [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Cliente registrado  (ven.cliente)</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Persona con cuenta: n.º de viajero,</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">correo de acceso, nivel de lealtad</FONT></TD></TR></TABLE>>];
+ persona -> comprador [label=" rol"]; persona -> pasajero [label=" rol"]; persona -> cliente [label=" subtipo 1 : 0..1"];
+ ej [shape=note, fillcolor="#FFFDF5", color="#D9C9A3", label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#7A5C00">Ejemplo ilustrativo</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Ana compra dos tiquetes sin registrarse: uno para ella y otro para su hijo.</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Ana = persona + compradora + pasajera.  Su hijo = persona + pasajero.</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Si Ana crea una cuenta, además es cliente registrada; no se duplica nada.</FONT></TD></TR></TABLE>>];
+ {rank=same; comprador; pasajero; cliente;}
+ pasajero -> ej [style=invis];
+}

@@ -1,0 +1,26 @@
+digraph G {
+ graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.15, ranksep=0.7, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+ tr [shape=plaintext, style="", label=<<B><FONT COLOR="#1F3864">Riesgo</FONT></B>>];
+ tm [shape=plaintext, style="", label=<<B><FONT COLOR="#1F3864">Qué haremos</FONT></B>>];
+ tr -> tm [style=invis];
+ r0 [label="Sin suscripción de Azure a tiempo", fillcolor="#FBE9E9", color="#E5B5B5", width=2.6];
+ m0 [label="Pedirla en la primera semana;\nguía y scripts ya listos", fillcolor="#E7F6E7", color="#9FD49F", width=3.3];
+ r0 -> m0;
+ r1 [label="Diferencias de versión\nen las laptops", fillcolor="#FBE9E9", color="#E5B5B5", width=2.6];
+ m1 [label="Script de verificación de solo\nlectura antes de reconstruir", fillcolor="#E7F6E7", color="#9FD49F", width=3.3];
+ r1 -> m1;
+ r2 [label="Cambio de fechas del curso", fillcolor="#FBE9E9", color="#E5B5B5", width=2.6];
+ m2 [label="Avance adelantado;\nconsulta al docente", fillcolor="#E7F6E7", color="#9FD49F", width=3.3];
+ r2 -> m2;
+ r3 [label="Aportes que no se ven\nen GitHub", fillcolor="#FBE9E9", color="#E5B5B5", width=2.6];
+ m3 [label="Cada integrante sube sus\ncambios con su cuenta", fillcolor="#E7F6E7", color="#9FD49F", width=3.3];
+ r3 -> m3;
+ r4 [label="Costos inesperados\nen la nube", fillcolor="#FBE9E9", color="#E5B5B5", width=2.6];
+ m4 [label="Oferta gratuita con pausa automática\ny firewall limitado a una IP", fillcolor="#E7F6E7", color="#9FD49F", width=3.3];
+ r4 -> m4;
+ {rank=same; tr; r0; r1; r2; r3; r4;}
+ {rank=same; tm; m0; m1; m2; m3; m4;}
+ tr -> r0 -> r1 -> r2 -> r3 -> r4 [style=invis]; tm -> m0 -> m1 -> m2 -> m3 -> m4 [style=invis];
+}

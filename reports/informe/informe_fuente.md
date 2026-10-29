@@ -19,13 +19,19 @@ Producto Académico Colaborativo
 :::
 
 ::: {custom-style="Portada Datos"}
-Integrantes que participaron activamente: [POR COMPLETAR]
+Integrantes que participaron activamente:
 
-Docente: [POR COMPLETAR]
+Carlos Veliz de Villa Aguirre
+
+Elias Sifuentes Valles
+
+Carlos De los Ríos De la Roca
+
+Docentes: Walter Alejandro Silva Sotillo y Max Leoncio Mucha Morales
 
 Sección / NRC: [POR COMPLETAR]
 
-Líder del equipo (entrega en el aula virtual): [POR COMPLETAR]
+Líder del equipo (entrega en el aula virtual): Carlos De los Ríos De la Roca
 
 Lugar y fecha: [POR COMPLETAR], noviembre de 2026
 :::
@@ -35,7 +41,7 @@ Lugar y fecha: [POR COMPLETAR], noviembre de 2026
 ```
 
 ::: {custom-style="Titulo Indice"}
-Contenido
+Índice
 :::
 
 ```{=openxml}

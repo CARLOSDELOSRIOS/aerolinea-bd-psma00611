@@ -16,7 +16,7 @@ Este registro describe el trabajo de preparación hecho en el entorno de desarro
 | 7 · Azure | Guía, script de creación (simulación por defecto), verificación de solo lectura, configuración segura | **No ejecutado en Azure** | `docs/05_azure/guia_azure.md` |
 | 8 · Informe | DOCX editable y PDF (A4, 16 secciones, 21 tablas, 15 figuras, índice actualizado) | Generado en el contenedor | `reports/informe/` |
 | 9 · Presentación y defensa | 14 diapositivas con notas (20:00), guion, demostración, guía de estudio, 24 preguntas | Generado y validado en el contenedor | `slides/`, `docs/defensa/` |
-| 10 · Documento de avance del PA | DOCX y PDF de 18 páginas: estado por componente, verificación, plan de trabajo propuesto, riesgos y consultas al docente | Generado en el contenedor | `reports/avance/` |
+| 10 · Documento de avance del PA | DOCX y PDF con índices, 19 diagramas y figuras, sección de trabajo en equipo, plan, riesgos, preguntas al docente, árbol de archivos y prompts literales | Generado en el contenedor | `reports/avance/`, `docs/equipo/prompts.json` |
 
 ## 2. Pendientes efectivos
 
@@ -24,8 +24,8 @@ Solo el equipo puede resolverlos, porque requieren identidades, cuentas, equipos
 
 | # | Pendiente | Quién | Requiere | Dónde se refleja al terminar |
 |---|---|---|---|---|
-| P1 | Completar carátula: integrantes activos, docente, sección/NRC, líder, lugar y fecha | Equipo | Datos reales | `reports/informe/informe_fuente.md` (líneas 22-30), `slides/construir_presentacion.js` (autor y portada), `README.md`; luego `python -m aerolinea informe` y `node construir_presentacion.js` |
-| P2 | Declarar el uso de herramientas de IA según las normas de la universidad y del docente | Equipo | Norma aplicable | Informe, Anexo E (texto preparado para completar) |
+| P1 | Completar en las carátulas la sección/NRC y el lugar y la fecha (integrantes, docentes y líder ya están) | Equipo | Datos reales | `reports/informe/informe_fuente.md`, `reports/avance/avance_fuente.md`; luego `python -m aerolinea informe` y `python -m aerolinea avance` |
+| P2 | Confirmar o ajustar el borrador de declaración de uso de IA (anexo C del avance) según las normas de la universidad y de los docentes | Equipo | Norma aplicable | Avance, anexo C; informe, anexo E |
 | P3 | Ejecutar en la laptop Windows: `verificar_entorno.ps1` y `reproducir --confirmar-destruccion` | Equipo | Laptop con SQL Server, SSMS, Python y ODBC | `evidence/laptop_windows/`; columna «Laptop» de `docs/06_pruebas/plan_pruebas.md` |
 | P4 | Comparar los CSV de la laptop con `data/sintetico/manifiesto.json` (SHA-256) antes de citar cifras como obtenidas en la laptop | Equipo | P3 | `README.md`, informe §10-11 |
 | P5 | Desplegar en Azure SQL Database | Equipo | Suscripción, autorización expresa para crear recursos, administrador Entra (`docs/05_azure/guia_azure.md`, campo «Quién administra») | `evidence/azure/` según la lista de evidencias de la guía; R01 en la matriz |

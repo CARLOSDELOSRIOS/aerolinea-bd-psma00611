@@ -1,0 +1,17 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.35, ranksep=0.45, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+ env [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">.env</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Configuración local</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">sin contraseñas (Windows)</FONT></TD></TR></TABLE>>, shape=note, fillcolor="#FFFDF5", color="#D9C9A3"];
+ p0 [label=<<B><FONT FACE="Liberation Mono">verificar-conexion</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">servidor, versión, cifrado</FONT>>, width=2.2];
+ p1 [label=<<B><FONT FACE="Liberation Mono">desplegar</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">scripts 01 a 13</FONT>>, width=2.2];
+ p2 [label=<<B><FONT FACE="Liberation Mono">cargar-datos</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">≈1,19 M filas, una transacción</FONT>>, width=2.2];
+ {rank=same; p0 -> p1 -> p2;}
+ p3 [label=<<B><FONT FACE="Liberation Mono">pruebas</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">PR-01…23 y PC-01…04</FONT>>, width=2.2];
+ p4 [label=<<B><FONT FACE="Liberation Mono">consultas</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">Q01–Q20 → CSV</FONT>>, width=2.2];
+ p5 [label=<<B><FONT FACE="Liberation Mono">graficos</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">figuras F01–F08</FONT>>, width=2.2];
+ {rank=same; p3 -> p4 -> p5;}
+ p2 -> p3 [constraint=false]; p0 -> p3 [style=invis]; env -> p0 [style=dashed];
+ sal [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Resultados</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">evidence/  ·  reports/resultados/</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">reports/figuras/  ·  informe y avance</FONT></TD></TR></TABLE>>, fillcolor="#E7F6E7", color="#9FD49F"]; p5 -> sal [style=dashed]; p3 -> sal [style=invis];
+ rep [shape=note, fillcolor="white", label=<<B><FONT FACE="Liberation Mono">python -m aerolinea reproducir</FONT></B><BR/><FONT POINT-SIZE="9.5" COLOR="#52514e">ejecuta todos los pasos con un solo comando</FONT>>]; {rank=same; env; rep;} env -> rep [style=invis];
+}

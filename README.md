@@ -1,7 +1,7 @@
 # Base de datos de una aerolínea comercial (PSMA00611)
 
 Producto Académico Colaborativo del curso **Gestión de datos y bases de datos con SQL** (PSMA00611), Maestría en Ciencia de Datos, Escuela de Posgrado de la Universidad Continental.
-Equipo: [POR COMPLETAR] · Docente: [POR COMPLETAR] · Sección/NRC: [POR COMPLETAR]
+Equipo: Carlos Veliz de Villa Aguirre, Elias Sifuentes Valles y Carlos De los Ríos De la Roca (líder) · Docentes: Walter Alejandro Silva Sotillo y Max Leoncio Mucha Morales · Sección/NRC: [POR COMPLETAR]
 
 Base de datos en SQL Server / Azure SQL Database para una aerolínea que opera en Estados Unidos: clientes registrados y no registrados, empleados y tripulación, rutas con horario semanal, vuelos fechados generados desde la programación, localizaciones físicas y web, aviones con mapa de asientos, cabinas VIP y económica con tarifas versionadas por ruta, tiquetes, pagos parciales, descuentos, cancelaciones y reembolsos. Incluye una aplicación de consola en Python para desplegar, cargar datos sintéticos reproducibles, ejecutar consultas parametrizadas, exportar CSV, generar gráficos y correr las pruebas.
 
@@ -21,7 +21,7 @@ El contenedor **no** es la laptop ni Azure: demuestra que el código funciona so
 
 | Entregable | Archivo | Estado |
 |---|---|---|
-| Documento de avance del PA (18 páginas: estado, verificación, plan de trabajo, riesgos y consultas al docente) | [`reports/avance/avance_PSMA00611.docx`](reports/avance/avance_PSMA00611.docx) (editable) y [`.pdf`](reports/avance/avance_PSMA00611.pdf) | Generado; carátula `[POR COMPLETAR]` |
+| Documento de avance del PA (índices, 19 diagramas y figuras, trabajo en equipo, plan, riesgos, árbol de archivos y prompts literales en anexos) | [`reports/avance/avance_PSMA00611.docx`](reports/avance/avance_PSMA00611.docx) (editable) y [`.pdf`](reports/avance/avance_PSMA00611.pdf) | Generado; carátula `[POR COMPLETAR]` |
 | Informe académico (16 secciones, APA 7) | [`reports/informe/informe_PSMA00611.docx`](reports/informe/informe_PSMA00611.docx) (editable) y [`.pdf`](reports/informe/informe_PSMA00611.pdf) | Generado; carátula `[POR COMPLETAR]` |
 | Presentación (14 diapositivas, 20 minutos, notas del expositor) | [`slides/presentacion_PSMA00611.pptx`](slides/presentacion_PSMA00611.pptx) | Generada |
 | Guion, demostración, guía de estudio y 24 preguntas de defensa | [`docs/defensa/`](docs/defensa/) | Preparados; la asignación real de exposiciones es del equipo |
@@ -167,4 +167,4 @@ Publicado en <https://github.com/CARLOSDELOSRIOS/aerolinea-bd-psma00611> (públi
 
 ## Pendientes del equipo
 
-Ver la lista completa en [`docs/registro_progreso.md`](docs/registro_progreso.md). Los principales: datos de carátula `[POR COMPLETAR]`, ejecución en la laptop, despliegue en Azure con autorización, invitación de los integrantes al repositorio de GitHub, confirmación del número mínimo de páginas del informe y de la semana de entrega del avance (discrepancias D1, D2 y D12 en [`docs/00_fuentes/revision_fuentes.md`](docs/00_fuentes/revision_fuentes.md)).
+Ver la lista completa en [`docs/registro_progreso.md`](docs/registro_progreso.md). Los principales: sección/NRC y lugar y fecha en las carátulas, ejecución en la laptop, despliegue en Azure con autorización, invitación de los integrantes al repositorio de GitHub, confirmación del número mínimo de páginas del informe y de la semana de entrega del avance (discrepancias D1, D2 y D12 en [`docs/00_fuentes/revision_fuentes.md`](docs/00_fuentes/revision_fuentes.md)).

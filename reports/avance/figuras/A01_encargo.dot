@@ -1,0 +1,16 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.3, ranksep=0.45, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+
+ pac [label=<<B><FONT COLOR="white">Producto Académico Colaborativo</FONT></B><BR/><FONT COLOR="white" POINT-SIZE="9.5">Base de datos en la nube para una aerolínea</FONT>>, fillcolor="#256ABF", color="#256ABF"];
+ av [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Avance · 20 %</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Registrarse en GitHub</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Crear el equipo y el proyecto</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Subir los scripts</FONT></TD></TR></TABLE>>];
+ po [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Presentación oral · 40 %</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">10 a 15 diapositivas</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">20 minutos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Todos exponen (al azar)</FONT></TD></TR></TABLE>>];
+ pf [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Producto final · 40 %</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Informe y base de datos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Entrega del líder</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">16-nov-2026, 23:59</FONT></TD></TR></TABLE>>];
+ pac -> av; pac -> po; pac -> pf;
+ subgraph cluster_c { label=<<B>Lo que debe contener el producto</B>>; fontcolor="#1F3864"; style="rounded,dashed"; color="#9EB6D8";
+  c1 [label="1. Requisitos\nde la empresa"]; c2 [label="2. Modelo\nde datos"]; c3 [label="3. Creación\nde tablas"];
+  c4 [label="4. Inserción\nde datos"]; c5 [label="5. Consultas"]; c6 [label="6. Consultas desde\nun lenguaje de\nprogramación"];
+  {rank=same; c1 -> c2 -> c3;} {rank=same; c4 -> c5 -> c6;} c3 -> c4 [constraint=false]; c1 -> c4 [style=invis]; }
+ av -> c1 [style=invis]; pf -> c3 [style=dashed, arrowhead=none];
+}

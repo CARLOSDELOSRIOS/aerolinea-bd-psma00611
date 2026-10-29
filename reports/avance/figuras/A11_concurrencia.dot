@@ -1,0 +1,12 @@
+digraph G {
+ graph [rankdir=TB, bgcolor="white", pad=0.25, nodesep=0.5, ranksep=0.45, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+
+ s [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">40 sesiones a la vez</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Cada una con su propia conexión</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">y una barrera de arranque común</FONT></TD></TR></TABLE>>];
+ l [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Fila del cupo bloqueada (UPDLOCK)</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">ops.vuelo_cabina · cabina VIP de 12 asientos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Las ventas del mismo vuelo pasan de una en una</FONT></TD></TR></TABLE>>, fillcolor="#FFF4D6", color="#E3C77A"];
+ ok [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">12 ventas confirmadas</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Plazas ocupadas: 12 de 12</FONT></TD></TR></TABLE>>, fillcolor="#E7F6E7", color="#9FD49F"];
+ no [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#A33333">28 rechazadas</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Error 50020: sin plazas</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">La transacción se revierte entera</FONT></TD></TR></TABLE>>, fillcolor="#FBE9E9", color="#E5B5B5"];
+ c [shape=note, fillcolor="white", label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1" CELLPADDING="1"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">Última barrera</FONT></B></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">CHECK (plazas_ocupadas</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">&lt;= capacidad)</FONT></TD></TR></TABLE>>];
+ s -> l; l -> ok; l -> no; {rank=same; s; c;} s -> c [style=invis];
+}

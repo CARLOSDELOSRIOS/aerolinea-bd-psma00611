@@ -57,7 +57,7 @@ const HEX = THEME.colors;
 const pres = new pptxgen();
 pres.layout = "LAYOUT_WIDE"; // 13,333" x 7,5"
 pres.theme = { headFontFace: THEME.headFontFace, bodyFontFace: THEME.bodyFontFace };
-pres.author = "[POR COMPLETAR: equipo]";
+pres.author = "Carlos Veliz de Villa Aguirre, Elias Sifuentes Valles y Carlos De los Ríos De la Roca";
 pres.title = "Base de datos para una aerolínea comercial (PSMA00611)";
 pres.subject = "Producto Académico Colaborativo";
 const C = pres.SchemeColor;
@@ -138,8 +138,9 @@ function nuevo(master, titulo, seccion) {
   texto(s, [
     { text: "Gestión de datos y bases de datos con SQL (PSMA00611)", options: { breakLine: true } },
     { text: "Maestría en Ciencia de Datos · Escuela de Posgrado · Universidad Continental", options: { breakLine: true } },
-    { text: "Equipo: [POR COMPLETAR]   ·   Docente: [POR COMPLETAR]" },
-  ], { x: 0.8, y: 5.6, w: 11.5, h: 1.2, fontSize: 14, color: C.background1, paraSpaceAfter: 4 });
+    { text: "Equipo: Carlos Veliz de Villa Aguirre · Elias Sifuentes Valles · Carlos De los Ríos De la Roca (líder)", options: { breakLine: true } },
+    { text: "Docentes: Walter Alejandro Silva Sotillo y Max Leoncio Mucha Morales" },
+  ], { x: 0.8, y: 5.35, w: 11.8, h: 1.65, fontSize: 13, color: C.background1, paraSpaceAfter: 4 });
   s.addNotes("Tiempo: 0:30. Presentar el producto en una frase: una base de datos relacional para una aerolínea nueva, que garantiza en el propio motor las reglas del negocio y que se puede reconstruir completa con un comando. Aclarar desde el inicio que todos los datos son sintéticos y que el despliegue en Azure está preparado pero pendiente. Recordar que la exposición es aleatoria: cualquiera del equipo puede continuar desde cualquier diapositiva.");
 
   // =========================================================== 2. Problema y objetivos

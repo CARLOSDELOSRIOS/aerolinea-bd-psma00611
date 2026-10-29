@@ -1,0 +1,27 @@
+digraph G {
+ graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.1, ranksep=0.5, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+ r [label=<<B><FONT COLOR="white">aerolinea-bd-psma00611/</FONT></B><BR/><FONT COLOR="white" POINT-SIZE="9.5">225 archivos</FONT>>, fillcolor="#256ABF", color="#256ABF"];
+ raiz [label=<<B>(raíz)</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">README, CONTRIBUTING, dependencias y ejemplos de configuración · 8 archivos</FONT>>, fillcolor="white"];
+ r -> raiz;
+ docs [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>docs/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Documentación del proyecto · 69 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">00_fuentes/ (2) · 01_requisitos/ (1) · 02_modelo/ (46)</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">03_arquitectura/ (6) · 04_entorno_local/ (1) · 05_azure/ (1)</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">06_pruebas/ (2) · 07_consultas/ (2) · defensa/ (4) · equipo/ (3)</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">1 archivo propio</FONT></TD></TR></TABLE>>];
+ r -> docs;
+ sql [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>sql/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Scripts T-SQL y consultas · 37 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">azure/ (1) · consultas/ (20) · 16 archivos propios</FONT></TD></TR></TABLE>>];
+ r -> sql;
+ src [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>src/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Aplicación en Python · 17 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">aerolinea/ (17)</FONT></TD></TR></TABLE>>];
+ r -> src;
+ tests [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>tests/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Pruebas (pytest) · 5 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">5 archivos propios</FONT></TD></TR></TABLE>>];
+ r -> tests;
+ reports [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>reports/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Resultados, figuras, informe y avance · 66 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">avance/ (33) · figuras/ (9) · informe/ (3) · resultados/ (21)</FONT></TD></TR></TABLE>>];
+ r -> reports;
+ slides [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>slides/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Presentación · 4 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">4 archivos propios</FONT></TD></TR></TABLE>>];
+ r -> slides;
+ evidence [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>evidence/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Evidencias por entorno · 16 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">azure/ (1) · contenedor_linux/ (14) · laptop_windows/ (1)</FONT></TD></TR></TABLE>>];
+ r -> evidence;
+ scripts [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>scripts/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Windows y Azure · 2 archivos</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">azure/ (1) · windows/ (1)</FONT></TD></TR></TABLE>>];
+ r -> scripts;
+ data [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="1"><TR><TD ALIGN="LEFT"><B>data/</B>  <FONT POINT-SIZE="10" COLOR="#1F3864">Manifiesto de datos sintéticos · 1 archivo</FONT></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9" COLOR="#52514e">sintetico/ (1)</FONT></TD></TR></TABLE>>];
+ r -> data;
+
+}

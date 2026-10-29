@@ -1,0 +1,17 @@
+digraph G {
+ graph [rankdir=LR, bgcolor="white", pad=0.25, nodesep=0.12, ranksep=0.6, fontname="Liberation Sans", fontsize=11, newrank=true];
+ node [fontname="Liberation Sans", fontsize=11, shape=box, style="rounded,filled", fillcolor="#EEF3FA", color="#9EB6D8", fontcolor="#0b0b0b", penwidth=1.2, margin="0.18,0.10"];
+ edge [fontname="Liberation Sans", fontsize=9.5, color="#52514e", fontcolor="#52514e", arrowsize=0.75];
+ og [label=<<B><FONT COLOR="white">Objetivo general</FONT></B><BR/><FONT COLOR="white" POINT-SIZE="9.5">Diseñar, implementar y validar<BR/>la base de datos de la aerolínea,<BR/>desplegable en SQL Server y<BR/>Azure SQL Database, con<BR/>consultas desde Python</FONT>>, fillcolor="#256ABF", color="#256ABF"];
+ oe1 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">OE1 · Requisitos</FONT></B></TD><TD ROWSPAN="2" WIDTH="120"><TABLE BORDER="1" COLOR="#0ca30c" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7F6E7" STYLE="rounded"><TR><TD><FONT FACE="DejaVu Sans" POINT-SIZE="9" COLOR="#0ca30c"><B>✔ Completo</B></FONT></TD></TR></TABLE></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Reglas verificables</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ og -> oe1;
+ oe2 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">OE2 · Modelo</FONT></B></TD><TD ROWSPAN="2" WIDTH="120"><TABLE BORDER="1" COLOR="#0ca30c" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7F6E7" STYLE="rounded"><TR><TD><FONT FACE="DejaVu Sans" POINT-SIZE="9" COLOR="#0ca30c"><B>✔ Completo</B></FONT></TD></TR></TABLE></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">3FN y desnormalizaciones justificadas</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ og -> oe2;
+ oe3 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">OE3 · Integridad</FONT></B></TD><TD ROWSPAN="2" WIDTH="120"><TABLE BORDER="1" COLOR="#0ca30c" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7F6E7" STYLE="rounded"><TR><TD><FONT FACE="DejaVu Sans" POINT-SIZE="9" COLOR="#0ca30c"><B>✔ Completo</B></FONT></TD></TR></TABLE></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Reglas en el motor, también con concurrencia</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ og -> oe3;
+ oe4 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">OE4 · Datos y consultas</FONT></B></TD><TD ROWSPAN="2" WIDTH="120"><TABLE BORDER="1" COLOR="#0ca30c" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#E7F6E7" STYLE="rounded"><TR><TD><FONT FACE="DejaVu Sans" POINT-SIZE="9" COLOR="#0ca30c"><B>✔ Completo</B></FONT></TD></TR></TABLE></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Datos reproducibles y 20 consultas</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ og -> oe4;
+ oe5 [label=<<TABLE BORDER="0" CELLBORDER="0" CELLSPACING="2"><TR><TD ALIGN="LEFT"><B><FONT COLOR="#1F3864">OE5 · Validación y nube</FONT></B></TD><TD ROWSPAN="2" WIDTH="120"><TABLE BORDER="1" COLOR="#B07A00" CELLBORDER="0" CELLPADDING="3" BGCOLOR="#FFF4D6" STYLE="rounded"><TR><TD><FONT FACE="DejaVu Sans" POINT-SIZE="9" COLOR="#B07A00"><B>◐ En curso</B></FONT></TD></TR></TABLE></TD></TR><TR><TD ALIGN="LEFT"><FONT POINT-SIZE="9.5" COLOR="#52514e">Pruebas hechas; Azure por desplegar</FONT></TD></TR></TABLE>>, fillcolor="white"];
+ og -> oe5;
+
+}
