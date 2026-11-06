@@ -102,7 +102,10 @@ async function aplicarTema(archivo, tema) {
   xml = xml.replace(/(<a:majorFont><a:latin typeface=")[^"]*"/, `$1${tema.headFontFace}"`).replace(/(<a:minorFont><a:latin typeface=")[^"]*"/, `$1${tema.bodyFontFace}"`);
   xml = xml.replace(/(<a:theme [^>]*name=")[^"]*"/, `$1${tema.name}"`);
   zip.file(ruta, xml);
-  fs.writeFileSync(archivo, await zip.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
+  // Sin entradas de carpeta en el ZIP: algunos servicios en la nube no abren paquetes que las tengan.
+  const limpio = new JSZip();
+  for (const [nombre, entrada] of Object.entries(zip.files)) if (!entrada.dir) limpio.file(nombre, await entrada.async("nodebuffer"), { createFolders: false });
+  fs.writeFileSync(archivo, await limpio.generateAsync({ type: "nodebuffer", compression: "DEFLATE" }));
 }
 
 // ------------------------------------------------------------------ utilidades

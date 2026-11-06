@@ -310,8 +310,10 @@ def pruebas() -> Path:
     return _exportar("A12_pruebas", _grafo(cuerpo, sep=(0.3, 0.45)))
 
 
-def cronograma() -> Path:
-    """Plan propuesto hasta la entrega final (fechas objetivo, no compromisos ya cumplidos)."""
+def cronograma(hoy: date | None = date(2026, 10, 29), nombre: str = "A13_cronograma") -> Path:
+    """Plan propuesto hasta la entrega final (fechas objetivo, no compromisos ya cumplidos).
+
+    `hoy` marca la fecha del avance; la versión de la presentación va sin marca (hoy=None)."""
     DIR_FIGURAS.mkdir(parents=True, exist_ok=True)
     hitos = [("1. Organización del equipo y GitHub", date(2026, 10, 30), date(2026, 11, 2)),
              ("2. Retroalimentación del avance", None, None),
@@ -329,9 +331,10 @@ def cronograma() -> Path:
             ax.plot([ini], [i], marker="D", markersize=9, color=SERIE[1], zorder=4)
         else:
             ax.barh(i, (fin - ini).days, left=mdates.date2num(ini), height=0.5, color=SERIE[0], edgecolor=SUPERFICIE, linewidth=2)
-    hoy = date(2026, 10, 29)
-    ax.axvline(mdates.date2num(hoy), color=TEXTO_SECUNDARIO, linestyle=(0, (3, 3)), linewidth=1)
-    ax.text(mdates.date2num(hoy), -0.62, " hoy, 29-oct", fontsize=8.5, color=TEXTO_SECUNDARIO, va="center")
+    if hoy is not None:
+        ax.axvline(mdates.date2num(hoy), color=TEXTO_SECUNDARIO, linestyle=(0, (3, 3)), linewidth=1)
+        ax.text(mdates.date2num(hoy), -0.62, f" hoy, {hoy.day}-{'oct' if hoy.month == 10 else 'nov'}", fontsize=8.5,
+                color=TEXTO_SECUNDARIO, va="center")
     ax.set_yticks(range(len(hitos)), [h[0] for h in hitos], fontsize=9)
     ax.set_ylim(len(hitos) - 0.4, -0.85)
     ax.set_xlim(mdates.date2num(date(2026, 10, 28)), mdates.date2num(date(2026, 11, 18)))
@@ -344,7 +347,7 @@ def cronograma() -> Path:
     ax.grid(axis="y", visible=False)
     ax.tick_params(axis="y", length=0)
     fig.tight_layout()
-    ruta = DIR_FIGURAS / "A13_cronograma.png"
+    ruta = DIR_FIGURAS / f"{nombre}.png"
     fig.savefig(ruta, dpi=200)
     plt.close(fig)
     return ruta
@@ -446,4 +449,5 @@ def archivos_proyecto() -> list[str]:
 
 def generar_todas(archivos: list[str]) -> list[Path]:
     return [encargo(), estado(), objetivos(), personas(), ruta_vuelo(), precio_historico(), normalizacion(), integridad(),
-            scripts(), aplicacion(), concurrencia(), pruebas(), cronograma(), riesgos(), equipo(), repositorio(archivos)]
+            scripts(), aplicacion(), concurrencia(), pruebas(), cronograma(), riesgos(), equipo(), repositorio(archivos),
+            cronograma(None, "A13_cronograma_presentacion")]
